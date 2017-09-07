@@ -1,4 +1,3 @@
-
 package view;
 
 import java.util.Scanner;
@@ -31,6 +30,15 @@ public class View {
         return input.nextLine();
     }
 
+    public String getUserLogin(Scanner stdin) {
+        System.out.print("Login: ");
+        return stdin.nextLine();
+    }
+
+    public String getUserPassword(Scanner stdin) {
+        System.out.print("Password: ");
+        return stdin.nextLine();
+    }
 
 
 }
