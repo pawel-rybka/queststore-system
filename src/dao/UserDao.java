@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public abstract class UserDao<T> implements Fileable, Listable<T> {
 
-    ArrayList<T> objects;
+    ArrayList<T> objects = new ArrayList<>();
 
-    public ArrayList readFromFile(String path){
+    public ArrayList<String> readFromFile(String path){
 
         ArrayList<String> lines = new ArrayList<String>();
 
@@ -43,12 +43,17 @@ public abstract class UserDao<T> implements Fileable, Listable<T> {
         }
     }
 
+    
     public <T> void removeFromList(T object){
+        // System.out.println(object);
         this.getAll().remove(object);
     }
     public <T> void addToList(T object){
+        // System.out.println(object);
         this.getAll().add(object);
     }
 
-    public abstract ArrayList getAll();
+    public ArrayList getAll() {
+        return this.objects;
+    }
 }
