@@ -1,6 +1,7 @@
 
 package view;
 
+import java.util.Scanner;
 public class View {
 
     final private String ADMIN = "1) create Mentor account\n"
@@ -25,17 +26,10 @@ public class View {
         System.out.println(menu);
     }
 
-    public void getString() {
-        Sy
-        String login = getString();
-       
+    public String getString() {
+        Scanner input = new Scanner(System.in);
+        return input.nextLine();
     }
-
-    public void getLogin() {
-        String password = getString();
-       
-    }
-    
 
 
 

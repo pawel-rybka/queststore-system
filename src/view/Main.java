@@ -1,10 +1,31 @@
 package view;
 
 public class Main {
+
+    private View view = new View();
+
     public static void main(String[] args) {
-        View view = new View();
+        
+        Main test = new Main();
+        test.testMenus();
+        test.testInputs();
+
+        
+    }
+
+    private void testMenus() {
         view.showMenu("admin");
         view.showMenu("mentor");
         view.showMenu("student");
+
+        System.out.println();
+    }
+
+    private void testInputs() {
+        System.out.print("Type login: ");
+        String login = view.getString();
+        System.out.println("Your login: " + login);
+
+        System.out.println();
     }
 }
