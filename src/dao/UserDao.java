@@ -27,16 +27,21 @@ public abstract class UserDao<T> implements Fileable, Listable<T> {
     public void update(ArrayList<String> list, String path){
         try{
             FileWriter fileWriter = new FileWriter(path);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             for (String elem: list){
-                filedWriter.write(elem);
-                fileWriter.newLine();
+                bufferedReader.write(elem);
+                bufferedReader.newLine();
             }
         } catch (IOException e) {
             System.out.println("No file!");
         }
     }
 
-    public <T> void removeFromList(T object){}
-    public <T> void addToList(T object){}
+    public <T> void removeFromList(T object){
+        lines.remove(object);
+    }
+    public <T> void addToList(T object){
+        lines.add(object);
+    }
 }
