@@ -1,5 +1,5 @@
-public interface Listable{
-    
-    public ArrayList readFromFile();
-    public void update();
+public interface Listable<T>{
+
+    public <T> void removeFromList(T object);
+    public <T> void addToList(T object);
 }

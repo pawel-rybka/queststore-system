@@ -1,5 +1,5 @@
 public interface Fileable{
 
-    public void remove();
-    public void add();
+    public ArrayList readFromFile();
+    public void update();
 }
