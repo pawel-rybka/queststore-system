@@ -1,5 +1,12 @@
 package dao;
 
+import java.util.ArrayList;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public abstract class UserDao<T> implements Fileable, Listable<T> {
 
     ArrayList<T> objects;
@@ -10,14 +17,12 @@ public abstract class UserDao<T> implements Fileable, Listable<T> {
 
         String line;
 
-        try {
-            FileReader fileReader = new FileReader(path);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            line = bufferedReader.readLine();
-            while(line != null){
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+            while((line = bufferedReader.readLine()) != null){
                 lines.add(line);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.out.println("No file!");
         }
 
@@ -27,11 +32,11 @@ public abstract class UserDao<T> implements Fileable, Listable<T> {
     public void update(ArrayList<String> list, String path){
         try{
             FileWriter fileWriter = new FileWriter(path);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             for (String elem: list){
-                bufferedReader.write(elem);
-                bufferedReader.newLine();
+                bufferedWriter.write(elem);
+                bufferedWriter.newLine();
             }
         } catch (IOException e) {
             System.out.println("No file!");
@@ -39,9 +44,11 @@ public abstract class UserDao<T> implements Fileable, Listable<T> {
     }
 
     public <T> void removeFromList(T object){
-        lines.remove(object);
+        this.getAll().remove(object);
     }
     public <T> void addToList(T object){
-        lines.add(object);
+        this.getAll().add(object);
     }
+
+    public abstract ArrayList getAll();
 }
