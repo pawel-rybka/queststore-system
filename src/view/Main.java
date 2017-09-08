@@ -24,8 +24,7 @@ public class Main {
 
     private void testInputs() {
         System.out.print("Type login: ");
-        // String login = view.getString();
-        // System.out.println("Your login: " + login);
+
 
         System.out.println();
     }
