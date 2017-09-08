@@ -1,2 +1,2 @@
 #!/bin/bash
-java -classpath bin/ dao.Main
+java -classpath bin/ application.Application

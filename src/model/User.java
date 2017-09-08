@@ -18,4 +18,11 @@ public abstract class User {
         return this.name;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
 }

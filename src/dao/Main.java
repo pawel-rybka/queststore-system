@@ -9,14 +9,14 @@ public class Main{
         studentDao.creatObjectsFromList();
         Student student1 = new Student("100","kamil","mail66","haslo");
         studentDao.addToList(student1);
-        for (Student student : studentDao.students){
-            System.out.println(student.getName());
+        for (Object student : studentDao.getAll()){
+            System.out.println(((Student)student).getName());
         }
 
         studentDao.removeFromList(student1);
 
-        for (Student student : studentDao.students){
-            System.out.println(student.getName());
+        for (Object student : studentDao.getAll()){
+            System.out.println(((Student)student).getName());
         }
 
     }
