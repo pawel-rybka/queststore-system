@@ -6,17 +6,17 @@ import controller.Controller;
 import model.Mentor;
 import model.Student;
 import model.User;
-import dao.UserDao;
+import dao.AbstractDao;
 import dao.MentorDao;
 import view.View;
 
 public class Application {
 
     private User loggedUser;
-    private UserDao userDao;
+    private AbstractDao dao;
     private Controller controller;
     private Scanner stdin;
-    // private View view;
+    private View view;
 
     public static void main(String[] args) {
         Application app = new Application();
@@ -26,27 +26,26 @@ public class Application {
     Application () {
         this.loggedUser = null;
         this.controller = new Controller();
-        this.stdin = new Scanner(stdin);
-        // this.view = new View();
+        this.stdin = new Scanner(System.in);
+        this.view = new View(stdin);
     }
 
     public void run() {
-        // Scanner stdin = new Scanner(System.in);
-        View view = new View();
-        this.userDao = new MentorDao();
-        ((MentorDao)userDao).createObjectsFromList();
 
-        while (this.loggedUser == null) {
-            this.loggedUser = login(view);
+        this.dao = new MentorDao();
+        ((MentorDao)dao).createObjectsFromList();
+        this.loggedUser = login();
+
+        if (loggedUser != null) {
+            this.view.showMenu("mentor");
         }
-
         stdin.close();
     }
 
-    private User login(View view) {
-        String userEmail = view.getUserLogin(this.stdin);
-        String userPassword = view.getUserPassword(this.stdin);
-        Iterator iterator = userDao.getIterator();
+    private User login() {
+        String userEmail = this.view.getUserLogin();
+        String userPassword = this.view.getUserPassword();
+        Iterator iterator = this.dao.getIterator();
         User user = null;
         User foundUser = null;
 
