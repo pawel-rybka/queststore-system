@@ -1,15 +1,21 @@
 package dao;
 
 import java.util.ArrayList;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+import java.util.Iterator;
+
+
 public abstract class UserDao<T> implements Fileable, Listable<T> {
 
-    ArrayList<T> objects;
+    private UserIterator userIterator = new UserIterator();
+    ArrayList<T> objects = new ArrayList<>();
+
 
     public ArrayList readFromFile(String path){
 
@@ -41,6 +47,33 @@ public abstract class UserDao<T> implements Fileable, Listable<T> {
         } catch (IOException e) {
             System.out.println("No file!");
         }
+    }
+
+    private class UserIterator implements Iterator {
+        int index;
+
+        public UserIterator() {
+            this.index = 0;
+        }
+
+        public boolean hasNext() {
+            if (index < objects.size()) {
+                return true;
+            }
+            index = 0;
+            return false;
+        }
+
+        public T next() {
+            if (!hasNext()) {
+                return objects.get(index++);
+            }
+            return null;
+        }
+    }
+
+    public Iterator getIterator() {
+        return this.userIterator;
     }
 
     public <T> void removeFromList(T object){
