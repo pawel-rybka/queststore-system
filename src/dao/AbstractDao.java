@@ -81,11 +81,9 @@ public abstract class AbstractDao<T> implements Fileable, Listable<T> {
 
 
     public <T> void removeFromList(T object){
-        // System.out.println(object);
         this.getAll().remove(object);
     }
     public <T> void addToList(T object){
-        // System.out.println(object);
         this.getAll().add(object);
     }
 
