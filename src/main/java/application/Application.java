@@ -5,14 +5,14 @@ import java.util.Scanner;
 import model.Mentor;
 import model.Student;
 import model.User;
-import dao.AbstractDao;
+// import dao.AbstractDao;
 import dao.MentorDao;
 import view.View;
 
 public class Application {
 
     private User loggedUser;
-    private AbstractDao dao;
+    // private AbstractDao dao;
     private Scanner stdin;
     private View view;
 
@@ -29,8 +29,8 @@ public class Application {
 
     public void run() {
 
-        this.dao = new MentorDao();
-        ((MentorDao)dao).createObjectsFromList();
+        // this.dao = new MentorDao();
+        // ((MentorDao)dao).createObjectsFromList();
         this.loggedUser = login();
 
         if (loggedUser != null) {
@@ -42,16 +42,16 @@ public class Application {
     private User login() {
         String userEmail = this.view.getUserLogin();
         String userPassword = this.view.getUserPassword();
-        Iterator iterator = this.dao.getIterator();
+        // Iterator iterator = this.dao.getIterator();
         User user = null;
         User foundUser = null;
 
-        while (iterator.hasNext()) {
-            user = (User)iterator.next();
-            if (user.getEmail().equals(userEmail) && user.getPassword().equals(userPassword)) {
-                foundUser = user;
-            }
-        }
+        // while (iterator.hasNext()) {
+        //     user = (User)iterator.next();
+        //     if (user.getEmail().equals(userEmail) && user.getPassword().equals(userPassword)) {
+        //         foundUser = user;
+        //     }
+        // }
 
         return foundUser;
     }

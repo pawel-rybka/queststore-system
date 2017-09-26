@@ -9,7 +9,7 @@ public class Main {
 
     private void test() {
        
-        MentorController mc = new MentorController(new View(stdin));
+        // MentorController mc = new MentorController(new View(stdin));
         mc.handleMenu();
     }
 }
