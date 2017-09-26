@@ -1,4 +1,4 @@
-'first_name', 'last_name', 'phone_number', 'email', 'application_code'
+'first_name', 'last_name', 'phone_number', 'email', 'password'
 'Dominique','Williams','003630/734-4926','dolor@laoreet.co.uk',61823
 'Jemima','Foreman','003620/834-6898','magna@etultrices.net',58324
 'Zeph','Massey','003630/216-5351','a.feugiat.tellus@montesnasceturridiculus.co.uk',61349
