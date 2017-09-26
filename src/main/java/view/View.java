@@ -7,9 +7,9 @@ public class View {
             + "2) create Class\n3) edit Mentor's profile\n"
             + "4) see Mentor's profile\n5) create Level";
 
-    final private String MENTOR = "\n1) create Codecooler account\n2) Add Quest\n"
-            + "3) split Quests\n4) add Artifact\n5) update Quest/Artifact\n"
-            + "6) split Artifacts\n7) mark Achieved Quest\n"
+    final private String MENTOR = "\n0) quit menu\n1) create Codecooler account"
+            +"\n2) Add Quest\n3) split Quests\n4) add Artifact\n5) update "
+            + "Quest/Artifact\n6) split Artifacts\n7) mark Achieved Quest\n"
             + "8) mark Bought Artifact\n9) see codecoller's Wallet";
 
     final private String STUDENT = "\n1) see Wallet\n2) buy Artifact\n"
@@ -26,12 +26,13 @@ public class View {
         Scanner scanner = new Scanner(System.in);
         printMenu(msg);
         String choice = scanner.nextLine();
-        return choice.toLowerCase();
+        return choice;
     }
 
     public void printMenu(String msg) {
         if (msg.equals("Log")){
-            System.out.println("LOG IN AS: \n" + "1) Admin \n" + "2) Mentor \n" + "3) Student \n" + "0) Exit");
+            System.out.println("LOG IN AS: \n" + "1) Admin \n" + "2) Mentor \n" 
+                                + "3) Student \n" + "0) Exit");
         }
         else if (msg.equals("admin")){
             System.out.println(ADMIN);

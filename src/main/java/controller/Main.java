@@ -10,6 +10,6 @@ public class Main {
     private void test() {
        
         // MentorController mc = new MentorController(new View(stdin));
-        mc.handleMenu();
+        // mc.handleMenu();
     }
 }
