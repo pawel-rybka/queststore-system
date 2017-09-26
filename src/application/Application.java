@@ -2,7 +2,6 @@ package application;
 
 import java.util.Iterator;
 import java.util.Scanner;
-import controller.Controller;
 import model.Mentor;
 import model.Student;
 import model.User;
@@ -14,7 +13,6 @@ public class Application {
 
     private User loggedUser;
     private AbstractDao dao;
-    private Controller controller;
     private Scanner stdin;
     private View view;
 
@@ -25,7 +23,6 @@ public class Application {
 
     Application () {
         this.loggedUser = null;
-        this.controller = new Controller();
         this.stdin = new Scanner(System.in);
         this.view = new View(stdin);
     }
@@ -52,7 +49,7 @@ public class Application {
         while (iterator.hasNext()) {
             user = (User)iterator.next();
             if (user.getEmail().equals(userEmail) && user.getPassword().equals(userPassword)) {
-                foundUser = user; 
+                foundUser = user;
             }
         }
 
