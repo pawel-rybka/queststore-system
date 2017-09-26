@@ -3,26 +3,42 @@ package model;
 public abstract class User {
 
     private String id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
     private String email;
     private String password;
 
-    public User(String id, String name, String email, String password) {
+    public User(String id, String firstName, String lastName, String phoneNumber, String email, String password) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
     }
 
-    public String getName(){
-        return this.name;
+    public String getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getEmail() {
-        return this.email;
+        return email;
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 }
