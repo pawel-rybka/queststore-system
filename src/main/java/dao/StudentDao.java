@@ -1,18 +1,21 @@
 package dao;
 
-import java.util.ArrayList;
 import model.*;
 
-public class StudentDao extends AbstractDao<Student> {
-    String path = "./resources/students.csv";
-    ArrayList<String> lines = readFromFile(path);
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.ArrayList;
 
-    public void creatObjectsFromList(){
-        for (String line: lines){
-            String[] objectParameters = line.split("[,]");
-            Student student = new Student(objectParameters[0], objectParameters[1],
-                                        objectParameters[2], objectParameters[3]);
-            addToList(student);
-        }
-    }   
+public class StudentDao {
+
+    private ArrayList<Student> students = new ArrayList<Student>();
+    private Connection c = null;
+    private Statement stmt = null;
+
+    public StudentDao(){
+        c = Dao.getC();
+    }
+
+
+
 }
