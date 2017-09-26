@@ -20,14 +20,20 @@ public class View {
     public View(Scanner stdin) {
         this.stdin = stdin;
     }
-    public void showMenu(String owner) {
-        String menu = "\nChoose option:";
 
-        if (owner.equals("admin")) menu += ADMIN;    
-        else if (owner.equals("mentor")) menu += MENTOR;
-        else if (owner.equals("student")) menu += STUDENT;
-        menu += "\n0) exit menu\n";
-        System.out.println(menu);
+    public void printMenu(String msg) {
+        if (msg.equals("Log")){
+            System.out.println("LOG IN AS: \n" + "1) Admin \n" + "2) Mentor \n" + "3) Student \n" + "0) Exit");
+        }
+        else if (msg.equals("admin")){
+            System.out.println(ADMIN);
+        }
+        else if (msg.equals("mentor")){
+            System.out.println(MENTOR);
+        }
+        else if (msg.equals("student")){
+            System.out.println(STUDENT);
+        }
     }
 
     public String getUserLogin() {
