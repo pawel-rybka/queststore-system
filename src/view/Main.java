@@ -15,9 +15,9 @@ public class Main {
     }
 
     private void testMenus() {
-        view.showMenu("admin");
-        view.showMenu("mentor");
-        view.showMenu("student");
+        view.printMenu("admin");
+        view.printMenu("mentor");
+        view.printMenu("student");
 
         System.out.println();
     }

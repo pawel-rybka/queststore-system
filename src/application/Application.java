@@ -34,7 +34,7 @@ public class Application {
         this.loggedUser = login();
 
         if (loggedUser != null) {
-            this.view.showMenu("mentor");
+            this.view.printMenu("mentor");
         }
         stdin.close();
     }
