@@ -2,14 +2,14 @@ package model;
 
 public abstract class User {
 
-    private String id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
     private String password;
 
-    public User(String id, String firstName, String lastName, String phoneNumber, String email, String password) {
+    public User(Integer id, String firstName, String lastName, String phoneNumber, String email, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -18,7 +18,7 @@ public abstract class User {
         this.password = password;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
