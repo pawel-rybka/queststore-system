@@ -24,3 +24,7 @@ hs_err_pid*
 # others
 *.png
 bin/
+.classpath
+.project
+.settings/
+target/
