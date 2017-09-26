@@ -21,6 +21,14 @@ public class View {
         this.stdin = stdin;
     }
 
+    public String getInput(String msg){
+
+        Scanner scanner = new Scanner(System.in);
+        printMenu(msg);
+        String choice = scanner.nextLine();
+        return choice.toLowerCase();
+    }
+
     public void printMenu(String msg) {
         if (msg.equals("Log")){
             System.out.println("LOG IN AS: \n" + "1) Admin \n" + "2) Mentor \n" + "3) Student \n" + "0) Exit");
