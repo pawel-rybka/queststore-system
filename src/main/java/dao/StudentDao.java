@@ -34,8 +34,8 @@ public class StudentDao {
             String level = rs.getString("level");
 
             Student newStudent = new Student(id, firstName, lastName,
+                    phoneNumber, email, password, coins, totalCoins, level);
             students.add(newStudent);
-            phoneNumber, email, password, coins, totalCoins, level);
         }
         stmt.close();
     }
