@@ -18,6 +18,15 @@ public abstract class User {
         this.password = password;
     }
 
+    public User(String firstName, String lastName, String phoneNumber, String email, String password) {
+        this.id = null;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -40,5 +49,9 @@ public abstract class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
