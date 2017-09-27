@@ -42,7 +42,7 @@ public class AdminDao {
     }
 
     public void addObject(Admin admin)  {
-        String sql = String.format("INSERT INTO Admin (first_name, last_name, phone_number, email, password)" +
+        String sql = String.format("INSERT INTO Admins (first_name, last_name, phone_number, email, password)" +
                 "VALUES (?, ?, ?, ?, ?)");
 
         try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
