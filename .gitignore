@@ -24,3 +24,6 @@ hs_err_pid*
 # others
 *.png
 bin/
+/.idea/
+src/test/
+target/
