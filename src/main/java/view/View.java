@@ -8,9 +8,9 @@ public class View {
             + "4) see Mentor's profile\n5) create Level";
 
     final private String MENTOR = "\n0) quit menu\n1) create Codecooler account"
-            +"\n2) Add Quest\n3) split Quests\n4) add Artifact\n5) update "
-            + "Quest/Artifact\n6) split Artifacts\n7) mark Achieved Quest\n"
-            + "8) mark Bought Artifact\n9) see codecoller's Wallet";
+            + "\n2) Add Quest\n3) add Artifact\n4) update Quest\n5) update "
+            + "Artifact\n6) mark Achieved Quest\n7) mark Bought Artifact\n8) "
+            + "see codecoller's Wallet";
 
     final private String STUDENT = "\n1) see Wallet\n2) buy Artifact\n"
             + "3) group buying\n4) see Level";
