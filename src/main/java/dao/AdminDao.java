@@ -63,6 +63,15 @@ public class AdminDao {
 
     }
 
+    public void updateData(Admin admin) throws SQLException {
+        stmt = c.createStatement();
+        String sql = String.format("UPDATE Admins SET first_name = %s, last_name = %s, phone_number = %s," +
+                        "email = %s", admin.getFirstName(), admin.getLastName(), admin.getPhoneNumber(),
+                admin.getEmail());
+        stmt.executeUpdate(sql);
+        c.commit();
+    }
+
     private Integer selectLast(String table, Connection c) throws SQLException{
 
         Integer id = null;

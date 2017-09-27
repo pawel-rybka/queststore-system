@@ -64,6 +64,15 @@ public class MentorDao {
 
     }
 
+    public void updateData(Mentor mentor) throws SQLException {
+        stmt = c.createStatement();
+        String sql = String.format("UPDATE Mentors SET first_name = %s, last_name = %s, phone_number = %s," +
+                "email = %s", mentor.getFirstName(), mentor.getLastName(), mentor.getPhoneNumber(),
+                mentor.getEmail());
+        stmt.executeUpdate(sql);
+        c.commit();
+    }
+
     private Integer selectLast(String table, Connection c) throws SQLException{
 
         Integer id = null;

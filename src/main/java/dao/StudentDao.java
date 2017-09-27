@@ -67,6 +67,15 @@ public class StudentDao {
 
     }
 
+    public void updateData(Student student) throws SQLException {
+        stmt = c.createStatement();
+        String sql = String.format("UPDATE Students SET first_name = %s, last_name = %s, phone_number = %s," +
+                        "email = %s, coins = %d, total_coins = %d", student.getFirstName(), student.getLastName(), student.getPhoneNumber(),
+                student.getEmail(), student.getCoins(), student.getTotalCoins());
+        stmt.executeUpdate(sql);
+        c.commit();
+    }
+
     private Integer selectLast(String table, Connection c) throws SQLException{
 
         Integer id = null;
