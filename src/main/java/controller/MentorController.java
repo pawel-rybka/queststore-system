@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 import view.*;
+import dao.*;
 
 class MentorController {
     
@@ -38,7 +39,7 @@ class MentorController {
         }
     }
 
-    public void createStudent() {
+    private void createStudent() {
         String firstName = view.getInput("Enter first name.");
         String lastName = view.getInput("Enter last name.");
         String phoneNumber = view.getInput("Enter phone number.");
@@ -47,50 +48,68 @@ class MentorController {
         // new Student(firstName, lastName, phoneNumber, email, password);
     }
 
-    public void addQuest() {
+    private void addQuest() {
         String category = view.getInput("Enter the category.");
         // new Quest(category);
     }
 
-    public void addArtifact() {
+    private void addArtifact() {
         String category = view.getInput("Enter the category.");
         // new Artifact(category);
     }
 
-    public void updateQuest() {
-        // split this method to update artifact & update quest
+    private void updateQuest() {
+        Integer menu = -1;
+
+        while (menu == -1) {
+            // QuestDao questDao = new QuestDao();
+            // view.showList(questDao.getQuests())
+            menu = validateInt(view.getInput("Choose quest."));
+
+            System.out.println("entered: " + menu);
+        }
+        System.out.println("quit: " + menu);
         // TODO:
         // 1. show list
         // 2. get input
         // 3. update
     }
 
-    public void updateArtifact() {
-        // split this method to update artifact & update quest
+    private void updateArtifact() {
         // TODO:
         // 1. show list
         // 2. get input
         // 3. update
     }
 
-    public void markQuest() {
+    private void markQuest() {
         // TODO:
         // 1. show list
         // 2. get input
         // 3. mark
     }
 
-    public void markArtifact() {
+    private void markArtifact() {
         // TODO:
         // 1. show list
         // 2. get input
         // 3. mark
     }
 
-    public void seeWallet() {
+    private void seeWallet() {
         // TODO:
         // 1. show student list
         // 2. get input
         // 3. show wallet
+    }
+
+    private Integer validateInt(String text) {
+        Integer number = -1;
+        try {
+            number = Integer.parseInt(text);
+        } catch (Exception e) {
+            view.printMsg("Wrong input.");
+        }
+        return number;
     }
 }

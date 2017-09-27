@@ -55,5 +55,7 @@ public class View {
         return this.stdin.nextLine();
     }
 
-
+    public void printMsg(String msg) {
+        System.out.print(msg);
+    }
 }
