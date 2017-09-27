@@ -3,6 +3,7 @@ package controller;
 import model.*;
 import view.*;
 import dao.*;
+import java.lang.Exception;
 
 class MentorController {
     
@@ -63,15 +64,13 @@ class MentorController {
 
         while (menu == -1) {
             // QuestDao questDao = new QuestDao();
-            // view.showList(questDao.getQuests())
-            menu = validateInt(view.getInput("Choose quest."));
+            // view.showList(questDao.getQuests());
+            int size = 5;  // <-- tmp, to delete
+            menu = validateInt(view.getInput("Choose quest."), size);
 
-            System.out.println("entered: " + menu);
         }
-        System.out.println("quit: " + menu);
         // TODO:
         // 1. show list
-        // 2. get input
         // 3. update
     }
 
@@ -103,10 +102,11 @@ class MentorController {
         // 3. show wallet
     }
 
-    private Integer validateInt(String text) {
+    private Integer validateInt(String text, int size) {
         Integer number = -1;
         try {
             number = Integer.parseInt(text);
+            if (number < 0 || number >= size) throw Exception("s");
         } catch (Exception e) {
             view.printMsg("Wrong input.");
         }
