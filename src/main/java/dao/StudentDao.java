@@ -36,6 +36,27 @@ public class StudentDao {
         stmt.close();
     }
 
+    public Student createUserObject(String inputEmail, String inputPassword) throws SQLException{
+        stmt = c.createStatement();
+        String sql = String.format("SELECT * FROM Students WHERE email = %s AND password = %s", inputEmail, inputPassword);
+        ResultSet rs = stmt.executeQuery(sql);
+
+
+        int id = rs.getInt("id");
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String phoneNumber = rs.getString("phone_number");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        int coins = rs.getInt("coins");
+        int totalCoins = rs.getInt("total_coins");
+
+        Student newStudent = new Student(id, firstName, lastName,
+                phoneNumber, email, password, coins, totalCoins);
+
+        return newStudent;
+    }
+
     public void removeObject(Student student) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("DELETE FROM Students WHERE id=%d;",student.getId());

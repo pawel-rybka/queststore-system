@@ -34,6 +34,25 @@ public class MentorDao {
         stmt.close();
     }
 
+    public Mentor createUserObject(String inputEmail, String inputPassword) throws SQLException{
+        stmt = c.createStatement();
+        String sql = String.format("SELECT * FROM Mentors WHERE email = %s AND password = %s", inputEmail, inputPassword);
+        ResultSet rs = stmt.executeQuery(sql);
+
+
+        int id = rs.getInt("id");
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String phoneNumber = rs.getString("phone_number");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+
+        Mentor newMentor = new Mentor(id, firstName, lastName,
+                phoneNumber, email, password);
+
+        return newMentor;
+    }
+
     public void removeObject(Mentor mentor) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("DELETE FROM Mentors WHERE id=%d;",mentor.getId());

@@ -34,8 +34,23 @@ public class AdminDao {
         stmt.close();
     }
 
-    public Admin createUserObject(String email, String password) {
-        return null;
+    public Admin createUserObject(String inputEmail, String inputPassword) throws SQLException{
+        stmt = c.createStatement();
+        String sql = String.format("SELECT * FROM Admins WHERE email = %s AND password = %s", inputEmail, inputPassword);
+        ResultSet rs = stmt.executeQuery(sql);
+
+
+        int id = rs.getInt("id");
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String phoneNumber = rs.getString("phone_number");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+
+        Admin newAdmin = new Admin(id, firstName, lastName,
+                phoneNumber, email, password);
+
+        return newAdmin;
     }
 
     public void removeObject(Admin admin) throws SQLException {
