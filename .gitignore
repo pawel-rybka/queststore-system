@@ -27,3 +27,6 @@ bin/
 /.idea/
 src/test/
 target/
+.classpath
+.project
+.settings/
