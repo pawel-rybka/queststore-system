@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Dao {
     private static Connection c = null;
 
-    public static void connectBase() {
+    private static void connectBase() {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/database.db");
@@ -19,12 +19,9 @@ public class Dao {
 
     }
 
-    public static void closeDatabase(){
-
-        try{
+    public static void closeDatabase() throws SQLException {
+        if (c != null) {
             c.close();
-        } catch (SQLException e){
-            System.out.println("Something went wrong!");
         }
     }
 

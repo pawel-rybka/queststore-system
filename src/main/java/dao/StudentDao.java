@@ -2,10 +2,7 @@ package dao;
 
 import model.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class StudentDao {
@@ -31,13 +28,60 @@ public class StudentDao {
             String password = rs.getString("password");
             int coins = rs.getInt("coins");
             int totalCoins = rs.getInt("total_coins");
-            String level = rs.getString("level");
 
             Student newStudent = new Student(id, firstName, lastName,
-                    phoneNumber, email, password, coins, totalCoins, level);
+                    phoneNumber, email, password, coins, totalCoins);
             students.add(newStudent);
         }
         stmt.close();
     }
 
+    public void removeObject(Student student) throws SQLException {
+        stmt = c.createStatement();
+        String sql = String.format("DELETE FROM Students WHERE id=%d;",student.getId());
+        stmt.executeUpdate(sql);
+        c.commit();
+    }
+
+    public void addObject(Student student)  {
+        String sql = String.format("INSERT INTO Admin (first_name, last_name, phone_number, email, password, coins, total_coins)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, student.getFirstName());
+            pstmt.setString(2, student.getLastName());
+            pstmt.setString(3, student.getPhoneNumber());
+            pstmt.setString(4, student.getEmail());
+            pstmt.setString(5, student.getPassword());
+            pstmt.setInt(6, student.getCoins());
+            pstmt.setInt(7, student.getTotalCoins());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            student.setId(selectLast("Students", c));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Integer selectLast(String table, Connection c) throws SQLException{
+
+        Integer id = null;
+        stmt = c.createStatement();
+        ResultSet result = stmt.executeQuery( String.format("SELECT id FROM %s\n", table) +
+                "ORDER BY id DESC\n" +
+                "LIMIT 1;");
+
+        while (result.next()){
+            id = result.getInt("id");
+        }
+        return id;
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
 }

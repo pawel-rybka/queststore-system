@@ -18,7 +18,7 @@ public class MentorDao {
         c = Dao.getC();
     }
 
-    public void createObjectFromDatabase() throws SQLException {
+    private void createObjectFromDatabase() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Mentors;" );
 
@@ -37,8 +37,18 @@ public class MentorDao {
         stmt.close();
     }
 
+    public void removeObject(Mentor mentor) throws SQLException {
+        stmt = c.createStatement();
+        String sql = String.format("DELETE FROM Mentors WHERE id=%d;",mentor.getId());
+        stmt.executeUpdate(sql);
+        c.commit();
+    }
+
+
+
     public ArrayList<Mentor> getMentors() {
         return mentors;
     }
 
 }
+
