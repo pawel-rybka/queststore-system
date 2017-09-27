@@ -13,14 +13,9 @@ public class MentorDao {
 
     public MentorDao(){
         c = Dao.getC();
-        try {
-            createObjectFromDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void createObjectFromDatabase() throws SQLException {
+    public void createObjectFromDatabase() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Mentors;" );
 
@@ -69,11 +64,9 @@ public class MentorDao {
 
     }
 
-    public void updateData(Mentor mentor) throws SQLException {
+    public void updateData(Mentor mentor, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("UPDATE Mentors SET first_name = %s, last_name = %s, phone_number = %s," +
-                "email = %s", mentor.getFirstName(), mentor.getLastName(), mentor.getPhoneNumber(),
-                mentor.getEmail());
+        String sql = String.format("UPDATE Mentors SET %s = %s WHERE id = %d", columnName, value, mentor.getId());
         stmt.executeUpdate(sql);
         c.commit();
     }

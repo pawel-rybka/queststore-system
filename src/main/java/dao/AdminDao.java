@@ -13,14 +13,9 @@ public class AdminDao {
 
     public AdminDao(){
         c = Dao.getC();
-        try {
-            createObjectFromDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void createObjectFromDatabase() throws SQLException {
+    public void createObjectFromDatabase() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Admins;" );
 
@@ -37,6 +32,10 @@ public class AdminDao {
             admins.add(newAdmin);
         }
         stmt.close();
+    }
+
+    public Admin createUserObject(String email, String password) {
+        return null;
     }
 
     public void removeObject(Admin admin) throws SQLException {
@@ -68,11 +67,9 @@ public class AdminDao {
 
     }
 
-    public void updateData(Admin admin) throws SQLException {
+    public void updateData(Admin admin, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("UPDATE Admins SET first_name = %s, last_name = %s, phone_number = %s," +
-                        "email = %s", admin.getFirstName(), admin.getLastName(), admin.getPhoneNumber(),
-                admin.getEmail());
+        String sql = String.format("UPDATE Admins SET %s = %s WHERE id = %d", columnName, value, admin.getId());
         stmt.executeUpdate(sql);
         c.commit();
     }

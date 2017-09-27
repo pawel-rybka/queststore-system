@@ -13,14 +13,9 @@ public class StudentDao {
 
     public StudentDao(){
         c = Dao.getC();
-        try {
-            createObjectFromDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void createObjectFromDatabase() throws SQLException {
+    public void createObjectFromDatabase() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Students;" );
 
@@ -72,11 +67,9 @@ public class StudentDao {
 
     }
 
-    public void updateData(Student student) throws SQLException {
+    public void updateData(Student student, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("UPDATE Students SET first_name = %s, last_name = %s, phone_number = %s," +
-                        "email = %s, coins = %d, total_coins = %d", student.getFirstName(), student.getLastName(), student.getPhoneNumber(),
-                student.getEmail(), student.getCoins(), student.getTotalCoins());
+        String sql = String.format("UPDATE Students SET %s = %s WHERE id = %d", columnName, value, student.getId());
         stmt.executeUpdate(sql);
         c.commit();
     }
