@@ -8,7 +8,7 @@ public class View {
             + "4) see Mentor's profile\n5) create Level";
 
     final private String MENTOR = "\n0) quit menu\n1) create Codecooler account"
-            + "\n2) Add Quest\n3) add Artifact\n4) update Quest\n5) update "
+            + "\n2) add Quest\n3) add Artifact\n4) update Quest\n5) update "
             + "Artifact\n6) mark Achieved Quest\n7) mark Bought Artifact\n8) "
             + "see codecoller's Wallet";
 
@@ -24,7 +24,7 @@ public class View {
     public String getInput(String msg){
 
         Scanner scanner = new Scanner(System.in);
-        printMenu(msg);
+        System.out.println(msg);
         String choice = scanner.nextLine();
         return choice;
     }

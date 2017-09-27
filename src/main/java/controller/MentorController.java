@@ -12,10 +12,12 @@ class MentorController {
     }
 
     public void handleMenu() {
-        view.printMenu("mentor");
         String menu = "default";
 
         while (!menu.equals("0")) {
+            view.printMenu("mentor");
+            menu = view.getInput("Choose option.");
+
             if (menu.equals("1")) {
                 createStudent();
             } else if (menu.equals("2")) {
