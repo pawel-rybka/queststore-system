@@ -13,9 +13,14 @@ public class StudentDao {
 
     public StudentDao(){
         c = Dao.getC();
+        try {
+            createObjectFromDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void createObjectFromDatabase() throws SQLException {
+    private void createObjectFromDatabase() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Students;" );
 
