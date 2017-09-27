@@ -15,7 +15,7 @@ public class MentorDao {
         c = Dao.getC();
     }
 
-    private void createObjectFromDatabase() throws SQLException {
+    public void createObjectFromDatabase() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Mentors;" );
 
