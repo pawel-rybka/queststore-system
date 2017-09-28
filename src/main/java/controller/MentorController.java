@@ -110,9 +110,9 @@ public class MentorController {
     }
 
     private void updateArtifact() {
-        Integer menu = 0;
         ArtifactDao artifactDao = new ArtifactDao();
         ArrayList<Artifact> artifacts = artifactDao.getArtifacts();
+        Integer menu = 0;
         while (menu == 0) {
             if (artifacts.size() == 0) {
                 view.printMsg("Artifacts list empty, operation aborted.");
@@ -124,7 +124,7 @@ public class MentorController {
             menu = validateOption(view.getInput("Choose quest."), 
                                   artifacts.size());
         }
-        
+
         // ----------- code to refactoring:
         view.printMsg("Name = " + artifacts.get(menu-1).getName());
         if (view.getInput("Update name? (Y/N)").toLowerCase().equals("y")) {

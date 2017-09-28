@@ -19,7 +19,7 @@ public class AdminController {
         String menu = "default";
 
         while (!menu.equals("0")) {
-            view.printMenu("mentor");
+            view.printMenu("admin");
             menu = view.getInput("Choose option.");
 
             if (menu.equals("1")) {
@@ -41,7 +41,28 @@ public class AdminController {
         }
 
         private void seeMentor() {
+            MentorDao mentorDao = new MentorDao();
+            try {
+                mentorDao.createObjectFromDatabase();
+            } catch (SQLException e) {
+                view.printMsg("Database error in mentorDao.createObjectFrom"
+                              + "Database(). Operation aborted.");
+            } 
+            ArrayList<Mentor> mentors = mentorDao.getMentors();
 
+            Integer menu = 0;
+            while (menu == 0) {
+                if (mentors.size() == 0) {
+                    view.printMsg("Mentor list empty, operation aborted.");
+                    return;
+                }
+                for (Mentor mentor : mentors) {
+                    view.printNumbered(mentor.getId(), 
+                        mentor.getFirstName() + mentor.getLastName());
+                }
+                menu = validateOption(view.getInput("Choose mentor."), 
+                                      mentors.size());
+            }
         }
 
         private void editMentor() {
@@ -56,5 +77,19 @@ public class AdminController {
             view.printMsg("Not implemented yet, operation aborted.");
         }
 
+        private Integer validateOption(String text, int size) {
+            Integer number = 0;
+            try {
+                number = Integer.parseInt(text);
+                if (number < 1 || number > size) {
+                    number = 0;
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                view.printMsg("Wrong input.");
+            }
+            return number;
+        }
+    
 
 }

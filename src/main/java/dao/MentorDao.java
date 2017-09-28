@@ -112,8 +112,6 @@ public class MentorDao {
         return id;
     }
 
-
-
     public ArrayList<Mentor> getMentors() {
         return mentors;
     }

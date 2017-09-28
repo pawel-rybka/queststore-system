@@ -25,9 +25,29 @@ public class Application {
     }
 
     private void runDemo() {
-        MentorController mc = new MentorController(new View(new 
-                                                    Scanner(System.in)));
-        mc.handleMenu();
+        String menu = "default";
+        while (!menu.equals("0")) {
+            view.printMsg("\n0) exit\n1) Admin\n2) Mentor\n"
+                          + "3) Student (preview menu only)");
+            menu = view.getInput("Choose option.");
+
+            if (menu.equals("1")) {
+                login(); // fake login
+                AdminController ac = new AdminController(new View(new 
+                                                         Scanner(System.in)));
+                ac.handleMenu();
+            } else if (menu.equals("2")) {
+                login(); // fake login
+                MentorController mc = new MentorController(new View(new 
+                                                           Scanner(System.in)));
+                mc.handleMenu();
+            } else if (menu.equals("3")) {
+                login(); // fake login
+                view.printMenu("student");
+                view.printMsg("Student's options not available in demo "
+                              +"version. Return to main menu.");
+            }
+        }
     }
 
     public void run() {

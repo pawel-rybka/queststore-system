@@ -3,7 +3,7 @@ package view;
 import java.util.Scanner;
 public class View {
 
-    final private String ADMIN = "\n1) create Mentor account\n"
+    final private String ADMIN = "\n0) quit menu\n1) create Mentor account\n"
             + "2) see Mentor's profile\n3) edit Mentor's profile\n"
             + "4) create Class\n5) create Level";
 
@@ -12,8 +12,8 @@ public class View {
             + "Artifact\n6) mark Achieved Quest\n7) mark Bought Artifact\n8) "
             + "see codecoller's Wallet";
 
-    final private String STUDENT = "\n1) see Wallet\n2) buy Artifact\n"
-            + "3) group buying\n4) see Level";
+    final private String STUDENT = "\n0) quit menu\n1) see Wallet\n2) buy "
+            + "Artifact\n3) Group Buying\n4) see Level";
 
     private Scanner stdin;
 
