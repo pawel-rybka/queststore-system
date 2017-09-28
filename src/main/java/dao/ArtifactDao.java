@@ -3,10 +3,7 @@ package dao;
 import model.Admin;
 import model.Artifact;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ArtifactDao {
@@ -42,5 +39,35 @@ public class ArtifactDao {
         stmt = c.createStatement();
         String sql = String.format("DELETE FROM Artifacts WHERE id=%d;", id);
         stmt.executeUpdate(sql);
+    }
+
+    public void addObject(Artifact artifact) throws SQLException {
+        String sql = "INSERT INTO Artifacts (category, price)" +
+                "VALUES (?, ?)";
+
+        Connection conn = Dao.getC();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, artifact.getCategory());
+        pstmt.setInt(2, artifact.getPrice());
+        pstmt.executeUpdate();
+        try {
+            artifact.setId(selectLast("Artifacts", c));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Integer selectLast(String table, Connection c) throws SQLException {
+        Integer id = null;
+        stmt = c.createStatement();
+        ResultSet result = stmt.executeQuery( String.format("SELECT id FROM %s\n", table) +
+                "ORDER BY id DESC\n" +
+                "LIMIT 1;");
+
+        while (result.next()){
+            id = result.getInt("id");
+        }
+        return id;
     }
 }
