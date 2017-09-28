@@ -4,6 +4,7 @@ import model.*;
 import view.*;
 import dao.*;
 import java.lang.Exception;
+import java.sql.SQLException;
 
 class MentorController {
     
@@ -46,41 +47,79 @@ class MentorController {
         String phoneNumber = view.getInput("Enter phone number.");
         String email = view.getInput("Enter email.");
         String password = view.getInput("Enter password.");
-        // new Student(firstName, lastName, phoneNumber, email, password);
+        
+        StudentDao studentDao = new StudentDao();
+        try {
+            studentDao.createObjectFromDatabase();
+        } catch (SQLException e) {
+            view.printMsg("Database error in createObjectFromDatabase()" + 
+                          " Operation aborted.");
+        } 
+        
+        boolean studentNotExist = true;
+        for (Student student : studentDao.getStudents()) {
+            if (student.getFirstName().equals(firstName)
+                    && student.getLastName().equals(lastName)
+                    && student.getPhoneNumber().equals(phoneNumber)
+                    && student.getEmail().equals(email)) {
+                studentNotExist = false;
+            }
+        }
+
+        if (studentNotExist) {
+            Student newStudent = new Student(firstName, lastName, phoneNumber, 
+                                             email, password, 0, 0);
+        } else {
+            view.printMsg("Student already exist. Aborted.");
+        }
+        
+        
     }
 
     private void addQuest() {
         String category = view.getInput("Enter the category.");
-        // new Quest(category);
+        view.printMsg("QuestModel class not finished, operation aborted.");
+        // new Quest(category); ???
     }
 
     private void addArtifact() {
         String category = view.getInput("Enter the category.");
-        // new Artifact(category);
+        view.printMsg("ArtifactModel class not finished, operation aborted.");
+        // new Artifact(category); ???
     }
 
     private void updateQuest() {
         Integer menu = -1;
-
         while (menu == -1) {
             // QuestDao questDao = new QuestDao();
             // view.showList(questDao.getQuests());
+            view.printMsg("QuestDao class not finished, type from 0-4 range.");
             int size = 5;  // <-- tmp, to delete
-            menu = validateInt(view.getInput("Choose quest."), size);
+            menu = validateOption(view.getInput("Choose quest."), size);
         }
-        // TODO:
+        view.printMsg("QuestModel class not finished, operation aborted.");
+        // ToDo:
         // 1. show list
         // 3. update
     }
 
     private void updateArtifact() {
-        // TODO:
+        Integer menu = -1;
+        while (menu == -1) {
+            // ArtifactDao artifactDao = new ArtifactDao();
+            // view.showList(artifactDao.getArtifact());
+            view.printMsg("ArtifactDao class not finished, type from 0-4 range.");
+            int size = 5;  // <-- tmp, to delete
+            menu = validateOption(view.getInput("Choose quest."), size);
+        }
+        view.printMsg("ArtifactDao class not finished, operation aborted.");
+        // ToDo:
         // 1. show list
-        // 2. get input
         // 3. update
     }
 
     private void markQuest() {
+        view.printMsg("Missing Quest's classess, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -88,6 +127,7 @@ class MentorController {
     }
 
     private void markArtifact() {
+        view.printMsg("Missing Artifact's classess, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -95,13 +135,14 @@ class MentorController {
     }
 
     private void seeWallet() {
+        view.printMsg("Missing Wallet's classess, operation aborted.");
         // TODO:
         // 1. show student list
         // 2. get input
         // 3. show wallet
     }
 
-    private Integer validateInt(String text, int size) {
+    private Integer validateOption(String text, int size) {
         Integer number = -1;
         try {
             number = Integer.parseInt(text);
