@@ -37,4 +37,10 @@ public class ArtifactDao {
         }
         stmt.close();
     }
+
+    public void removeObject(Integer id) throws SQLException {
+        stmt = c.createStatement();
+        String sql = String.format("DELETE FROM Artifacts WHERE id=%d;", id);
+        stmt.executeUpdate(sql);
+    }
 }
