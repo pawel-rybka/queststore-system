@@ -29,4 +29,8 @@ public class Artifact {
     public Integer getPrice() {
         return price;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
