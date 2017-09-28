@@ -67,8 +67,9 @@ public class StudentDao {
     }
 
     public void addObject(Student student) throws SQLException {
-        String sql = "INSERT INTO Student (first_name, last_name, phone_number, email, password, coins, total_coins)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO students (first_name, last_name, phone_number,"
+                    + "email, password, coins, total_coins)" 
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         Connection conn = Dao.getC();
         PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -80,6 +81,7 @@ public class StudentDao {
         pstmt.setInt(6, student.getCoins());
         pstmt.setInt(7, student.getTotalCoins());
         pstmt.executeUpdate();
+
         try {
             student.setId(selectLast("Students", c));
         } catch (SQLException e) {

@@ -69,6 +69,13 @@ class MentorController {
         if (studentNotExist) {
             Student newStudent = new Student(firstName, lastName, phoneNumber, 
                                              email, password, 0, 0);
+            studentDao.getStudents().add(newStudent);
+            try {
+                studentDao.addObject(newStudent);
+            } catch (SQLException e) {
+                view.printMsg("Database error in addObject()" + 
+                              " Operation aborted.");
+            } 
         } else {
             view.printMsg("Student already exist. Aborted.");
         }
