@@ -1,5 +1,8 @@
 package controller;
 
+import view.View;
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -9,7 +12,8 @@ public class Main {
 
     private void test() {
        
-        MentorController mc = new MentorController(new View(stdin));
+        MentorController mc = new MentorController(
+                            new View(new Scanner(System.in)));
         mc.handleMenu();
     }
 }
