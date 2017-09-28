@@ -57,9 +57,9 @@ public class AdminDao {
         return newAdmin;
     }
 
-    public void removeObject(Admin admin) throws SQLException {
+    public void removeObject(Integer id) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("DELETE FROM Admins WHERE id=%d;",admin.getId());
+        String sql = String.format("DELETE FROM Admins WHERE id=%d;", id);
         stmt.executeUpdate(sql);
     }
 
@@ -83,12 +83,12 @@ public class AdminDao {
 
     }
 
-    public void updateData(Admin admin, String columnName, String value) throws SQLException {
+    public void updateData(Integer id, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("UPDATE Admins SET %s = ? WHERE id = ?;", columnName);
         try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, value);
-            pstmt.setInt(2, admin.getId());
+            pstmt.setInt(2, id);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

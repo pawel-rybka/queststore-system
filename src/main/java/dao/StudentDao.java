@@ -60,9 +60,9 @@ public class StudentDao {
         return newStudent;
     }
 
-    public void removeObject(Student student) throws SQLException {
+    public void removeObject(Integer id) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("DELETE FROM Students WHERE id=%d;",student.getId());
+        String sql = String.format("DELETE FROM Students WHERE id=%d;", id);
         stmt.executeUpdate(sql);
     }
 
@@ -88,12 +88,12 @@ public class StudentDao {
 
     }
 
-    public void updateData(Student student, String columnName, String value) throws SQLException {
+    public void updateData(Integer id, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("UPDATE Students SET %s = ? WHERE id = ?;", columnName);
         try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, value);
-            pstmt.setInt(2, student.getId());
+            pstmt.setInt(2, id);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
