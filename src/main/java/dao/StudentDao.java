@@ -18,7 +18,6 @@ public class StudentDao {
     public void createObjectFromDatabase() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Students;" );
-
         while ( rs.next() ) {
             int id = rs.getInt("id");
             String firstName = rs.getString("first_name");
@@ -28,12 +27,12 @@ public class StudentDao {
             String password = rs.getString("password");
             int coins = rs.getInt("coins");
             int totalCoins = rs.getInt("total_coins");
-
             Student newStudent = new Student(id, firstName, lastName,
                     phoneNumber, email, password, coins, totalCoins);
             students.add(newStudent);
         }
         stmt.close();
+
     }
 
     public Student createUserObject(String inputEmail, String inputPassword) throws SQLException{

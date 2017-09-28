@@ -82,27 +82,27 @@ class MentorController {
     }
 
     private void addQuest() {
-        String category = view.getInput("Enter the category.");
-        view.printMsg("QuestModel class not finished, operation aborted.");
-        // new Quest(category); ???
+        // String category = view.getInput("Enter the category.");
+        view.printMsg("Not implemented yet, operation aborted.");
+        // new Quest(--------);
     }
 
     private void addArtifact() {
-        String category = view.getInput("Enter the category.");
-        view.printMsg("ArtifactModel class not finished, operation aborted.");
-        // new Artifact(category); ???
+        // String category = view.getInput("Enter the category.");
+        view.printMsg("Not implemented yet, operation aborted.");
+        // new Artifact(--------);
     }
 
     private void updateQuest() {
-        Integer menu = -1;
-        while (menu == -1) {
-            // QuestDao questDao = new QuestDao();
-            // view.showList(questDao.getQuests());
-            view.printMsg("QuestDao class not finished, type from 0-4 range.");
-            int size = 5;  // <-- tmp, to delete
-            menu = validateOption(view.getInput("Choose quest."), size);
-        }
-        view.printMsg("QuestModel class not finished, operation aborted.");
+        view.printMsg("Not implemented yet, operation aborted.");
+        // Integer menu = -1;
+        // while (menu == -1) {
+        //     // QuestDao questDao = new QuestDao();
+        //     // view.showList(questDao.getQuests());
+        //     view.printMsg("QuestDao class not finished, type from 0-4 range.");
+        //     int size = 5;  // <-- tmp, to delete
+        //     menu = validateOption(view.getInput("Choose quest."), size);
+        // }
         // ToDo:
         // 1. show list
         // 3. update
@@ -111,20 +111,22 @@ class MentorController {
     private void updateArtifact() {
         Integer menu = -1;
         while (menu == -1) {
-            // ArtifactDao artifactDao = new ArtifactDao();
-            // view.showList(artifactDao.getArtifact());
+            ArtifactDao artifactDao = new ArtifactDao();
+            
+            artifactDao.loadArtifactsFromDB();
+            
             view.printMsg("ArtifactDao class not finished, type from 0-4 range.");
             int size = 5;  // <-- tmp, to delete
             menu = validateOption(view.getInput("Choose quest."), size);
         }
-        view.printMsg("ArtifactDao class not finished, operation aborted.");
+        view.printMsg("Not implemented yet, operation aborted.");
         // ToDo:
         // 1. show list
         // 3. update
     }
 
     private void markQuest() {
-        view.printMsg("Missing Quest's classess, operation aborted.");
+        view.printMsg("Not implemented yet, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -132,7 +134,7 @@ class MentorController {
     }
 
     private void markArtifact() {
-        view.printMsg("Missing Artifact's classess, operation aborted.");
+        view.printMsg("Not implemented yet, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -140,7 +142,7 @@ class MentorController {
     }
 
     private void seeWallet() {
-        view.printMsg("Missing Wallet's classess, operation aborted.");
+        view.printMsg("Not implemented yet, operation aborted.");
         // TODO:
         // 1. show student list
         // 2. get input
