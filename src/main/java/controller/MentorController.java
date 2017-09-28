@@ -52,8 +52,8 @@ class MentorController {
         try {
             studentDao.createObjectFromDatabase();
         } catch (SQLException e) {
-            view.printMsg("Database error in createObjectFromDatabase()" + 
-                          " Operation aborted.");
+            view.printMsg("Database error in studentDao.createObjectFrom"
+                          + "Database(). Operation aborted.");
         } 
         
         boolean studentNotExist = true;
@@ -69,11 +69,16 @@ class MentorController {
         if (studentNotExist) {
             Student newStudent = new Student(firstName, lastName, phoneNumber, 
                                              email, password, 0, 0);
+            studentDao.getStudents().add(newStudent);
+            try {
+                studentDao.addObject(newStudent);
+            } catch (SQLException e) {
+                view.printMsg("Database error in studentDao.addObject(new"
+                              + "Student). Operation aborted.");
+            } 
         } else {
             view.printMsg("Student already exist. Aborted.");
         }
-        
-        
     }
 
     private void addQuest() {
