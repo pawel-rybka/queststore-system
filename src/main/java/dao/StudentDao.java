@@ -67,7 +67,7 @@ public class StudentDao {
     }
 
     public void addObject(Student student) throws SQLException {
-        String sql = "INSERT INTO Student (first_name, last_name, phone_number, email, password, coins, total_coins)" +
+        String sql = "INSERT INTO Students (first_name, last_name, phone_number, email, password, coins, total_coins)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         Connection conn = Dao.getC();
