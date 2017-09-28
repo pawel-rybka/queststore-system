@@ -1,22 +1,21 @@
 package model;
 
-import java.time.LocalDate;
 
 public class BoughtArtifact {
 
     private Integer id;
     private Integer studentId;
     private Integer artifactId;
-    private LocalDate usageDate;
+    private String usageDate;
 
-    public BoughtArtifact(Integer id, Integer studentId, Integer artifactId, LocalDate usageDate) {
+    public BoughtArtifact(Integer id, Integer studentId, Integer artifactId, String usageDate) {
         this.id = id;
         this.studentId = studentId;
         this.artifactId = artifactId;
         this.usageDate = usageDate;
     }
 
-    public BoughtArtifact(Integer studentId, Integer artifactId, LocalDate usageDate) {
+    public BoughtArtifact(Integer studentId, Integer artifactId, String usageDate) {
         this.id = null;
         this.studentId = studentId;
         this.artifactId = artifactId;
@@ -35,7 +34,7 @@ public class BoughtArtifact {
         return artifactId;
     }
 
-    public LocalDate getUsageDate() {
+    public String getUsageDate() {
         return usageDate;
     }
 

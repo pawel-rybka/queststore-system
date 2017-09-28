@@ -12,7 +12,7 @@ public class MentorDao {
     private Statement stmt = null;
 
     public MentorDao(){
-        c = Dao.getC();
+        c = DBConnection.getC();
     }
 
     public void createObjectFromDatabase() throws SQLException {
@@ -87,7 +87,7 @@ public class MentorDao {
     public void updateData(Integer id, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("UPDATE Mentors SET %s = ? WHERE id = ?;", columnName);
-        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, value);
             pstmt.setInt(2, id);
 

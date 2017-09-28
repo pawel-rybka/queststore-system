@@ -11,7 +11,7 @@ public class BoughtArtifactDao {
     private Statement stmt = null;
 
     public BoughtArtifactDao() {
-        this.c = Dao.getC();
+        this.c = DBConnection.getC();
     }
 
     private void loadBoughtArtifactsFromDB() throws SQLException {

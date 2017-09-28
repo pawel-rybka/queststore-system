@@ -1,21 +1,21 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.String;
 public class CompletedQuest {
 
     private Integer id;
     private Integer studentId;
     private Integer questId;
-    private LocalDate completeDate;
+    private String completeDate;
 
-    public CompletedQuest(Integer id, Integer studentId, Integer questId, LocalDate completeDate) {
+    public CompletedQuest(Integer id, Integer studentId, Integer questId, String completeDate) {
         this.id = id;
         this.studentId = studentId;
         this.questId = questId;
         this.completeDate = completeDate;
     }
 
-    public CompletedQuest(Integer studentId, Integer questId, LocalDate completeDate) {
+    public CompletedQuest(Integer studentId, Integer questId, String completeDate) {
         this.id = null;
         this.studentId = studentId;
         this.questId = questId;
@@ -34,7 +34,7 @@ public class CompletedQuest {
         return questId;
     }
 
-    public LocalDate getCompleteDate() {
+    public String getCompleteDate() {
         return completeDate;
     }
 
