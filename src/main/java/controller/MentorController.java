@@ -47,6 +47,7 @@ class MentorController {
         String phoneNumber = view.getInput("Enter phone number.");
         String email = view.getInput("Enter email.");
         String password = view.getInput("Enter password.");
+        
         StudentDao studentDao = new StudentDao();
         try {
             studentDao.createObjectFromDatabase();
@@ -54,17 +55,25 @@ class MentorController {
             view.printMsg("Database error in createObjectFromDatabase()" + 
                           " Operation aborted.");
         } 
+        
         boolean studentNotExist = true;
         for (Student student : studentDao.getStudents()) {
-            // add check
+            if (student.getFirstName().equals(firstName)
+                    && student.getLastName().equals(lastName)
+                    && student.getPhoneNumber().equals(phoneNumber)
+                    && student.getEmail().equals(email)) {
+                studentNotExist = false;
+            }
         }
-        if (studentNotExist){
+
+        if (studentNotExist) {
             Student newStudent = new Student(firstName, lastName, phoneNumber, 
                                              email, password, 0, 0);
         } else {
             view.printMsg("Student already exist. Aborted.");
         }
-        // ToDo: Add student to the database
+        
+        
     }
 
     private void addQuest() {
