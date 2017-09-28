@@ -67,7 +67,7 @@ class MentorController {
             // view.showList(questDao.getQuests());
             int size = 5;  // <-- tmp, to delete
             menu = validateInt(view.getInput("Choose quest."), size);
-
+            System.out.println(menu);
         }
         // TODO:
         // 1. show list
@@ -106,7 +106,10 @@ class MentorController {
         Integer number = -1;
         try {
             number = Integer.parseInt(text);
-            if (number < 0 || number >= size) throw Exception("s");
+            if (number < 0 || number >= size) {
+                number = -1;
+                throw new Exception("s");
+            }
         } catch (Exception e) {
             view.printMsg("Wrong input.");
         }

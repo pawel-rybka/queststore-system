@@ -56,6 +56,6 @@ public class View {
     }
 
     public void printMsg(String msg) {
-        System.out.print(msg);
+        System.out.println(msg);
     }
 }
