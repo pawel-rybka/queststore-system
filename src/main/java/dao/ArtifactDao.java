@@ -45,8 +45,7 @@ public class ArtifactDao {
         String sql = "INSERT INTO Artifacts (category, price)" +
                 "VALUES (?, ?)";
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, artifact.getCategory());
         pstmt.setInt(2, artifact.getPrice());
         pstmt.executeUpdate();
