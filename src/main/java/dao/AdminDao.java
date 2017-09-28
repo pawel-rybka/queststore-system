@@ -12,7 +12,7 @@ public class AdminDao {
     private Statement stmt = null;
 
     public AdminDao(){
-        c = Dao.getC();
+        c = DBConnection.getC();
     }
 
     public void createObjectFromDatabase() throws SQLException {
@@ -37,8 +37,7 @@ public class AdminDao {
     public Admin createUserObject(String inputEmail, String inputPassword) throws SQLException{
         String sql = String.format("SELECT * FROM Admins WHERE email = ? AND password = ?;");
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, inputEmail);
         pstmt.setString(2, inputPassword);
         ResultSet rs = pstmt.executeQuery();
@@ -67,8 +66,7 @@ public class AdminDao {
         String sql = "INSERT INTO Admins (first_name, last_name, phone_number, email, password)" +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, admin.getFirstName());
         pstmt.setString(2, admin.getLastName());
         pstmt.setString(3, admin.getPhoneNumber());
@@ -86,7 +84,7 @@ public class AdminDao {
     public void updateData(Integer id, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("UPDATE Admins SET %s = ? WHERE id = ?;", columnName);
-        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, value);
             pstmt.setInt(2, id);
 

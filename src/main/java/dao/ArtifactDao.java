@@ -12,7 +12,7 @@ public class ArtifactDao {
     private Statement stmt = null;
 
     public ArtifactDao() {
-        this.c = Dao.getC();
+        this.c = DBConnection.getC();
         try {
             loadArtifactsFromDB();
         } catch (SQLException e) {
@@ -45,8 +45,7 @@ public class ArtifactDao {
         String sql = "INSERT INTO Artifacts (category, price)" +
                 "VALUES (?, ?)";
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, artifact.getCategory());
         pstmt.setInt(2, artifact.getPrice());
         pstmt.executeUpdate();
@@ -61,7 +60,7 @@ public class ArtifactDao {
     public void updateData(Integer id, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("UPDATE Artifacts SET %s = ? WHERE id = ?;", columnName);
-        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, value);
             pstmt.setInt(2, id);
 

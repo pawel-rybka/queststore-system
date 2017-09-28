@@ -12,7 +12,7 @@ public class StudentDao {
     private Statement stmt = null;
 
     public StudentDao(){
-        c = Dao.getC();
+        c = DBConnection.getC();
     }
 
     public void createObjectFromDatabase() throws SQLException {
@@ -38,8 +38,7 @@ public class StudentDao {
     public Student createUserObject(String inputEmail, String inputPassword) throws SQLException{
         String sql = String.format("SELECT * FROM Students WHERE email = ? AND password = ?;");
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, inputEmail);
         pstmt.setString(2, inputPassword);
         ResultSet rs = pstmt.executeQuery();
@@ -69,8 +68,7 @@ public class StudentDao {
         String sql = "INSERT INTO Students (first_name, last_name, phone_number, email, password, coins, total_coins)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, student.getFirstName());
         pstmt.setString(2, student.getLastName());
         pstmt.setString(3, student.getPhoneNumber());
@@ -90,7 +88,7 @@ public class StudentDao {
     public void updateData(Integer id, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
         String sql = String.format("UPDATE Students SET %s = ? WHERE id = ?;", columnName);
-        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, value);
             pstmt.setInt(2, id);
 

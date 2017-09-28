@@ -1,52 +1,55 @@
 package dao;
 
-import model.BoughtArtifact;
+import model.Quest;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BoughtArtifactDao {
-    private ArrayList<BoughtArtifact> boughtArtifacts = new ArrayList<BoughtArtifact>();
+public class QuestDao {
+    private ArrayList<Quest> quests = new ArrayList<Quest>();
     private Connection c = null;
     private Statement stmt = null;
 
-    public BoughtArtifactDao() {
+    public QuestDao() {
         this.c = DBConnection.getC();
+        try {
+            loadQuestsFromDB();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void loadBoughtArtifactsFromDB() throws SQLException {
+    private void loadQuestsFromDB() throws SQLException {
         stmt = c.createStatement();
-        ResultSet rs = stmt.executeQuery( "SELECT * FROM bought_artifacts;" );
+        ResultSet rs = stmt.executeQuery( "SELECT * FROM Quests;" );
 
         while ( rs.next() ) {
             int id = rs.getInt("id");
-            Integer studentId = rs.getInt("student_id");
-            Integer artifactId = rs.getInt("artifact_id");
-            String usageDate = rs.getString("usage_date");
+            String name = rs.getString("name");
+            String category = rs.getString("category");
 
-            BoughtArtifact newBoughtArtifact = new BoughtArtifact(id, studentId, artifactId, usageDate);
-            boughtArtifacts.add(newBoughtArtifact);
+            Quest newQuest = new Quest(id, name, category);
+            quests.add(newQuest);
         }
         stmt.close();
     }
 
     public void removeObject(Integer id) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("DELETE FROM BougArtifacts WHERE id=%d;", id);
+        String sql = String.format("DELETE FROM Quests WHERE id=%d;", id);
         stmt.executeUpdate(sql);
     }
 
-    public void addObject(BoughtArtifact boughtArtifact) throws SQLException {
-        String sql = "INSERT INTO bought_artifacts (student_id, artifact_id, usage_date)" +
-                "VALUES (?, ?, ?)";
+    public void addObject(Quest quest) throws SQLException {
+        String sql = "INSERT INTO Quests (quest_name, category)" +
+                "VALUES (?, ?)";
 
         PreparedStatement pstmt = c.prepareStatement(sql);
-        pstmt.setInt(1, boughtArtifact.getStudentId());
-        pstmt.setInt(2, boughtArtifact.getArtifactId());
-        pstmt.setString(3, boughtArtifact.getUsageDate());
+        pstmt.setString(1, quest.getName());
+        pstmt.setString(2, quest.getCategory());
         pstmt.executeUpdate();
         try {
-            boughtArtifact.setId(selectLast("bought_artifacts", c));
+            quest.setId(selectLast("Quests", c));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,7 +58,7 @@ public class BoughtArtifactDao {
 
     public void updateData(Integer id, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("UPDATE bought_artifacts SET %s = ? WHERE id = ?;", columnName);
+        String sql = String.format("UPDATE Quests SET %s = ? WHERE id = ?;", columnName);
         try (PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, value);
             pstmt.setInt(2, id);
