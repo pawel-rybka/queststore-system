@@ -4,8 +4,8 @@ import java.util.Scanner;
 public class View {
 
     final private String ADMIN = "\n1) create Mentor account\n"
-            + "2) create Class\n3) edit Mentor's profile\n"
-            + "4) see Mentor's profile\n5) create Level";
+            + "2) see Mentor's profile\n3) edit Mentor's profile\n"
+            + "4) create Class\n5) create Level";
 
     final private String MENTOR = "\n0) quit menu\n1) create Codecooler account"
             + "\n2) add Quest\n3) add Artifact\n4) update Quest\n5) update "
