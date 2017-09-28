@@ -63,6 +63,12 @@ public class AdminController {
                 menu = validateOption(view.getInput("Choose mentor."), 
                                       mentors.size());
             }
+            Mentor mentor = mentors.get(menu-1);
+            view.printMsg("Name: " + mentor.getFirstName() + " "
+                          + mentor.getLastName());
+            view.printMsg("Phone: " + mentor.getPhoneNumber());
+            view.printMsg("E-mail: " + mentor.getEmail());
+            view.printMsg("Password: " + mentor.getPassword());
         }
 
         private void editMentor() {
