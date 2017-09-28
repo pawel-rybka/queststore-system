@@ -67,7 +67,6 @@ class MentorController {
             // view.showList(questDao.getQuests());
             int size = 5;  // <-- tmp, to delete
             menu = validateInt(view.getInput("Choose quest."), size);
-            System.out.println(menu);
         }
         // TODO:
         // 1. show list
