@@ -38,8 +38,7 @@ public class MentorDao {
 
         String sql = String.format("SELECT * FROM Mentors WHERE email = ? AND password = ?;");
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, inputEmail);
         pstmt.setString(2, inputPassword);
 
@@ -68,8 +67,7 @@ public class MentorDao {
         String sql = "INSERT INTO Mentors (first_name, last_name, phone_number, email, password)" +
                 "VALUES (?, ?, ?, ?, ?);";
 
-            Connection conn = Dao.getC();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setString(1, mentor.getFirstName());
             pstmt.setString(2, mentor.getLastName());
             pstmt.setString(3, mentor.getPhoneNumber());
@@ -79,7 +77,7 @@ public class MentorDao {
             pstmt.executeUpdate();
 
         try {
-            mentor.setId(selectLast("Mentors", conn));
+            mentor.setId(selectLast("Mentors", c));
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -37,8 +37,7 @@ public class AdminDao {
     public Admin createUserObject(String inputEmail, String inputPassword) throws SQLException{
         String sql = String.format("SELECT * FROM Admins WHERE email = ? AND password = ?;");
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, inputEmail);
         pstmt.setString(2, inputPassword);
         ResultSet rs = pstmt.executeQuery();
@@ -67,8 +66,7 @@ public class AdminDao {
         String sql = "INSERT INTO Admins (first_name, last_name, phone_number, email, password)" +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        Connection conn = Dao.getC();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setString(1, admin.getFirstName());
         pstmt.setString(2, admin.getLastName());
         pstmt.setString(3, admin.getPhoneNumber());
