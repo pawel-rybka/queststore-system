@@ -113,8 +113,6 @@ class MentorController {
         while (menu == -1) {
             ArtifactDao artifactDao = new ArtifactDao();
             
-            artifactDao.loadArtifactsFromDB();
-            
             view.printMsg("ArtifactDao class not finished, type from 0-4 range.");
             int size = 5;  // <-- tmp, to delete
             menu = validateOption(view.getInput("Choose quest."), size);

@@ -20,6 +20,10 @@ public class ArtifactDao {
         }
     }
 
+    public ArrayList<Artifact> getArtifacts(){
+        return artifacts;
+    }
+
     private void loadArtifactsFromDB() throws SQLException {
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Artifacts;" );
