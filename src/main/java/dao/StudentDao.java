@@ -37,10 +37,13 @@ public class StudentDao {
     }
 
     public Student createUserObject(String inputEmail, String inputPassword) throws SQLException{
-        stmt = c.createStatement();
-        String sql = String.format("SELECT * FROM Students WHERE email = %s AND password = %s", inputEmail, inputPassword);
-        ResultSet rs = stmt.executeQuery(sql);
+        String sql = String.format("SELECT * FROM Students WHERE email = ? AND password = ?;");
 
+        Connection conn = Dao.getC();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, inputEmail);
+        pstmt.setString(2, inputPassword);
+        ResultSet rs = pstmt.executeQuery();
 
         int id = rs.getInt("id");
         String firstName = rs.getString("first_name");
@@ -61,25 +64,22 @@ public class StudentDao {
         stmt = c.createStatement();
         String sql = String.format("DELETE FROM Students WHERE id=%d;",student.getId());
         stmt.executeUpdate(sql);
-        c.commit();
     }
 
-    public void addObject(Student student)  {
-        String sql = String.format("INSERT INTO Student (first_name, last_name, phone_number, email, password, coins, total_coins)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)");
+    public void addObject(Student student) throws SQLException {
+        String sql = "INSERT INTO Student (first_name, last_name, phone_number, email, password, coins, total_coins)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, student.getFirstName());
-            pstmt.setString(2, student.getLastName());
-            pstmt.setString(3, student.getPhoneNumber());
-            pstmt.setString(4, student.getEmail());
-            pstmt.setString(5, student.getPassword());
-            pstmt.setInt(6, student.getCoins());
-            pstmt.setInt(7, student.getTotalCoins());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        Connection conn = Dao.getC();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, student.getFirstName());
+        pstmt.setString(2, student.getLastName());
+        pstmt.setString(3, student.getPhoneNumber());
+        pstmt.setString(4, student.getEmail());
+        pstmt.setString(5, student.getPassword());
+        pstmt.setInt(6, student.getCoins());
+        pstmt.setInt(7, student.getTotalCoins());
+        pstmt.executeUpdate();
         try {
             student.setId(selectLast("Students", c));
         } catch (SQLException e) {
@@ -90,9 +90,15 @@ public class StudentDao {
 
     public void updateData(Student student, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("UPDATE Students SET %s = %s WHERE id = %d", columnName, value, student.getId());
-        stmt.executeUpdate(sql);
-        c.commit();
+        String sql = String.format("UPDATE Students SET %s = ? WHERE id = ?;", columnName);
+        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, value);
+            pstmt.setInt(2, student.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private Integer selectLast(String table, Connection c) throws SQLException{

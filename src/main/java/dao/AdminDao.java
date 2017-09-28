@@ -35,9 +35,13 @@ public class AdminDao {
     }
 
     public Admin createUserObject(String inputEmail, String inputPassword) throws SQLException{
-        stmt = c.createStatement();
-        String sql = String.format("SELECT * FROM Admins WHERE email = %s AND password = %s", inputEmail, inputPassword);
-        ResultSet rs = stmt.executeQuery(sql);
+        String sql = String.format("SELECT * FROM Admins WHERE email = ? AND password = ?;");
+
+        Connection conn = Dao.getC();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, inputEmail);
+        pstmt.setString(2, inputPassword);
+        ResultSet rs = pstmt.executeQuery();
 
 
         int id = rs.getInt("id");
@@ -57,23 +61,20 @@ public class AdminDao {
         stmt = c.createStatement();
         String sql = String.format("DELETE FROM Admins WHERE id=%d;",admin.getId());
         stmt.executeUpdate(sql);
-        c.commit();
     }
 
-    public void addObject(Admin admin)  {
-        String sql = String.format("INSERT INTO Admins (first_name, last_name, phone_number, email, password)" +
-                "VALUES (?, ?, ?, ?, ?)");
+    public void addObject(Admin admin) throws SQLException {
+        String sql = "INSERT INTO Admins (first_name, last_name, phone_number, email, password)" +
+                "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, admin.getFirstName());
-            pstmt.setString(2, admin.getLastName());
-            pstmt.setString(3, admin.getPhoneNumber());
-            pstmt.setString(4, admin.getEmail());
-            pstmt.setString(5, admin.getPassword());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        Connection conn = Dao.getC();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, admin.getFirstName());
+        pstmt.setString(2, admin.getLastName());
+        pstmt.setString(3, admin.getPhoneNumber());
+        pstmt.setString(4, admin.getEmail());
+        pstmt.setString(5, admin.getPassword());
+        pstmt.executeUpdate();
         try {
             admin.setId(selectLast("Admins", c));
         } catch (SQLException e) {
@@ -84,9 +85,15 @@ public class AdminDao {
 
     public void updateData(Admin admin, String columnName, String value) throws SQLException {
         stmt = c.createStatement();
-        String sql = String.format("UPDATE Admins SET %s = %s WHERE id = %d", columnName, value, admin.getId());
-        stmt.executeUpdate(sql);
-        c.commit();
+        String sql = String.format("UPDATE Admins SET %s = ? WHERE id = ?;", columnName);
+        try (Connection conn = Dao.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, value);
+            pstmt.setInt(2, admin.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private Integer selectLast(String table, Connection c) throws SQLException{
