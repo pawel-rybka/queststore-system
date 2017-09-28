@@ -33,7 +33,6 @@ public class ArtifactDao {
             String name = rs.getString("name");
             String category = rs.getString("category");
             Integer price = rs.getInt("price");
-            System.out.println(id + "<>" + category + "<----" + name);
             Artifact newArtifact = new Artifact(id, name, category, price);
             artifacts.add(newArtifact);
         }

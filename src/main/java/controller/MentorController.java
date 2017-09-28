@@ -126,7 +126,6 @@ public class MentorController {
         }
         view.printMsg("Not implemented yet, operation aborted.");
         // ToDo:
-        // 1. show list
         // 3. update
     }
 
