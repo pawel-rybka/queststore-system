@@ -21,15 +21,6 @@ public class Student extends User {
         this.totalCoins = totalCoins;
     }
 
-    public Level calculateLevel() {
-        Level level = null;
-
-        // code here
-
-        return level;
-
-    }
-
     public Integer getCoins() {
         return coins;
     }
