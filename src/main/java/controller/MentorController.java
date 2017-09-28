@@ -4,6 +4,7 @@ import model.*;
 import view.*;
 import dao.*;
 import java.lang.Exception;
+import java.sql.SQLException;
 
 class MentorController {
     
@@ -46,8 +47,23 @@ class MentorController {
         String phoneNumber = view.getInput("Enter phone number.");
         String email = view.getInput("Enter email.");
         String password = view.getInput("Enter password.");
-        Student newStudent = new Student(firstName, lastName, phoneNumber, 
-                                         email, password, 0, 0);
+        StudentDao studentDao = new StudentDao();
+        try {
+            studentDao.createObjectFromDatabase();
+        } catch (SQLException e) {
+            view.printMsg("Database error in createObjectFromDatabase()" + 
+                          " Operation aborted.");
+        } 
+        boolean studentNotExist = true;
+        for (Student student : studentDao.getStudents()) {
+            // add check
+        }
+        if (studentNotExist){
+            Student newStudent = new Student(firstName, lastName, phoneNumber, 
+                                             email, password, 0, 0);
+        } else {
+            view.printMsg("Student already exist. Aborted.");
+        }
         // ToDo: Add student to the database
     }
 
@@ -94,6 +110,7 @@ class MentorController {
     }
 
     private void markQuest() {
+        view.printMsg("Missing Quest's classess, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -101,6 +118,7 @@ class MentorController {
     }
 
     private void markArtifact() {
+        view.printMsg("Missing Artifact's classess, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -108,6 +126,7 @@ class MentorController {
     }
 
     private void seeWallet() {
+        view.printMsg("Missing Wallet's classess, operation aborted.");
         // TODO:
         // 1. show student list
         // 2. get input
