@@ -7,6 +7,7 @@ public class Student extends User {
     private String level;
 
 
+
     public Student(Integer id, String firstName, String lastName, String phoneNumber, String email,
                    String password, Integer coins, Integer totalCoins) {
         super(id, firstName, lastName, phoneNumber, email, password);
