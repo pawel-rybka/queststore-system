@@ -46,23 +46,25 @@ class MentorController {
         String phoneNumber = view.getInput("Enter phone number.");
         String email = view.getInput("Enter email.");
         String password = view.getInput("Enter password.");
-        new Student(firstName, lastName, phoneNumber, 
-                    email, password, 0, 0);
+        Student newStudent = new Student(firstName, lastName, phoneNumber, 
+                                         email, password, 0, 0);
+        // ToDo: Add student to the database
     }
 
     private void addQuest() {
-        String category = view.getInput("Enter the category.");
-        // new Quest(category);
+        view.printMsg("QuestModel class not finished!");
+        // String category = view.getInput("Enter the category.");
+        // new Quest(category); ???
     }
 
     private void addArtifact() {
-        String category = view.getInput("Enter the category.");
-        // new Artifact(category);
+        view.printMsg("ArtifactModel class not finished!");
+        // String category = view.getInput("Enter the category.");
+        // new Artifact(category); ???
     }
 
     private void updateQuest() {
         Integer menu = -1;
-
         while (menu == -1) {
             // QuestDao questDao = new QuestDao();
             // view.showList(questDao.getQuests());
