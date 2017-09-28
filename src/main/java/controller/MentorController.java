@@ -46,7 +46,8 @@ class MentorController {
         String phoneNumber = view.getInput("Enter phone number.");
         String email = view.getInput("Enter email.");
         String password = view.getInput("Enter password.");
-        // new Student(firstName, lastName, phoneNumber, email, password);
+        new Student(firstName, lastName, phoneNumber, 
+                    email, password, 0, 0);
     }
 
     private void addQuest() {
