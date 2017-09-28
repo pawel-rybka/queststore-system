@@ -1,6 +1,5 @@
 package model;
 
-import java.time.String;
 public class CompletedQuest {
 
     private Integer id;
