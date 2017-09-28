@@ -30,10 +30,11 @@ public class ArtifactDao {
 
         while ( rs.next() ) {
             int id = rs.getInt("id");
+            String name = rs.getString("name");
             String category = rs.getString("category");
             Integer price = rs.getInt("price");
-
-            Artifact newArtifact = new Artifact(id, category, price);
+            System.out.println(id + "<>" + category + "<----" + name);
+            Artifact newArtifact = new Artifact(id, name, category, price);
             artifacts.add(newArtifact);
         }
         stmt.close();

@@ -1,10 +1,11 @@
 package controller;
 
+import java.lang.Exception;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import model.*;
 import view.*;
 import dao.*;
-import java.lang.Exception;
-import java.sql.SQLException;
 
 class MentorController {
     
@@ -109,13 +110,19 @@ class MentorController {
     }
 
     private void updateArtifact() {
-        Integer menu = -1;
-        while (menu == -1) {
+        Integer menu = 0;
+        while (menu == 0) {
             ArtifactDao artifactDao = new ArtifactDao();
-            
-            view.printNumbered(5, "dupa");
-            int size = 5;  // <-- tmp, to delete
-            menu = validateOption(view.getInput("Choose quest."), size);
+            ArrayList<Artifact> artifacts = artifactDao.getArtifacts();
+            if (artifacts.size() == 0) {
+                view.printMsg("Artifacts list empty, operation aborted.");
+                return;
+            }
+            for (Artifact artifact : artifacts) {
+                view.printNumbered(artifact.getId(), artifact.getCategory());
+            }
+            menu = validateOption(view.getInput("Choose quest."), 
+                                  artifacts.size());
         }
         view.printMsg("Not implemented yet, operation aborted.");
         // ToDo:
@@ -148,12 +155,12 @@ class MentorController {
     }
 
     private Integer validateOption(String text, int size) {
-        Integer number = -1;
+        Integer number = 0;
         try {
             number = Integer.parseInt(text);
-            if (number < 0 || number >= size) {
-                number = -1;
-                throw new Exception("s");
+            if (number < 1 || number > size) {
+                number = 0;
+                throw new Exception();
             }
         } catch (Exception e) {
             view.printMsg("Wrong input.");

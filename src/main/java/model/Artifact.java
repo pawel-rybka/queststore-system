@@ -3,11 +3,13 @@ package model;
 public class Artifact {
 
     Integer id;
+    String name;
     String category;
     Integer price;
 
-    public Artifact(Integer id, String category, Integer price) {
+    public Artifact(Integer id, String name, String category, Integer price) {
         this.id = id;
+        this.name = name;
         this.category = category;
         this.price = price;
     }
@@ -20,6 +22,10 @@ public class Artifact {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getCategory() {
