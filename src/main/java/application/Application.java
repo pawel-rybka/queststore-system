@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import model.User;
 import view.View;
+import controller.*;
 
 public class Application {
 
@@ -11,15 +12,22 @@ public class Application {
     private Scanner stdin;
     private View view;
 
-    public static void main(String[] args) {
-        Application app = new Application();
-        app.run();
-    }
-
     Application () {
         this.loggedUser = null;
         this.stdin = new Scanner(System.in);
         this.view = new View(stdin);
+    }
+
+    public static void main(String[] args) {
+        Application app = new Application();
+        // app.run();
+        app.runDemo();
+    }
+
+    private void runDemo() {
+        MentorController mc = new MentorController(new View(new 
+                                                    Scanner(System.in)));
+        mc.handleMenu();
     }
 
     public void run() {

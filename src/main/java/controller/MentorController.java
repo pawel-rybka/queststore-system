@@ -7,7 +7,7 @@ import model.*;
 import view.*;
 import dao.*;
 
-class MentorController {
+public class MentorController {
     
     private View view;
     
@@ -119,7 +119,7 @@ class MentorController {
                 return;
             }
             for (Artifact artifact : artifacts) {
-                view.printNumbered(artifact.getId(), artifact.getCategory());
+                view.printNumbered(artifact.getId(), artifact.getName());
             }
             menu = validateOption(view.getInput("Choose quest."), 
                                   artifacts.size());
