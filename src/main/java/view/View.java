@@ -58,4 +58,8 @@ public class View {
     public void printMsg(String msg) {
         System.out.println(msg);
     }
+
+    public void printNumbered(Integer id, String element) {
+        System.out.println(id + ") " + element);
+    }
 }
