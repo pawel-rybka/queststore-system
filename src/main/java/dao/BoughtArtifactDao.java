@@ -5,7 +5,7 @@ import model.BoughtArtifact;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BoughtArtifactDao extends AbstractDao<T> {
+public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
     private Connection c = null;
     private Statement stmt = null;
 

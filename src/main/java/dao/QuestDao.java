@@ -5,7 +5,7 @@ import model.Quest;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class QuestDao extends AbstractDao<T> {
+public class QuestDao extends AbstractDao<Quest> {
     private Connection c = null;
     private Statement stmt = null;
 
