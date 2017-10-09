@@ -42,30 +42,21 @@ public class AdminController {
 
         private void seeMentor() {
             MentorDao mentorDao = new MentorDao();
-            try {
-                mentorDao.createObjectFromDatabase();
-            } catch (SQLException e) {
-                view.printMsg("Database error in mentorDao.createObjectFrom"
-                              + "Database(). Operation aborted.");
-            } 
             ArrayList<Mentor> mentors = mentorDao.getMentors();
 
-            Integer menu = 0;
-            while (menu == 0) {
+            Integer mentorId = -1;
+            while (mentorId == -1) {
                 if (mentors.size() == 0) {
                     view.printMsg("Mentor list empty, operation aborted.");
                     return;
                 }
                 for (Mentor mentor : mentors) {
-                    view.printNumbered(mentor.getId(), 
-                        mentor.getFirstName() + mentor.getLastName());
-                }
-                menu = validateOption(view.getInput("Choose mentor."), 
+                    view.printNumbered(mentor.getId(), mentor.getFullName());
+                mentorId = validateOption(view.getInput("Choose mentor."),
                                       mentors.size());
             }
-            Mentor mentor = mentors.get(menu-1);
-            view.printMsg("Name: " + mentor.getFirstName() + " "
-                          + mentor.getLastName());
+            Mentor mentor = mentors.get(mentorId);
+            view.printMsg("Name: " + mentor.getFullName());
             view.printMsg("Phone: " + mentor.getPhoneNumber());
             view.printMsg("E-mail: " + mentor.getEmail());
             view.printMsg("Password: " + mentor.getPassword());
