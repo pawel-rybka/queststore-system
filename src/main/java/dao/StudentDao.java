@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class StudentDao {
 
-    private ArrayList<Student> students = new ArrayList<Student>();
     private Connection c = null;
     private Statement stmt = null;
 
@@ -15,9 +14,11 @@ public class StudentDao {
         c = DBConnection.getC();
     }
 
-    public void createObjectFromDatabase() throws SQLException {
+    public ArrayList<Student> createObjectFromDatabase() throws SQLException {
+        ArrayList<Student> students = new ArrayList<Student>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Students;" );
+
         while ( rs.next() ) {
             int id = rs.getInt("id");
             String firstName = rs.getString("first_name");
@@ -32,7 +33,7 @@ public class StudentDao {
             students.add(newStudent);
         }
         stmt.close();
-
+        return students;
     }
 
     public Student createUserObject(String inputEmail, String inputPassword) throws SQLException{
@@ -112,7 +113,4 @@ public class StudentDao {
         return id;
     }
 
-    public ArrayList<Student> getStudents() {
-        return students;
-    }
 }

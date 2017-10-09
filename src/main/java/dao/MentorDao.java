@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class MentorDao {
 
-    private ArrayList<Mentor> mentors = new ArrayList<Mentor>();
     private Connection c = null;
     private Statement stmt = null;
 
@@ -15,7 +14,8 @@ public class MentorDao {
         c = DBConnection.getC();
     }
 
-    public void createObjectFromDatabase() throws SQLException {
+    public ArrayList<Mentor> createObjectFromDatabase() throws SQLException {
+        ArrayList<Mentor> mentors = new ArrayList<Mentor>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Mentors;" );
 
@@ -32,6 +32,7 @@ public class MentorDao {
             mentors.add(newMentor);
         }
         stmt.close();
+        return mentors;
     }
 
     public Mentor createUserObject(String inputEmail, String inputPassword) throws SQLException{
@@ -110,10 +111,6 @@ public class MentorDao {
             id = result.getInt("id");
         }
         return id;
-    }
-
-    public ArrayList<Mentor> getMentors() {
-        return mentors;
     }
 
 }

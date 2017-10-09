@@ -6,20 +6,15 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class QuestDao {
-    private ArrayList<Quest> quests = new ArrayList<Quest>();
     private Connection c = null;
     private Statement stmt = null;
 
     public QuestDao() {
         this.c = DBConnection.getC();
-        try {
-            loadQuestsFromDB();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void loadQuestsFromDB() throws SQLException {
+    private ArrayList<Quest> loadQuestsFromDB() throws SQLException {
+        ArrayList<Quest> quests = new ArrayList<Quest>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Quests;" );
 
@@ -32,6 +27,7 @@ public class QuestDao {
             quests.add(newQuest);
         }
         stmt.close();
+        return quests;
     }
 
     public void removeObject(Integer id) throws SQLException {

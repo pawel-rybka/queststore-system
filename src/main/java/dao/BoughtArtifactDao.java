@@ -6,7 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class BoughtArtifactDao {
-    private ArrayList<BoughtArtifact> boughtArtifacts = new ArrayList<BoughtArtifact>();
     private Connection c = null;
     private Statement stmt = null;
 
@@ -14,7 +13,8 @@ public class BoughtArtifactDao {
         this.c = DBConnection.getC();
     }
 
-    private void loadBoughtArtifactsFromDB() throws SQLException {
+    private ArrayList<BoughtArtifact> loadBoughtArtifactsFromDB() throws SQLException {
+        ArrayList<BoughtArtifact> boughtArtifacts = new ArrayList<BoughtArtifact>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM bought_artifacts;" );
 
@@ -28,6 +28,7 @@ public class BoughtArtifactDao {
             boughtArtifacts.add(newBoughtArtifact);
         }
         stmt.close();
+        return boughtArtifacts;
     }
 
     public void removeObject(Integer id) throws SQLException {

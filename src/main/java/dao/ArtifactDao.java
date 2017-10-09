@@ -1,30 +1,20 @@
 package dao;
 
-import model.Admin;
 import model.Artifact;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ArtifactDao {
-    private ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
     private Connection c = null;
     private Statement stmt = null;
 
     public ArtifactDao() {
         this.c = DBConnection.getC();
-        try {
-            loadArtifactsFromDB();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    public ArrayList<Artifact> getArtifacts(){
-        return artifacts;
-    }
-
-    private void loadArtifactsFromDB() throws SQLException {
+    private ArrayList<Artifact> loadArtifactsFromDB() throws SQLException {
+        ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Artifacts;" );
 
@@ -37,6 +27,7 @@ public class ArtifactDao {
             artifacts.add(newArtifact);
         }
         stmt.close();
+        return artifacts;
     }
 
     public void removeObject(Integer id) throws SQLException {

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class AdminDao {
 
-    private ArrayList<Admin> admins = new ArrayList<Admin>();
     private Connection c = null;
     private Statement stmt = null;
 
@@ -15,7 +14,8 @@ public class AdminDao {
         c = DBConnection.getC();
     }
 
-    public void createObjectFromDatabase() throws SQLException {
+    public ArrayList<Admin> createObjectFromDatabase() throws SQLException {
+        ArrayList<Admin> admins = new ArrayList<Admin>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Admins;" );
 
@@ -32,6 +32,7 @@ public class AdminDao {
             admins.add(newAdmin);
         }
         stmt.close();
+        return admins;
     }
 
     public Admin createUserObject(String inputEmail, String inputPassword) throws SQLException{
@@ -108,7 +109,4 @@ public class AdminDao {
         return id;
     }
 
-    public ArrayList<Admin> getAdmins() {
-        return admins;
-    }
 }
