@@ -40,6 +40,11 @@ public abstract class User {
         return lastName;
     }
 
+    public String getFullName() {
+        String fullName = firstName + " " + lastName;
+        return fullName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
