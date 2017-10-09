@@ -5,7 +5,7 @@ import model.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class StudentDao {
+public class StudentDao extends AbstractDao<T>{
 
     private Connection c = null;
     private Statement stmt = null;
