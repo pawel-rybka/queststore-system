@@ -28,4 +28,15 @@ public class Student extends User {
     public Integer getTotalCoins() {
         return totalCoins;
     }
+
+
+    public void setCoins(Integer firstName) {
+        this.coins = coins;
+    }
+
+    public void setTotalCoins(Integer totalCoins) {
+        this.totalCoins = totalCoins;
+    }
+
+
 }
