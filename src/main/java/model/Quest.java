@@ -6,6 +6,7 @@ public class Quest {
     private String name;
     private String category;
 
+
     public Quest(Integer id, String name, String category) {
         this.id = id;
         this.name = name;
@@ -29,7 +30,17 @@ public class Quest {
         return category;
     }
 
+
     public void setId(Integer id) {
+
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

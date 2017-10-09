@@ -38,7 +38,20 @@ public class BoughtArtifact {
         return usageDate;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setArtifactId(Integer artifactId) {
+        this.artifactId = artifactId;
+    }
+
+    public void setUsageDate(String usageDate) {
+        this.usageDate = usageDate;
     }
 }

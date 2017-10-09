@@ -33,4 +33,12 @@ public class Piggybank {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public void setArtifactId(Integer artifactId) {
+        this.artifactId = artifactId;
+    }
+
+    public void setCounter(Integer counter) {
+        this.counter = counter;
+    }
 }

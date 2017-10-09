@@ -28,7 +28,18 @@ public class Purchase {
         return artifactId;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setArtifactId(Integer artifactId) {
+        this.artifactId = artifactId;
+    }
 }
+
+

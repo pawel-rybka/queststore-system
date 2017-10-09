@@ -36,7 +36,20 @@ public class Artifact {
         return price;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }
