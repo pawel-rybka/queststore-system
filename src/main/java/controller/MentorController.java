@@ -8,20 +8,23 @@ import view.*;
 import dao.*;
 
 public class MentorController {
-    
-    private View view;
+
+    private Mentor mentor;
+    private MentorView mentorView;
     private ControllerView controllerView;
     
-    public MentorController (View view) {
-        this.view = view;
+    public MentorController (Mentor mentor) {
+        this.mentor = mentor;
+        this.mentorView = new MentorView();
+
     }
 
     public void handleMenu() {
         String menu = "default";
 
         while (!menu.equals("0")) {
-            view.printMenu("mentor");
-            menu = view.getInput("Choose option.");
+            mentorView.printMenu();
+            menu = mentorView.getInput("Choose option.");
 
             switch (menu) {
                 case "1":
@@ -52,24 +55,24 @@ public class MentorController {
         try {
             studentDao.addObject(newStudent);
         } catch (SQLException e) {
-            view.printMsg("Database error,can't add a student.");
+            mentorView.printMsg("Database error,can't add a student.");
         } 
     }
 
     private void addQuest() {
         // String category = view.getInput("Enter the category.");
-        view.printMsg("Not implemented yet, operation aborted.");
+        mentorView.printMsg("Not implemented yet, operation aborted.");
         // new Quest(--------);
     }
 
     private void addArtifact() {
         // String category = view.getInput("Enter the category.");
-        view.printMsg("Not implemented yet, operation aborted.");
+        mentorView.printMsg("Not implemented yet, operation aborted.");
         // new Artifact(--------);
     }
 
     private void updateQuest() {
-        view.printMsg("Not implemented yet, operation aborted.");
+        mentorView.printMsg("Not implemented yet, operation aborted.");
         // Integer menu = -1;
         // while (menu == -1) {
         //     // QuestDao questDao = new QuestDao();
@@ -95,20 +98,20 @@ public class MentorController {
         Integer menu = 0;
         while (menu == 0) {
             if (artifacts.size() == 0) {
-                view.printMsg("Artifacts list empty, operation aborted.");
+                mentorView.printMsg("Artifacts list empty, operation aborted.");
                 return;
             }
             for (Artifact artifact : artifacts) {
-                view.printNumbered(artifact.getId(), artifact.getName());
+                mentorView.printNumbered(artifact.getId(), artifact.getName());
             }
-            menu = validateOption(view.getInput("Choose quest."), 
+            menu = validateOption(mentorView.getInput("Choose quest."),
                                   artifacts.size());
         }
 
     }
 
     private void markQuest() {
-        view.printMsg("Not implemented yet, operation aborted.");
+        mentorView.printMsg("Not implemented yet, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -116,7 +119,7 @@ public class MentorController {
     }
 
     private void markArtifact() {
-        view.printMsg("Not implemented yet, operation aborted.");
+        mentorView.printMsg("Not implemented yet, operation aborted.");
         // TODO:
         // 1. show list
         // 2. get input
@@ -124,7 +127,7 @@ public class MentorController {
     }
 
     private void seeWallet() {
-        view.printMsg("Not implemented yet, operation aborted.");
+        mentorView.printMsg("Not implemented yet, operation aborted.");
         // TODO:
         // 1. show student list
         // 2. get input
@@ -140,7 +143,7 @@ public class MentorController {
                 throw new Exception();
             }
         } catch (Exception e) {
-            view.printMsg("Wrong input.");
+            mentorView.printMsg("Wrong input.");
         }
         return number;
     }

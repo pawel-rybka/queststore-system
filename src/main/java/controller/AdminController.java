@@ -7,20 +7,22 @@ import view.*;
 import dao.*;
 
 public class AdminController {
-    
-    private View view;
+
+    private Admin admin;
+    private AdminView adminView;
     private ControllerView controllerView;
     
-    public AdminController (View view) {
-        this.view = view;
+    public AdminController (Admin admin) {
+        this.admin = admin;
+        this.adminView = new AdminView();
     }
 
     public void handleMenu() {
         String menu = "default";
 
         while (!menu.equals("0")) {
-            view.printMenu("admin");
-            menu = view.getInput("Choose option.");
+            adminView.printMenu();
+            menu = adminView.getInput("Choose option.");
 
             switch (menu) {
                 case "1":
@@ -45,7 +47,7 @@ public class AdminController {
         try {
             mentorDao.addObject(newMentor);
         } catch (SQLException e) {
-            view.printMsg("Database error, can't add a mentor.");
+            adminView.printMsg("Database error, can't add a mentor.");
         }
     }
 
@@ -62,19 +64,19 @@ public class AdminController {
 
         while ((chosenMentor.getId() == null)) {
             if (mentors.size() == 0) {
-                view.printMsg("Mentor list empty, operation aborted.");
+                adminView.printMsg("Mentor list empty, operation aborted.");
                 return;
             }
             for (Mentor mentor : mentors) {
-                view.printNumbered(mentor.getId(), mentor.getFullName());
+                adminView.printNumbered(mentor.getId(), mentor.getFullName());
             }
-            chosenMentor = pickMentor(view.getInput("Choose mentor."), mentors);
+            chosenMentor = pickMentor(adminView.getInput("Choose mentor."), mentors);
         }
 
-        view.printMsg("Name: " + chosenMentor.getFullName());
-        view.printMsg("Phone: " + chosenMentor.getPhoneNumber());
-        view.printMsg("E-mail: " + chosenMentor.getEmail());
-        view.printMsg("Password: " + chosenMentor.getPassword());
+        adminView.printMsg("Name: " + chosenMentor.getFullName());
+        adminView.printMsg("Phone: " + chosenMentor.getPhoneNumber());
+        adminView.printMsg("E-mail: " + chosenMentor.getEmail());
+        adminView.printMsg("Password: " + chosenMentor.getPassword());
     }
 
     /** uncomment last row ! */
@@ -91,10 +93,10 @@ public class AdminController {
 
         while ((mentor.getId() == null)) {
             if (mentors.size() == 0) {
-                view.printMsg("Mentor list empty, operation aborted.");
+                adminView.printMsg("Mentor list empty, operation aborted.");
                 return;
             }
-            mentor = pickMentor(view.getInput("Enter ID: "), mentors);
+            mentor = pickMentor(adminView.getInput("Enter ID: "), mentors);
         }
 
         mentor.setFirstName(changeAttribute("First name", mentor.getFirstName()));
@@ -107,11 +109,11 @@ public class AdminController {
     }
 
     private void createClass() {
-        view.printMsg("Not implemented yet, operation aborted.");
+        adminView.printMsg("Not implemented yet, operation aborted.");
     }
 
     private void createLevel() {
-        view.printMsg("Not implemented yet, operation aborted.");
+        adminView.printMsg("Not implemented yet, operation aborted.");
     }
 
     private Mentor pickMentor(String text, ArrayList<Mentor> mentors) {
@@ -125,7 +127,7 @@ public class AdminController {
     }
 
     private String changeAttribute(String attributeName, String oldValue) {
-        String newValue = view.getInput(attributeName + " = " + oldValue
+        String newValue = adminView.getInput(attributeName + " = " + oldValue
                                         + ". Press Enter, to skip change or enter new value: ");
         if (newValue.equals("")) newValue = oldValue;
         return newValue;
