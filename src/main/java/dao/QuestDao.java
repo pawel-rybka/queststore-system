@@ -13,7 +13,7 @@ public class QuestDao extends AbstractDao<Quest> {
         this.c = DBConnection.getC();
     }
 
-    private ArrayList<Quest> loadQuestsFromDB() throws SQLException {
+    public ArrayList<Quest> getQuests() throws SQLException {
         ArrayList<Quest> quests = new ArrayList<Quest>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Quests;" );
@@ -28,5 +28,28 @@ public class QuestDao extends AbstractDao<Quest> {
         }
         stmt.close();
         return quests;
+    }
+
+    public void addObject(Quest quest) throws SQLException {
+        String sql = "INSERT INTO quests (name, category)" +
+                "VALUES (?, ?)";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setString(1, quest.getName());
+        pstmt.setString(2, quest.getCategory());
+        pstmt.executeUpdate();
+    }
+
+    public void updateData(Quest quest) throws SQLException {
+
+        String sql = "UPDATE quests SET name = ?, category = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, quest.getName());
+            pstmt.setString(2, quest.getCategory());
+            pstmt.setInt(3, quest.getId());
+
+            pstmt.executeUpdate();
+        }
     }
 }

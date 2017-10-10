@@ -13,24 +13,16 @@ import model.Student;
 
 
 public abstract class AbstractDao <T extends GetIdable> {
-    private Connection conn = null;
+//    private Connection c = null;
 
     public void removeObject(T object) throws SQLException {
-
-        String sql = "DELETE FROM ? WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, getTableName(object));
-            pstmt.setInt(2, object.getId());
-            pstmt.executeUpdate();
-        }
-    }
-
-    public void addObject(T object) throws SQLException {
-
-//        String sql = "INSERT INTO ? (";
+        Connection c = DBConnection.getC();
+        String sql = String.format("DELETE FROM %s WHERE id = ?", getTableName(object));
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, object.getId());
+        pstmt.executeUpdate();
 
     }
-
 
     private String getTableName(T object) {
         String tableName = "";
