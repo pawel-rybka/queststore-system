@@ -10,6 +10,7 @@ import dao.*;
 public class MentorController {
     
     private View view;
+    private ControllerView controllerView;
     
     public MentorController (View view) {
         this.view = view;
@@ -44,43 +45,15 @@ public class MentorController {
     }
 
     private void createStudent() {
-        String firstName = view.getInput("Enter first name.");
-        String lastName = view.getInput("Enter last name.");
-        String phoneNumber = view.getInput("Enter phone number.");
-        String email = view.getInput("Enter email.");
-        String password = view.getInput("Enter password.");
-        
+        String[] personalData = controllerView.getPersonalData();
+        Student newStudent = new Student(personalData[0], personalData[1], personalData[2],
+                                         personalData[3], personalData[4]);
         StudentDao studentDao = new StudentDao();
         try {
-            studentDao.createObjectFromDatabase();
+            studentDao.addObject(newStudent);
         } catch (SQLException e) {
-            view.printMsg("Database error in studentDao.createObjectFrom"
-                          + "Database(). Operation aborted.");
+            view.printMsg("Database error,can't add a student.");
         } 
-        
-        boolean studentNotExist = true;
-        for (Student student : studentDao.getStudents()) {
-            if (student.getFirstName().equals(firstName)
-                    && student.getLastName().equals(lastName)
-                    && student.getPhoneNumber().equals(phoneNumber)
-                    && student.getEmail().equals(email)) {
-                studentNotExist = false;
-            }
-        }
-
-        if (studentNotExist) {
-            Student newStudent = new Student(firstName, lastName, phoneNumber, 
-                                             email, password, 0, 0);
-            studentDao.getStudents().add(newStudent);
-            try {
-                studentDao.addObject(newStudent);
-            } catch (SQLException e) {
-                view.printMsg("Database error in studentDao.addObject(new"
-                              + "Student). Operation aborted.");
-            } 
-        } else {
-            view.printMsg("Student already exist. Aborted.");
-        }
     }
 
     private void addQuest() {

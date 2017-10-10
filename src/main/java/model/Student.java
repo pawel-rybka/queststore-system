@@ -15,10 +15,10 @@ public class Student extends User {
         this.totalCoins = totalCoins;
     }
 
-    public Student(String firstName, String lastName, String phoneNumber, String email, String password, Integer coins, Integer totalCoins) {
+    public Student(String firstName, String lastName, String phoneNumber, String email, String password) {
         super(firstName, lastName, phoneNumber, email, password);
-        this.coins = coins;
-        this.totalCoins = totalCoins;
+        this.coins = 0;
+        this.totalCoins = 0;
     }
 
     public Integer getCoins() {

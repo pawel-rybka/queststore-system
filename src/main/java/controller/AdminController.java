@@ -1,6 +1,5 @@
 package controller;
 
-import java.lang.Exception;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.*;
@@ -10,6 +9,7 @@ import dao.*;
 public class AdminController {
     
     private View view;
+    private ControllerView controllerView;
     
     public AdminController (View view) {
         this.view = view;
@@ -38,14 +38,10 @@ public class AdminController {
     }
 
     private void createMentor() {
-        String firstName = view.getInput("Enter first name. ");
-        String lastName = view.getInput("Enter last name: ");
-        String phoneNumber = view.getInput("Enter phone number: ");
-        String email = view.getInput("Enter email: ");
-        String password = view.getInput("Enter password: ");
-
+        String[] personalData = controllerView.getPersonalData();
+        Mentor newMentor = new Mentor(personalData[0], personalData[1], personalData[2],
+                                      personalData[3], personalData[4]);
         MentorDao mentorDao = new MentorDao();
-        Mentor newMentor = new Mentor(firstName, lastName, phoneNumber, email, password);
         try {
             mentorDao.addObject(newMentor);
         } catch (SQLException e) {
