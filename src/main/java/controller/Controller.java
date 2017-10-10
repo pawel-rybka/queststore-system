@@ -55,7 +55,8 @@ public class Controller {
         }
 
         if(!(admin == null)) {
-            System.out.println(admin.getFullName());
+            AdminController adminController = new AdminController(admin);
+            adminController.handleMenu();
         }
     }
 
@@ -74,7 +75,8 @@ public class Controller {
         }
 
         if(!(mentor == null)) {
-            System.out.println(mentor.getFullName());
+            MentorController mentorController = new MentorController(mentor);
+            mentorController.handleMenu();
         }
     }
 
@@ -93,7 +95,6 @@ public class Controller {
         }
 
         if(!(student == null)) {
-            System.out.println(student.getFullName());
             StudentController studentController = new StudentController(student);
             studentController.handleMenu();
         }
