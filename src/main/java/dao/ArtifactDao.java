@@ -30,6 +30,20 @@ public class ArtifactDao extends AbstractDao<Artifact> {
         return artifacts;
     }
 
+    public Artifact getArtifactById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM Artifacts WHERE id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        String name = rs.getString("name");
+        String category = rs.getString("category");
+        Integer price = rs.getInt("price");
+        Artifact newArtifact = new Artifact(id, name, category, price);
+        return newArtifact;
+    }
+
     public void addObject(Artifact artifact) throws SQLException {
         String sql = "INSERT INTO Artifacts (name, category, price)" +
                 "VALUES (?, ?, ?)";
