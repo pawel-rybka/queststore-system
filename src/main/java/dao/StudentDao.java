@@ -18,7 +18,7 @@ public class StudentDao extends AbstractDao<Student>{
         String sql = "SELECT * FROM students;";
 
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery( "" );
+        ResultSet rs = stmt.executeQuery( sql );
 
         while ( rs.next() ) {
             Integer id = rs.getInt("id");
