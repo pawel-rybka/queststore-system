@@ -51,7 +51,13 @@ public class AdminController {
 
     private void seeMentor() {
         MentorDao mentorDao = new MentorDao();
-        ArrayList<Mentor> mentors = mentorDao.getMentors();
+        ArrayList<Mentor> mentors = null;
+
+        try {
+            mentors = mentorDao.getMentors();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Mentor chosenMentor = null;
 
         while ((chosenMentor.getId() == null)) {
@@ -74,7 +80,13 @@ public class AdminController {
     /** uncomment last row ! */
     private void editMentor() {
         MentorDao mentorDao = new MentorDao();
-        ArrayList<Mentor> mentors = mentorDao.getMentors();
+        ArrayList<Mentor> mentors = null;
+
+        try {
+            mentors = mentorDao.getMentors();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Mentor mentor = null;
 
         while ((mentor.getId() == null)) {

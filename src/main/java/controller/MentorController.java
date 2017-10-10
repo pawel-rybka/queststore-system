@@ -85,7 +85,13 @@ public class MentorController {
 
     private void updateArtifact() {
         ArtifactDao artifactDao = new ArtifactDao();
-        ArrayList<Artifact> artifacts = artifactDao.getArtifacts();
+        ArrayList<Artifact> artifacts = null;
+
+        try {
+            artifacts = artifactDao.getArtifacts();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Integer menu = 0;
         while (menu == 0) {
             if (artifacts.size() == 0) {
