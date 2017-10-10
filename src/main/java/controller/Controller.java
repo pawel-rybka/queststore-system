@@ -94,6 +94,8 @@ public class Controller {
 
         if(!(student == null)) {
             System.out.println(student.getFullName());
+            StudentController studentController = new StudentController(student);
+            studentController.handleMenu();
         }
     }
 }
