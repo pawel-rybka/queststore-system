@@ -22,23 +22,24 @@ public class MentorController {
             view.printMenu("mentor");
             menu = view.getInput("Choose option.");
 
-            if (menu.equals("1")) {
-                createStudent();
-            } else if (menu.equals("2")) {
-                addQuest();
-            } else if (menu.equals("3")) {
-                addArtifact();
-            } else if (menu.equals("4")) {
-                updateQuest();
-            } else if (menu.equals("5")) {
-                updateArtifact();
-            } else if (menu.equals("6")) {
-                markQuest();   
-            } else if (menu.equals("7")) {
-                markArtifact();
-            } else if (menu.equals("8")) {
-                seeWallet();
-            } 
+            switch (menu) {
+                case "1":
+                    createStudent();    break;
+                case "2":
+                    addQuest();         break;
+                case "3":
+                    addArtifact();      break;
+                case "4":
+                    updateQuest();      break;
+                case "5":
+                    updateArtifact();   break;
+                case "6":
+                    markQuest();        break;
+                case "7":
+                    markArtifact();     break;
+                case "8":
+                    seeWallet();        break;
+            }
         }
     }
 

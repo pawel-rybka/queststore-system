@@ -1,9 +1,8 @@
 package view;
 
-import java.util.Scanner;
 public class Main {
 
-    private View view = new View(new Scanner(System.in));
+    private View view = new View();
 
     public static void main(String[] args) {
         Main test = new Main();

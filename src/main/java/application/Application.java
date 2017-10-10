@@ -15,7 +15,7 @@ public class Application {
     Application () {
         this.loggedUser = null;
         this.stdin = new Scanner(System.in);
-        this.view = new View(stdin);
+        this.view = new View();
     }
 
     public static void main(String[] args) {
@@ -33,13 +33,11 @@ public class Application {
 
             if (menu.equals("1")) {
                 login(); // fake login
-                AdminController ac = new AdminController(new View(new 
-                                                         Scanner(System.in)));
+                AdminController ac = new AdminController(new View());
                 ac.handleMenu();
             } else if (menu.equals("2")) {
                 login(); // fake login
-                MentorController mc = new MentorController(new View(new 
-                                                           Scanner(System.in)));
+                MentorController mc = new MentorController(new View());
                 mc.handleMenu();
             } else if (menu.equals("3")) {
                 login(); // fake login

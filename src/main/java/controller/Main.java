@@ -11,8 +11,7 @@ public class Main {
     }
 
     private void test() {
-        MentorController mc = new MentorController(
-                            new View(new Scanner(System.in)));
+        MentorController mc = new MentorController(new View());
         mc.handleMenu();
     }
 }
