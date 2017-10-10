@@ -13,7 +13,7 @@ public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
         this.c = DBConnection.getC();
     }
 
-    private ArrayList<BoughtArtifact> loadBoughtArtifactsFromDB() throws SQLException {
+    private ArrayList<BoughtArtifact> getBoughtArtifacts() throws SQLException {
         ArrayList<BoughtArtifact> boughtArtifacts = new ArrayList<BoughtArtifact>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM bought_artifacts;" );
@@ -29,5 +29,31 @@ public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
         }
         stmt.close();
         return boughtArtifacts;
+    }
+
+    public void addObject(BoughtArtifact boughtArtifact) throws SQLException {
+        String sql = "INSERT INTO bought_artifacts (student_id, artifact_id, usage_date)" +
+                "VALUES (?, ?, ?)";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, boughtArtifact.getStudentId());
+        pstmt.setInt(2, boughtArtifact.getArtifactId());
+        pstmt.setString(3, boughtArtifact.getUsageDate());
+        pstmt.executeUpdate();
+    }
+
+    public void updateData(BoughtArtifact boughtArtifact) throws SQLException {
+
+        String sql = "UPDATE bought_artifacts SET student_id = ?, artifact_id = ?," +
+                "usage_date = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setInt(1, boughtArtifact.getStudentId());
+            pstmt.setInt(2, boughtArtifact.getArtifactId());
+            pstmt.setString(3, boughtArtifact.getUsageDate());
+            pstmt.setInt(4, boughtArtifact.getId());
+
+            pstmt.executeUpdate();
+        }
     }
 }

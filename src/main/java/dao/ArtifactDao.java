@@ -13,7 +13,7 @@ public class ArtifactDao extends AbstractDao<Artifact> {
         this.c = DBConnection.getC();
     }
 
-    private ArrayList<Artifact> loadArtifactsFromDB() throws SQLException {
+    private ArrayList<Artifact> getArtifacts() throws SQLException {
         ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Artifacts;" );
@@ -28,5 +28,31 @@ public class ArtifactDao extends AbstractDao<Artifact> {
         }
         stmt.close();
         return artifacts;
+    }
+
+    public void addObject(Artifact artifact) throws SQLException {
+        String sql = "INSERT INTO Artifacts (name, category, price)" +
+                "VALUES (?, ?, ?)";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setString(1, artifact.getName());
+        pstmt.setString(2, artifact.getCategory());
+        pstmt.setInt(3, artifact.getPrice());
+        pstmt.executeUpdate();
+    }
+
+    public void updateData(Artifact artifact) throws SQLException {
+
+        String sql = "UPDATE Artifacts SET name = ?, category = ?," +
+                "price = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, artifact.getName());
+            pstmt.setString(2, artifact.getCategory());
+            pstmt.setInt(3, artifact.getPrice());
+            pstmt.setInt(4, artifact.getId());
+
+            pstmt.executeUpdate();
+        }
     }
 }

@@ -14,7 +14,7 @@ public class AdminDao extends AbstractDao<Admin> {
         c = DBConnection.getC();
     }
 
-    public ArrayList<Admin> createObjectFromDatabase() throws SQLException {
+    public ArrayList<Admin> getAdmins() throws SQLException {
         ArrayList<Admin> admins = new ArrayList<Admin>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Admins;" );
@@ -55,5 +55,36 @@ public class AdminDao extends AbstractDao<Admin> {
                 phoneNumber, email, password);
 
         return newAdmin;
+    }
+
+    public void addObject(Admin admin) throws SQLException {
+        String sql = "INSERT INTO Admins (first_name, last_name, phone_number, email, password)" +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setString(1, admin.getFirstName());
+        pstmt.setString(2, admin.getLastName());
+        pstmt.setString(3, admin.getPhoneNumber());
+        pstmt.setString(4, admin.getEmail());
+        pstmt.setString(5, admin.getPassword());
+        pstmt.executeUpdate();
+    }
+
+    public void updateData(Admin admin) throws SQLException {
+
+        String sql = "UPDATE Admins SET first_name = ?, last_name = ?," +
+                                    "phone_number = ?, email = ?," +
+                                    "password = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, admin.getFirstName());
+            pstmt.setString(2, admin.getLastName());
+            pstmt.setString(3, admin.getPhoneNumber());
+            pstmt.setString(4, admin.getEmail());
+            pstmt.setString(5, admin.getPassword());
+            pstmt.setInt(6, admin.getId());
+
+            pstmt.executeUpdate();
+        }
     }
 }

@@ -24,13 +24,6 @@ public abstract class AbstractDao <T extends GetIdable> {
 
     }
 
-    public void addObject(T object) throws SQLException {
-
-//        String sql = "INSERT INTO ? (";
-
-    }
-
-
     private String getTableName(T object) {
         String tableName = "";
 

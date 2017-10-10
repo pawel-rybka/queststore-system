@@ -13,7 +13,7 @@ public class CompletedQuestDao extends AbstractDao<CompletedQuest>{
         this.c = DBConnection.getC();
     }
 
-    private ArrayList<CompletedQuest> loadCompletedQuestsFromDB() throws SQLException {
+    private ArrayList<CompletedQuest> getCompletedQuests() throws SQLException {
         ArrayList<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM completed_quests;" );
@@ -29,5 +29,33 @@ public class CompletedQuestDao extends AbstractDao<CompletedQuest>{
         }
         stmt.close();
         return completedQuests;
+    }
+
+    public void addObject(CompletedQuest completedQuest) throws SQLException {
+        String sql = "INSERT INTO completed_quests (student_id, quest_id, complete_date)" +
+                "VALUES (?, ?, ?)";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, completedQuest.getStudentId());
+        pstmt.setInt(2, completedQuest.getQuestId());
+        pstmt.setString(3, completedQuest.getCompleteDate());
+        pstmt.executeUpdate();
+    }
+
+    public void updateData(CompletedQuest completedQuest) throws SQLException {
+        stmt = c.createStatement();
+        String sql = "UPDATE completed_quests SET student_id = ?, quest_id = ?," +
+                "complete_date = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setInt(1, completedQuest.getStudentId());
+            pstmt.setInt(2, completedQuest.getQuestId());
+            pstmt.setString(3, completedQuest.getCompleteDate());
+            pstmt.setInt(4, completedQuest.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
