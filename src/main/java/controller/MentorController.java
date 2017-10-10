@@ -10,6 +10,7 @@ import dao.*;
 public class MentorController {
     
     private View view;
+    private ControllerView controllerView;
     
     public MentorController (View view) {
         this.view = view;
@@ -22,64 +23,37 @@ public class MentorController {
             view.printMenu("mentor");
             menu = view.getInput("Choose option.");
 
-            if (menu.equals("1")) {
-                createStudent();
-            } else if (menu.equals("2")) {
-                addQuest();
-            } else if (menu.equals("3")) {
-                addArtifact();
-            } else if (menu.equals("4")) {
-                updateQuest();
-            } else if (menu.equals("5")) {
-                updateArtifact();
-            } else if (menu.equals("6")) {
-                markQuest();   
-            } else if (menu.equals("7")) {
-                markArtifact();
-            } else if (menu.equals("8")) {
-                seeWallet();
-            } 
+            switch (menu) {
+                case "1":
+                    createStudent();    break;
+                case "2":
+                    addQuest();         break;
+                case "3":
+                    addArtifact();      break;
+                case "4":
+                    updateQuest();      break;
+                case "5":
+                    updateArtifact();   break;
+                case "6":
+                    markQuest();        break;
+                case "7":
+                    markArtifact();     break;
+                case "8":
+                    seeWallet();        break;
+            }
         }
     }
 
     private void createStudent() {
-        String firstName = view.getInput("Enter first name.");
-        String lastName = view.getInput("Enter last name.");
-        String phoneNumber = view.getInput("Enter phone number.");
-        String email = view.getInput("Enter email.");
-        String password = view.getInput("Enter password.");
-        
+        String[] personalData = controllerView.getPersonalData();
+        Student newStudent = new Student(personalData[0], personalData[1], personalData[2],
+                                         personalData[3], personalData[4]);
         StudentDao studentDao = new StudentDao();
         try {
-            studentDao.createObjectFromDatabase();
+            studentDao.addObject(newStudent);
         } catch (SQLException e) {
-            view.printMsg("Database error in studentDao.createObjectFrom"
-                          + "Database(). Operation aborted.");
+            view.printMsg("Database error,can't add a student.");
         } 
-        
-        boolean studentNotExist = true;
-        for (Student student : studentDao.getStudents()) {
-            if (student.getFirstName().equals(firstName)
-                    && student.getLastName().equals(lastName)
-                    && student.getPhoneNumber().equals(phoneNumber)
-                    && student.getEmail().equals(email)) {
-                studentNotExist = false;
-            }
-        }
-
-        if (studentNotExist) {
-            Student newStudent = new Student(firstName, lastName, phoneNumber, 
-                                             email, password, 0, 0);
-            studentDao.getStudents().add(newStudent);
-            try {
-                studentDao.addObject(newStudent);
-            } catch (SQLException e) {
-                view.printMsg("Database error in studentDao.addObject(new"
-                              + "Student). Operation aborted.");
-            } 
-        } else {
-            view.printMsg("Student already exist. Aborted.");
-        }
     }
 
     private void addQuest() {
