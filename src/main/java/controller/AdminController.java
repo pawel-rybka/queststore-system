@@ -77,7 +77,6 @@ public class AdminController {
         view.printMsg("Password: " + chosenMentor.getPassword());
     }
 
-    /** uncomment last row ! */
     private void editMentor() {
         MentorDao mentorDao = new MentorDao();
         ArrayList<Mentor> mentors = null;
@@ -103,7 +102,12 @@ public class AdminController {
         mentor.setEmail(changeAttribute("Email", mentor.getEmail()));
         mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
 
-//        mentorDao.updateData(mentor);
+        try {
+            mentorDao.updateData(mentor);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void createClass() {
