@@ -12,7 +12,7 @@ public class Main {
 
     private void test() {
         MentorController mc = new MentorController(
-                            new View(new Scanner(System.in)));
+                            new View());
         mc.handleMenu();
     }
 }
