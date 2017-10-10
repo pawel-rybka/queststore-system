@@ -15,11 +15,10 @@ public class View {
     final private String STUDENT = "\n0) quit menu\n1) see Wallet\n2) buy "
             + "Artifact\n3) Group Buying\n4) see Level";
 
-    private Scanner stdin;
+    private static Scanner stdin = new Scanner(System.in);
 
-    public View(Scanner stdin) {
-        this.stdin = stdin;
-    }
+
+    public View(){}
 
     public String getInput(String msg){
 
@@ -47,12 +46,12 @@ public class View {
 
     public String getUserLogin() {
         System.out.print("Login: ");
-        return this.stdin.nextLine();
+        return stdin.nextLine();
     }
 
     public String getUserPassword() {
         System.out.print("Password: ");
-        return this.stdin.nextLine();
+        return stdin.nextLine();
     }
 
     public void printMsg(String msg) {
