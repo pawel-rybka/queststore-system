@@ -37,7 +37,20 @@ public class AdminController {
     }
 
         private void createMentor() {
-            view.printMsg("Not implemented yet, operation aborted.");
+            String firstName = view.getInput("Enter first name. ");
+            String lastName = view.getInput("Enter last name: ");
+            String phoneNumber = view.getInput("Enter phone number: ");
+            String email = view.getInput("Enter email: ");
+            String password = view.getInput("Enter password: ");
+
+            MentorDao mentorDao = new MentorDao();
+            Mentor newMentor = new Mentor(firstName, lastName, phoneNumber, email, password);
+            try {
+                mentorDao.addObject(newMentor);
+            } catch (SQLException e) {
+                view.printMsg("Database error, can't add a mentor.");
+
+            }
         }
 
         private void seeMentor() {
@@ -52,8 +65,8 @@ public class AdminController {
                 }
                 for (Mentor mentor : mentors) {
                     view.printNumbered(mentor.getId(), mentor.getFullName());
-                mentorId = validateOption(view.getInput("Choose mentor."),
-                                      mentors.size());
+                }
+                mentorId = validateOption(view.getInput("Choose mentor."), mentors.size());
             }
             Mentor mentor = mentors.get(mentorId);
             view.printMsg("Name: " + mentor.getFullName());

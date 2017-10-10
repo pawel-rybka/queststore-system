@@ -57,10 +57,7 @@ public abstract class User {
         return password;
     }
 
-    public String getFullName() return firstName + " " + lastName;
-
     public void setId(Integer id) {
-
         this.id = id;
     }
 
