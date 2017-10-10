@@ -5,46 +5,43 @@ import model.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class MentorDao {
+public class MentorDao extends AbstractDao<Mentor> {
 
-    private ArrayList<Mentor> mentors = new ArrayList<Mentor>();
-    private Connection c = null;
-    private Statement stmt = null;
+    private Connection conn = null;
 
     public MentorDao(){
-        c = DBConnection.getC();
+        conn = DBConnection.getC();
     }
 
-    public void createObjectFromDatabase() throws SQLException {
-        stmt = c.createStatement();
-        ResultSet rs = stmt.executeQuery( "SELECT * FROM Mentors;" );
+    public ArrayList<Mentor> getMentors() throws SQLException {
+        ArrayList<Mentor> mentors = new ArrayList<>();
+        String sql = "SELECT * FROM Mentors;";
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
 
         while ( rs.next() ) {
-            int id = rs.getInt("id");
+            Integer id = rs.getInt("id");
             String firstName = rs.getString("first_name");
             String lastName = rs.getString("last_name");
             String phoneNumber = rs.getString("phone_number");
             String email = rs.getString("email");
             String password = rs.getString("password");
 
-            Mentor newMentor = new Mentor(id, firstName, lastName,
-                    phoneNumber, email, password);
+            Mentor newMentor = new Mentor(id, firstName, lastName, phoneNumber, email, password);
             mentors.add(newMentor);
         }
         stmt.close();
+        return mentors;
     }
 
-    public Mentor createUserObject(String inputEmail, String inputPassword) throws SQLException{
+    public Mentor getMentorById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM Mentors WHERE id = ?;";
 
-        String sql = String.format("SELECT * FROM Mentors WHERE email = ? AND password = ?;");
-
-        PreparedStatement pstmt = c.prepareStatement(sql);
-        pstmt.setString(1, inputEmail);
-        pstmt.setString(2, inputPassword);
-
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, id);
         ResultSet rs = pstmt.executeQuery();
 
-        int id = rs.getInt("id");
         String firstName = rs.getString("first_name");
         String lastName = rs.getString("last_name");
         String phoneNumber = rs.getString("phone_number");
@@ -57,64 +54,61 @@ public class MentorDao {
         return newMentor;
     }
 
-    public void removeObject(Integer id) throws SQLException {
-        stmt = c.createStatement();
-        String sql = String.format("DELETE FROM Mentors WHERE id=%d;", id);
-        stmt.executeUpdate(sql);
+    public Mentor createUserObject(String inputEmail, String inputPassword) throws SQLException {
+        Mentor newMentor = null;
+        String sql = "SELECT * FROM Mentors WHERE email = ? AND password = ?;";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, inputEmail);
+        pstmt.setString(2, inputPassword);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            int id = rs.getInt("id");
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String phoneNumber = rs.getString("phone_number");
+            String email = rs.getString("email");
+            String password = rs.getString("password");
+
+            newMentor = new Mentor(id, firstName, lastName, phoneNumber, email, password);
+        }
+
+        pstmt.close();
+        rs.close();
+        return newMentor;
     }
 
     public void addObject(Mentor mentor) throws SQLException {
         String sql = "INSERT INTO Mentors (first_name, last_name, phone_number, email, password)" +
                 "VALUES (?, ?, ?, ?, ?);";
 
-            PreparedStatement pstmt = c.prepareStatement(sql);
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, mentor.getFirstName());
+        pstmt.setString(2, mentor.getLastName());
+        pstmt.setString(3, mentor.getPhoneNumber());
+        pstmt.setString(4, mentor.getEmail());
+        pstmt.setString(5, mentor.getPassword());
+        pstmt.executeUpdate();
+
+        pstmt.close();
+    }
+
+    public void updateData(Mentor mentor) throws SQLException {
+        String sql = "UPDATE Mentors SET first_name = ?, last_name = ?, phone_number = ?, "
+                     +"email = ?, password = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, mentor.getFirstName());
             pstmt.setString(2, mentor.getLastName());
             pstmt.setString(3, mentor.getPhoneNumber());
             pstmt.setString(4, mentor.getEmail());
             pstmt.setString(5, mentor.getPassword());
+            pstmt.setInt(4, mentor.getId());
 
             pstmt.executeUpdate();
-
-        try {
-            mentor.setId(selectLast("Mentors", c));
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
-
-    public void updateData(Integer id, String columnName, String value) throws SQLException {
-        stmt = c.createStatement();
-        String sql = String.format("UPDATE Mentors SET %s = ? WHERE id = ?;", columnName);
-        try (Connection conn = DBConnection.getC(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, value);
-            pstmt.setInt(2, id);
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-
-    private Integer selectLast(String table, Connection c) throws SQLException{
-
-        Integer id = null;
-        stmt = c.createStatement();
-        ResultSet result = stmt.executeQuery( String.format("SELECT id FROM %s\n", table) +
-                "ORDER BY id DESC\n" +
-                "LIMIT 1;");
-
-        while (result.next()){
-            id = result.getInt("id");
-        }
-        return id;
-    }
-
-    public ArrayList<Mentor> getMentors() {
-        return mentors;
-    }
-
 }
 

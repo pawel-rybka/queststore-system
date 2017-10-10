@@ -1,6 +1,6 @@
 package model;
 
-public class CompletedQuest {
+public class CompletedQuest implements GetIdable{
 
     private Integer id;
     private Integer studentId;
