@@ -99,38 +99,6 @@ public class MentorController {
                                   artifacts.size());
         }
 
-        // ----------- code to refactoring:
-        view.printMsg("Name = " + artifacts.get(menu-1).getName());
-        if (view.getInput("Update name? (Y/N)").toLowerCase().equals("y")) {
-            try {
-                artifactDao.updateData(menu, "name", 
-                    view.getInput("Enter new name:"));
-            } catch (SQLException e) {
-                view.printMsg("Database error in ArtifactDao.updateData(...)."
-                + "Operation aborted.");
-            }
-        }
-        view.printMsg("Category = " + artifacts.get(menu-1).getCategory());
-        if (view.getInput("Update category? (Y/N)").toLowerCase().equals("y")) {
-            try {
-                artifactDao.updateData(menu, "category", 
-                    view.getInput("Enter new category:"));
-            } catch (SQLException e) {
-                view.printMsg("Database error in ArtifactDao.updateData(...)."
-                + "Operation aborted.");
-            }
-        }
-        view.printMsg("Price = " + artifacts.get(menu-1).getPrice());
-        if (view.getInput("Update price? (Y/N)").toLowerCase().equals("y")) {
-            try {
-                artifactDao.updateData(menu, "price", 
-                    view.getInput("Enter new price:"));
-            } catch (SQLException e) {
-                view.printMsg("Database error in ArtifactDao.updateData(...)."
-                + "Operation aborted.");
-            }
-        }
-        // -------------- end of code to refactoring:
     }
 
     private void markQuest() {

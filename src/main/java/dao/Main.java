@@ -12,13 +12,13 @@ public class Main {
 //        Mentor mentor = mDao.createUserObject("agnieszka.koszany@codecool.com", "1234");
 //        System.out.println(mentor.getFirstName() + " " +mentor.getLastName());
         StudentDao sDao = new StudentDao();
-        ArrayList<Student> students = sDao.createObjectFromDatabase();
+        ArrayList<Student> students = sDao.getStudents();
         for (Student student: students){
             if (student.getFirstName().equals("c")) {
                 sDao.removeObject(student);
             }
         }
-        students = sDao.createObjectFromDatabase();
+        students = sDao.getStudents();
         for (Student student: students) {
             System.out.println(student.getFirstName());
         }
