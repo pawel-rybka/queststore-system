@@ -1,20 +1,37 @@
 package dao;
 
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import model.Admin;
 import model.Artifact;
+import model.GetIdable;
 import model.Mentor;
 import model.Student;
 
-import java.sql.SQLException;
 
-public abstract class AbstractDao <T> {
-//    private static final String[] TABLES_NAMES= { "Admins", "Mentors", "Students"};
+public abstract class AbstractDao <T extends GetIdable> {
+    private Connection conn = null;
 
+    public void removeObject(T object) throws SQLException {
 
-    public void removeObject(T object) {
-
-        String sql = String.format("DELETE FROM %s WHERE id = %s", getTableName(object), object.getId());
+        String sql = "DELETE FROM ? WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, getTableName(object));
+            pstmt.setInt(2, object.getId());
+            pstmt.executeUpdate();
+        }
     }
+
+    public T addObject(T object) throws SQLException {
+
+//        String sql = "INSERT INTO ? (";
+
+
+    }
+
 
     private String getTableName(T object) {
         String tableName = "";
