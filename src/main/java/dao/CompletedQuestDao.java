@@ -13,7 +13,7 @@ public class CompletedQuestDao extends AbstractDao<CompletedQuest>{
         this.c = DBConnection.getC();
     }
 
-    private ArrayList<CompletedQuest> getCompletedQuests() throws SQLException {
+    public ArrayList<CompletedQuest> getCompletedQuests() throws SQLException {
         ArrayList<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM completed_quests;" );

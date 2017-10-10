@@ -13,7 +13,7 @@ public class ArtifactDao extends AbstractDao<Artifact> {
         this.c = DBConnection.getC();
     }
 
-    private ArrayList<Artifact> getArtifacts() throws SQLException {
+    public ArrayList<Artifact> getArtifacts() throws SQLException {
         ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Artifacts;" );
