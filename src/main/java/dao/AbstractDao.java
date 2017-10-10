@@ -25,10 +25,9 @@ public abstract class AbstractDao <T extends GetIdable> {
         }
     }
 
-    public T addObject(T object) throws SQLException {
+    public void addObject(T object) throws SQLException {
 
 //        String sql = "INSERT INTO ? (";
-
 
     }
 
