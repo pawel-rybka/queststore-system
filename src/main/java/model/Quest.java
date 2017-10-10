@@ -1,6 +1,6 @@
 package model;
 
-public class Quest {
+public class Quest implements GetIdable{
 
     private Integer id;
     private String name;

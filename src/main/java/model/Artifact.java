@@ -1,6 +1,6 @@
 package model;
 
-public class Artifact {
+public class Artifact implements GetIdable{
 
     Integer id;
     String name;

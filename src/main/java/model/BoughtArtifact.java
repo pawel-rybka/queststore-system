@@ -1,7 +1,7 @@
 package model;
 
 
-public class BoughtArtifact {
+public class BoughtArtifact implements GetIdable{
 
     private Integer id;
     private Integer studentId;
