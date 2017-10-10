@@ -64,16 +64,15 @@ public class MentorDao extends AbstractDao<Mentor> {
 
         ResultSet rs = pstmt.executeQuery();
 
-        if (rs.next()) {
-            int id = rs.getInt("id");
-            String firstName = rs.getString("first_name");
-            String lastName = rs.getString("last_name");
-            String phoneNumber = rs.getString("phone_number");
-            String email = rs.getString("email");
-            String password = rs.getString("password");
+        int id = rs.getInt("id");
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String phoneNumber = rs.getString("phone_number");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
 
-            newMentor = new Mentor(id, firstName, lastName, phoneNumber, email, password);
-        }
+        newMentor = new Mentor(id, firstName, lastName, phoneNumber, email, password);
+
 
         pstmt.close();
         rs.close();
