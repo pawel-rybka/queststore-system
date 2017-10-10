@@ -37,7 +37,20 @@ public class CompletedQuest implements GetIdable{
         return completeDate;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setQuestId(Integer questId) {
+        this.questId = questId;
+    }
+
+    public void setCompleteDate(String completeDate) {
+        this.completeDate = completeDate;
     }
 }

@@ -16,4 +16,13 @@ public class StudentClass {
     public Integer getClassId() {
         return classId;
     }
+
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
+    }
 }

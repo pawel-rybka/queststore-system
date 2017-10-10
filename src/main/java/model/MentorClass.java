@@ -17,4 +17,13 @@ public class MentorClass {
     public Integer getClassId() {
         return classId;
     }
+
+
+    public void setMentorId(Integer mentorId) {
+        this.mentorId = mentorId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
+    }
 }

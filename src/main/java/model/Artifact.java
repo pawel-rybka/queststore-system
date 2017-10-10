@@ -36,7 +36,25 @@ public class Artifact implements GetIdable{
         return price;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+
+    public String toString() {
+        return this.category + " | " + this.name + " | " + this.price + "$";
     }
 }

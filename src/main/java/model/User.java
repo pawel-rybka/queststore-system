@@ -9,6 +9,7 @@ public abstract class User implements GetIdable{
     private String email;
     private String password;
 
+
     public User(Integer id, String firstName, String lastName, String phoneNumber, String email, String password) {
         this.id = id;
         this.firstName = firstName;
@@ -39,6 +40,11 @@ public abstract class User implements GetIdable{
         return lastName;
     }
 
+    public String getFullName() {
+        String fullName = firstName + " " + lastName;
+        return fullName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -53,5 +59,25 @@ public abstract class User implements GetIdable{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
