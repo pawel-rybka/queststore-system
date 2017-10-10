@@ -37,84 +37,82 @@ public class AdminController {
         }
     }
 
-        private void createMentor() {
-            String firstName = view.getInput("Enter first name. ");
-            String lastName = view.getInput("Enter last name: ");
-            String phoneNumber = view.getInput("Enter phone number: ");
-            String email = view.getInput("Enter email: ");
-            String password = view.getInput("Enter password: ");
+    private void createMentor() {
+        String firstName = view.getInput("Enter first name. ");
+        String lastName = view.getInput("Enter last name: ");
+        String phoneNumber = view.getInput("Enter phone number: ");
+        String email = view.getInput("Enter email: ");
+        String password = view.getInput("Enter password: ");
 
-            MentorDao mentorDao = new MentorDao();
-            Mentor newMentor = new Mentor(firstName, lastName, phoneNumber, email, password);
-            try {
-                mentorDao.addObject(newMentor);
-            } catch (SQLException e) {
-                view.printMsg("Database error, can't add a mentor.");
+        MentorDao mentorDao = new MentorDao();
+        Mentor newMentor = new Mentor(firstName, lastName, phoneNumber, email, password);
+        try {
+            mentorDao.addObject(newMentor);
+        } catch (SQLException e) {
+            view.printMsg("Database error, can't add a mentor.");
+        }
+    }
+
+    private void seeMentor() {
+        MentorDao mentorDao = new MentorDao();
+        ArrayList<Mentor> mentors = mentorDao.getMentors();
+        Mentor chosenMentor = null;
+
+        while ((chosenMentor == null)) {
+            if (mentors.size() == 0) {
+                view.printMsg("Mentor list empty, operation aborted.");
+                return;
             }
-        }
-
-        private void seeMentor() {
-            MentorDao mentorDao = new MentorDao();
-            ArrayList<Mentor> mentors = mentorDao.getMentors();
-            Mentor chosenMentor = null;
-
-            while ((chosenMentor == null)) {
-                if (mentors.size() == 0) {
-                    view.printMsg("Mentor list empty, operation aborted.");
-                    return;
-                }
-                for (Mentor mentor : mentors) {
-                    view.printNumbered(mentor.getId(), mentor.getFullName());
-                }
-                chosenMentor = pickMentor(view.getInput("Choose mentor."), mentors);
+            for (Mentor mentor : mentors) {
+                view.printNumbered(mentor.getId(), mentor.getFullName());
             }
-            view.printMsg("Name: " + chosenMentor.getFullName());
-            view.printMsg("Phone: " + chosenMentor.getPhoneNumber());
-            view.printMsg("E-mail: " + chosenMentor.getEmail());
-            view.printMsg("Password: " + chosenMentor.getPassword());
+            chosenMentor = pickMentor(view.getInput("Choose mentor."), mentors);
         }
+        view.printMsg("Name: " + chosenMentor.getFullName());
+        view.printMsg("Phone: " + chosenMentor.getPhoneNumber());
+        view.printMsg("E-mail: " + chosenMentor.getEmail());
+        view.printMsg("Password: " + chosenMentor.getPassword());
+    }
 
-        private void editMentor() {
-            MentorDao mentorDao = new MentorDao();
-            ArrayList<Mentor> mentors = mentorDao.getMentors();
-            Mentor mentor = pickMentor(view.getInput("Enter ID: "), mentors);
+    private void editMentor() {
+        MentorDao mentorDao = new MentorDao();
+        ArrayList<Mentor> mentors = mentorDao.getMentors();
+        Mentor mentor = pickMentor(view.getInput("Enter ID: "), mentors);
 
-            mentor.setFirstName(changeAttribute("First name", mentor.getFirstName()));
-            mentor.setLastName(changeAttribute("Last name", mentor.getLastName()));
-            mentor.setPhoneNumber(changeAttribute("Phone number", mentor.getPhoneNumber()));
-            mentor.setEmail(changeAttribute("Email", mentor.getEmail()));
-            mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
+        mentor.setFirstName(changeAttribute("First name", mentor.getFirstName()));
+        mentor.setLastName(changeAttribute("Last name", mentor.getLastName()));
+        mentor.setPhoneNumber(changeAttribute("Phone number", mentor.getPhoneNumber()));
+        mentor.setEmail(changeAttribute("Email", mentor.getEmail()));
+        mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
 
-            mentorDao.updateData(mentor);
-        }
+        mentorDao.updateData(mentor);
+    }
 
-        private String changeAttribute(String attributeName, String oldValue) {
-            String newValue = view.getInput(attributeName + " = " + oldValue + ". Press Enter, to skip change or enter new value: ");
-            if (newValue.equals("")) newValue = oldValue;
-            return newValue;
+    private void createClass() {
+        view.printMsg("Not implemented yet, operation aborted.");
+    }
 
-        }
+    private void createLevel() {
+        view.printMsg("Not implemented yet, operation aborted.");
+    }
 
-        private void createClass() {
-            view.printMsg("Not implemented yet, operation aborted.");
-        }
-
-        private void createLevel() {
-            view.printMsg("Not implemented yet, operation aborted.");
-        }
-
-        private Mentor pickMentor(String text, ArrayList<Mentor> mentors) {
-            Mentor pickedMentor = new Mentor(-1, "", "", "", "", "");
-            try {
-                for (Mentor mentor : mentors) {
-                    if (mentor.getId().equals(text)) pickedMentor = mentor;
-                }
-            } catch (Exception e) {
-                view.printMsg("Wrong input.");
-                pickedMentor = null;
+    private Mentor pickMentor(String text, ArrayList<Mentor> mentors) {
+        Mentor pickedMentor = new Mentor(-1, "", "", "", "", "");
+        try {
+            for (Mentor mentor : mentors) {
+                if (mentor.getId().equals(text)) pickedMentor = mentor;
             }
-            return pickedMentor;
+        } catch (Exception e) {
+            view.printMsg("Wrong input.");
+            pickedMentor = null;
         }
-    
+        return pickedMentor;
+    }
 
+    private String changeAttribute(String attributeName, String oldValue) {
+        String newValue = view.getInput(attributeName + " = " + oldValue
+                                        + ". Press Enter, to skip change or enter new value: ");
+        if (newValue.equals("")) newValue = oldValue;
+        return newValue;
+    }
 }
