@@ -1,6 +1,5 @@
 package controller;
 
-import java.lang.Exception;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.*;
@@ -10,6 +9,7 @@ import dao.*;
 public class AdminController {
     
     private View view;
+    private ControllerView controllerView;
     
     public AdminController (View view) {
         this.view = view;
@@ -38,14 +38,10 @@ public class AdminController {
     }
 
     private void createMentor() {
-        String firstName = view.getInput("Enter first name. ");
-        String lastName = view.getInput("Enter last name: ");
-        String phoneNumber = view.getInput("Enter phone number: ");
-        String email = view.getInput("Enter email: ");
-        String password = view.getInput("Enter password: ");
-
+        String[] personalData = controllerView.getPersonalData();
+        Mentor newMentor = new Mentor(personalData[0], personalData[1], personalData[2],
+                                      personalData[3], personalData[4]);
         MentorDao mentorDao = new MentorDao();
-        Mentor newMentor = new Mentor(firstName, lastName, phoneNumber, email, password);
         try {
             mentorDao.addObject(newMentor);
         } catch (SQLException e) {
@@ -58,7 +54,7 @@ public class AdminController {
         ArrayList<Mentor> mentors = mentorDao.getMentors();
         Mentor chosenMentor = null;
 
-        while ((chosenMentor == null)) {
+        while ((chosenMentor.getId() == null)) {
             if (mentors.size() == 0) {
                 view.printMsg("Mentor list empty, operation aborted.");
                 return;
@@ -68,16 +64,26 @@ public class AdminController {
             }
             chosenMentor = pickMentor(view.getInput("Choose mentor."), mentors);
         }
+
         view.printMsg("Name: " + chosenMentor.getFullName());
         view.printMsg("Phone: " + chosenMentor.getPhoneNumber());
         view.printMsg("E-mail: " + chosenMentor.getEmail());
         view.printMsg("Password: " + chosenMentor.getPassword());
     }
 
+    /** uncomment last row ! */
     private void editMentor() {
         MentorDao mentorDao = new MentorDao();
         ArrayList<Mentor> mentors = mentorDao.getMentors();
-        Mentor mentor = pickMentor(view.getInput("Enter ID: "), mentors);
+        Mentor mentor = null;
+
+        while ((mentor.getId() == null)) {
+            if (mentors.size() == 0) {
+                view.printMsg("Mentor list empty, operation aborted.");
+                return;
+            }
+            mentor = pickMentor(view.getInput("Enter ID: "), mentors);
+        }
 
         mentor.setFirstName(changeAttribute("First name", mentor.getFirstName()));
         mentor.setLastName(changeAttribute("Last name", mentor.getLastName()));
@@ -85,7 +91,7 @@ public class AdminController {
         mentor.setEmail(changeAttribute("Email", mentor.getEmail()));
         mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
 
-        mentorDao.updateData(mentor);
+//        mentorDao.updateData(mentor);
     }
 
     private void createClass() {
@@ -97,14 +103,11 @@ public class AdminController {
     }
 
     private Mentor pickMentor(String text, ArrayList<Mentor> mentors) {
-        Mentor pickedMentor = new Mentor(-1, "", "", "", "", "");
-        try {
-            for (Mentor mentor : mentors) {
-                if (mentor.getId().equals(text)) pickedMentor = mentor;
+        Mentor pickedMentor = new Mentor(null, null, null, null, null);
+        for (Mentor mentor : mentors) {
+            if (mentor.getId().toString().equals(text)) {
+                pickedMentor = mentor;
             }
-        } catch (Exception e) {
-            view.printMsg("Wrong input.");
-            pickedMentor = null;
         }
         return pickedMentor;
     }

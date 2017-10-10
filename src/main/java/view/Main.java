@@ -1,6 +1,5 @@
 package view;
 
-import java.util.Scanner;
 public class Main {
 
     private View view = new View();

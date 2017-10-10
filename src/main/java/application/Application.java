@@ -10,6 +10,7 @@ public class Application {
 
     Application () {
         this.controller = new Controller();
+
     }
 
     private void run(){
