@@ -1,6 +1,7 @@
 package dao;
 
 import model.BoughtArtifact;
+import model.Student;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
         this.c = DBConnection.getC();
     }
 
-    private ArrayList<BoughtArtifact> getBoughtArtifacts() throws SQLException {
+    public ArrayList<BoughtArtifact> getBoughtArtifacts() throws SQLException {
         ArrayList<BoughtArtifact> boughtArtifacts = new ArrayList<BoughtArtifact>();
         stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM bought_artifacts;" );
@@ -29,6 +30,24 @@ public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
         }
         stmt.close();
         return boughtArtifacts;
+    }
+
+    public ArrayList<BoughtArtifact> getBoughtArtifactsByUser(Student student) throws SQLException {
+        ArrayList<BoughtArtifact> boughtByUser = new ArrayList<BoughtArtifact>();
+        stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM bought_artifacts WHERE id = %d;", student.getId()));
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            Integer studentId = rs.getInt("student_id");
+            Integer artifactId = rs.getInt("artifact_id");
+            String usageDate = rs.getString("usage_date");
+
+            BoughtArtifact newBoughtArtifact = new BoughtArtifact(id, studentId, artifactId, usageDate);
+            boughtByUser.add(newBoughtArtifact);
+        }
+        stmt.close();
+        return boughtByUser;
     }
 
     public void addObject(BoughtArtifact boughtArtifact) throws SQLException {
