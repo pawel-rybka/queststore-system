@@ -22,17 +22,18 @@ public class AdminController {
             view.printMenu("admin");
             menu = view.getInput("Choose option.");
 
-            if (menu.equals("1")) {
-                createMentor();
-            } else if (menu.equals("2")) {
-                seeMentor();
-            } else if (menu.equals("3")) {
-                editMentor();
-            } else if (menu.equals("4")) {
-                createClass();
-            } else if (menu.equals("5")) {
-                createLevel();
-            } 
+            switch (menu) {
+                case "1":
+                    createMentor(); break;
+                case "2":
+                    seeMentor();    break;
+                case "3":
+                    editMentor();   break;
+                case "4":
+                    createClass();  break;
+                case "5":
+                    createLevel();  break;
+            }
         }
     }
 
@@ -49,16 +50,15 @@ public class AdminController {
                 mentorDao.addObject(newMentor);
             } catch (SQLException e) {
                 view.printMsg("Database error, can't add a mentor.");
-
             }
         }
 
         private void seeMentor() {
             MentorDao mentorDao = new MentorDao();
             ArrayList<Mentor> mentors = mentorDao.getMentors();
+            Mentor chosenMentor = null;
 
-            Integer mentorId = -1;
-            while (mentorId == -1) {
+            while ((chosenMentor == null)) {
                 if (mentors.size() == 0) {
                     view.printMsg("Mentor list empty, operation aborted.");
                     return;
@@ -66,17 +66,33 @@ public class AdminController {
                 for (Mentor mentor : mentors) {
                     view.printNumbered(mentor.getId(), mentor.getFullName());
                 }
-                mentorId = validateOption(view.getInput("Choose mentor."), mentors.size());
+                chosenMentor = pickMentor(view.getInput("Choose mentor."), mentors);
             }
-            Mentor mentor = mentors.get(mentorId);
-            view.printMsg("Name: " + mentor.getFullName());
-            view.printMsg("Phone: " + mentor.getPhoneNumber());
-            view.printMsg("E-mail: " + mentor.getEmail());
-            view.printMsg("Password: " + mentor.getPassword());
+            view.printMsg("Name: " + chosenMentor.getFullName());
+            view.printMsg("Phone: " + chosenMentor.getPhoneNumber());
+            view.printMsg("E-mail: " + chosenMentor.getEmail());
+            view.printMsg("Password: " + chosenMentor.getPassword());
         }
 
         private void editMentor() {
-            view.printMsg("Not implemented yet, operation aborted.");
+            MentorDao mentorDao = new MentorDao();
+            ArrayList<Mentor> mentors = mentorDao.getMentors();
+            Mentor mentor = pickMentor(view.getInput("Enter ID: "), mentors);
+
+            mentor.setFirstName(changeAttribute("First name", mentor.getFirstName()));
+            mentor.setLastName(changeAttribute("Last name", mentor.getLastName()));
+            mentor.setPhoneNumber(changeAttribute("Phone number", mentor.getPhoneNumber()));
+            mentor.setEmail(changeAttribute("Email", mentor.getEmail()));
+            mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
+
+            mentorDao.updateData(mentor);
+        }
+
+        private String changeAttribute(String attributeName, String oldValue) {
+            String newValue = view.getInput(attributeName + " = " + oldValue + ". Press Enter, to skip change or enter new value: ");
+            if (newValue.equals("")) newValue = oldValue;
+            return newValue;
+
         }
 
         private void createClass() {
@@ -87,18 +103,17 @@ public class AdminController {
             view.printMsg("Not implemented yet, operation aborted.");
         }
 
-        private Integer validateOption(String text, int size) {
-            Integer number = 0;
+        private Mentor pickMentor(String text, ArrayList<Mentor> mentors) {
+            Mentor pickedMentor = new Mentor(-1, "", "", "", "", "");
             try {
-                number = Integer.parseInt(text);
-                if (number < 1 || number > size) {
-                    number = 0;
-                    throw new Exception();
+                for (Mentor mentor : mentors) {
+                    if (mentor.getId().equals(text)) pickedMentor = mentor;
                 }
             } catch (Exception e) {
                 view.printMsg("Wrong input.");
+                pickedMentor = null;
             }
-            return number;
+            return pickedMentor;
         }
     
 
