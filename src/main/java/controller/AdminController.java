@@ -15,6 +15,7 @@ public class AdminController {
     public AdminController (Admin admin) {
         this.admin = admin;
         this.adminView = new AdminView();
+        this.controllerView = new ControllerView();
     }
 
     public void handleMenu() {
