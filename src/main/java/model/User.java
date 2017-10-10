@@ -1,6 +1,6 @@
 package model;
 
-public abstract class User {
+public abstract class User implements GetIdable{
 
     private Integer id;
     private String firstName;
