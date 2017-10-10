@@ -59,7 +59,13 @@ public class StudentController {
     public void buyArtifact() {
         studentView.printMsg("\nYOUR ACCOUNT BALANCE: " + this.student.getCoins().toString());
 
-        ArrayList<Artifact> artifacts = artifactDao.getArtifacts();
+        ArrayList<Artifact> artifacts = null;
+
+        try {
+            artifacts = artifactDao.getArtifacts();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         ArrayList<Artifact> availableArtifacts = this.checkAvailableArtifacts(artifacts);
 
         studentView.printMsg("\nAVAILABLE ARTIFACTS: \n" + artifactView.printTable(availableArtifacts));
