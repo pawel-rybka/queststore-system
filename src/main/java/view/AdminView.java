@@ -20,11 +20,4 @@ public class AdminView extends View {
         System.out.println(MENU);
     }
 
-    public void printPersonalData(Mentor mentor) {
-        printMsg("Name: " + mentor.getFullName());
-        printMsg("Phone: " + mentor.getPhoneNumber());
-        printMsg("E-mail: " + mentor.getEmail());
-        printMsg("Password: " + mentor.getPassword());
-
-    }
 }

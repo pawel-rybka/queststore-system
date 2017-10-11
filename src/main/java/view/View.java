@@ -1,5 +1,7 @@
 package view;
 
+import model.Mentor;
+
 import java.util.Scanner;
 public class View {
 
@@ -61,4 +63,12 @@ public class View {
     public void printNumbered(Integer id, String element) {
         System.out.println(id + ") " + element);
     }
+
+    public void printPersonalData(Mentor mentor) {
+        printMsg("Name: " + mentor.getFullName());
+        printMsg("Phone: " + mentor.getPhoneNumber());
+        printMsg("E-mail: " + mentor.getEmail());
+        printMsg("Password: " + mentor.getPassword());
+    }
+
 }
