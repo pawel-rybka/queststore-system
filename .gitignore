@@ -25,10 +25,8 @@ hs_err_pid*
 *.png
 bin/
 /.idea/
-src/test/
 target/
 .classpath
 .project
 .settings/
-src/main/resources/
 /queststore-system.bpt.iml
