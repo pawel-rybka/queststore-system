@@ -18,7 +18,7 @@ public class StudentDao extends AbstractDao<Student>{
         String sql = "SELECT * FROM students;";
 
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery( "" );
+        ResultSet rs = stmt.executeQuery( sql );
 
         while ( rs.next() ) {
             Integer id = rs.getInt("id");
@@ -36,6 +36,26 @@ public class StudentDao extends AbstractDao<Student>{
 
         stmt.close();
         return students;
+    }
+
+    public Student getStudentById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM Students WHERE id = ?;";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String phoneNumber = rs.getString("phone_number");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        Integer coins = rs.getInt("coins");
+        Integer totalCoins = rs.getInt("total_coins");
+        Student newStudent = new Student(id, firstName, lastName, phoneNumber,
+                email, password, coins, totalCoins);
+
+        return newStudent;
     }
 
     public Student createUserObject(String inputEmail, String inputPassword) throws SQLException{
