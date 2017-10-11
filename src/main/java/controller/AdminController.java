@@ -8,12 +8,13 @@ import dao.*;
 
 public class AdminController {
 
-//    private Admin admin;
+    private Admin admin;
     private AdminView adminView;
     private ControllerView controllerView;
+    private MentorDao mentorDao = new MentorDao();
     
     public AdminController (Admin admin) {
-//        this.admin = admin;
+        this.admin = admin;
         this.adminView = new AdminView();
         this.controllerView = new ControllerView();
     }
@@ -44,7 +45,6 @@ public class AdminController {
         String[] personalData = controllerView.getPersonalData();
         Mentor newMentor = new Mentor(personalData[0], personalData[1], personalData[2],
                                       personalData[3], personalData[4]);
-        MentorDao mentorDao = new MentorDao();
         try {
             mentorDao.addObject(newMentor);
         } catch (SQLException e) {
@@ -83,7 +83,6 @@ public class AdminController {
         mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
 
         try {
-            MentorDao mentorDao = new MentorDao();
             mentorDao.updateData(mentor);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -99,7 +98,6 @@ public class AdminController {
     }
 
     private  ArrayList<Mentor> buildMentors() {
-        MentorDao mentorDao = new MentorDao();
         ArrayList<Mentor> mentors = null;
 
         try {
@@ -117,7 +115,6 @@ public class AdminController {
     private Mentor pickMentor() {
         Mentor mentor = null;
         try {
-            MentorDao mentorDao = new MentorDao();
             mentor = mentorDao.getMentorById(Integer.parseInt(adminView.getInput("Enter ID: ")));
         } catch (Exception e) {
             adminView.printMsg("Wrong input!");

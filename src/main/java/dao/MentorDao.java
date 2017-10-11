@@ -104,7 +104,7 @@ public class MentorDao extends AbstractDao<Mentor> {
             pstmt.setString(3, mentor.getPhoneNumber());
             pstmt.setString(4, mentor.getEmail());
             pstmt.setString(5, mentor.getPassword());
-            pstmt.setInt(4, mentor.getId());
+            pstmt.setInt(6, mentor.getId());
 
             pstmt.executeUpdate();
         }
