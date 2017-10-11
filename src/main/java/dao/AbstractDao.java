@@ -24,6 +24,9 @@ public abstract class AbstractDao <T extends GetIdable> {
 
     }
 
+    public abstract void addObject(T object) throws SQLException;
+    public abstract void updateData(T object) throws SQLException;
+
     private String getTableName(T object) {
         String tableName = "";
 
