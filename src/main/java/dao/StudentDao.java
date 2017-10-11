@@ -40,9 +40,9 @@ public class StudentDao extends AbstractDao<Student>{
 
     public Student getStudentById(Integer id) throws SQLException {
         String sql = "SELECT * FROM Students WHERE id = ?;";
-
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, id);
+
         ResultSet rs = pstmt.executeQuery();
 
         String firstName = rs.getString("first_name");
@@ -55,6 +55,7 @@ public class StudentDao extends AbstractDao<Student>{
         Student newStudent = new Student(id, firstName, lastName, phoneNumber,
                 email, password, coins, totalCoins);
 
+        rs.close();
         return newStudent;
     }
 

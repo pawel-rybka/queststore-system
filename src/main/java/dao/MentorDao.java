@@ -50,7 +50,7 @@ public class MentorDao extends AbstractDao<Mentor> {
 
         Mentor newMentor = new Mentor(id, firstName, lastName,
                 phoneNumber, email, password);
-
+        rs.close();
         return newMentor;
     }
 
