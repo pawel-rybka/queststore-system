@@ -1,5 +1,7 @@
 package view;
 
+import model.*;
+
 public class AdminView extends View {
 
     final private String MENU = "\nADMIN MENU: " +
@@ -17,4 +19,5 @@ public class AdminView extends View {
     public void printMenu() {
         System.out.println(MENU);
     }
+
 }

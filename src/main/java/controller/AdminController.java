@@ -8,13 +8,14 @@ import dao.*;
 
 public class AdminController {
 
-    private Admin admin;
+//    private Admin admin;
     private AdminView adminView;
     private ControllerView controllerView;
     
     public AdminController (Admin admin) {
-        this.admin = admin;
+//        this.admin = admin;
         this.adminView = new AdminView();
+        this.controllerView = new ControllerView();
     }
 
     public void handleMenu() {
@@ -52,50 +53,27 @@ public class AdminController {
     }
 
     private void seeMentor() {
-        MentorDao mentorDao = new MentorDao();
-        ArrayList<Mentor> mentors = null;
+        ArrayList<Mentor> mentors = buildMentors();
+        if (mentors == null) return;
 
-        try {
-            mentors = mentorDao.getMentors();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         Mentor chosenMentor = null;
-
-        while ((chosenMentor.getId() == null)) {
-            if (mentors.size() == 0) {
-                adminView.printMsg("Mentor list empty, operation aborted.");
-                return;
-            }
+        while (chosenMentor == null) {
             for (Mentor mentor : mentors) {
                 adminView.printNumbered(mentor.getId(), mentor.getFullName());
             }
-            chosenMentor = pickMentor(adminView.getInput("Choose mentor."), mentors);
+            chosenMentor = pickMentor();
         }
 
-        adminView.printMsg("Name: " + chosenMentor.getFullName());
-        adminView.printMsg("Phone: " + chosenMentor.getPhoneNumber());
-        adminView.printMsg("E-mail: " + chosenMentor.getEmail());
-        adminView.printMsg("Password: " + chosenMentor.getPassword());
+        adminView.printPersonalData(chosenMentor);
     }
 
     private void editMentor() {
-        MentorDao mentorDao = new MentorDao();
-        ArrayList<Mentor> mentors = null;
+        ArrayList<Mentor> mentors = buildMentors();
+        if (mentors == null) return;
 
-        try {
-            mentors = mentorDao.getMentors();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         Mentor mentor = null;
-
-        while ((mentor.getId() == null)) {
-            if (mentors.size() == 0) {
-                adminView.printMsg("Mentor list empty, operation aborted.");
-                return;
-            }
-            mentor = pickMentor(adminView.getInput("Enter ID: "), mentors);
+        while (mentor == null) {
+            mentor = pickMentor();
         }
 
         mentor.setFirstName(changeAttribute("First name", mentor.getFirstName()));
@@ -105,11 +83,11 @@ public class AdminController {
         mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
 
         try {
+            MentorDao mentorDao = new MentorDao();
             mentorDao.updateData(mentor);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     private void createClass() {
@@ -120,19 +98,36 @@ public class AdminController {
         adminView.printMsg("Not implemented yet, operation aborted.");
     }
 
-    private Mentor pickMentor(String text, ArrayList<Mentor> mentors) {
-        Mentor pickedMentor = new Mentor(null, null, null, null, null);
-        for (Mentor mentor : mentors) {
-            if (mentor.getId().toString().equals(text)) {
-                pickedMentor = mentor;
-            }
+    private  ArrayList<Mentor> buildMentors() {
+        MentorDao mentorDao = new MentorDao();
+        ArrayList<Mentor> mentors = null;
+
+        try {
+            mentors = mentorDao.getMentors();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return pickedMentor;
+
+        if (mentors.size() == 0) {
+            adminView.printMsg("Mentor list empty, operation aborted.");
+        }
+        return mentors;
+    }
+
+    private Mentor pickMentor() {
+        Mentor mentor = null;
+        try {
+            MentorDao mentorDao = new MentorDao();
+            mentor = mentorDao.getMentorById(Integer.parseInt(adminView.getInput("Enter ID: ")));
+        } catch (Exception e) {
+            adminView.printMsg("Wrong input!");
+        }
+        return mentor;
     }
 
     private String changeAttribute(String attributeName, String oldValue) {
         String newValue = adminView.getInput(attributeName + " = " + oldValue
-                                        + ". Press Enter, to skip change or enter new value: ");
+                                        + ". Press Enter to skip change or type new value: ");
         if (newValue.equals("")) newValue = oldValue;
         return newValue;
     }
