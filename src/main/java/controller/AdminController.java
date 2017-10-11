@@ -53,60 +53,27 @@ public class AdminController {
     }
 
     private void seeMentor() {
-        MentorDao mentorDao = new MentorDao();
-        ArrayList<Mentor> mentors = null;
-
-        try {
-            mentors = mentorDao.getMentors();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (mentors.size() == 0) {
-            adminView.printMsg("Mentor list empty, operation aborted.");
-            return;
-        }
+        ArrayList<Mentor> mentors = buildMentors();
+        if (mentors == null) return;
 
         Mentor chosenMentor = null;
         while (chosenMentor == null) {
             for (Mentor mentor : mentors) {
                 adminView.printNumbered(mentor.getId(), mentor.getFullName());
             }
-            try {
-                chosenMentor = mentorDao.getMentorById(Integer.parseInt(adminView.getInput("Choose mentor.")));
-            } catch (Exception e) {
-                adminView.printMsg("Wrong input!");
-            }
+            chosenMentor = pickMentor();
         }
 
-        adminView.printMsg("Name: " + chosenMentor.getFullName());
-        adminView.printMsg("Phone: " + chosenMentor.getPhoneNumber());
-        adminView.printMsg("E-mail: " + chosenMentor.getEmail());
-        adminView.printMsg("Password: " + chosenMentor.getPassword());
+        adminView.printPersonalData(chosenMentor);
     }
 
     private void editMentor() {
-        MentorDao mentorDao = new MentorDao();
-        ArrayList<Mentor> mentors = null;
-
-        try {
-            mentors = mentorDao.getMentors();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (mentors.size() == 0) {
-            adminView.printMsg("Mentor list empty, operation aborted.");
-            return;
-        }
+        ArrayList<Mentor> mentors = buildMentors();
+        if (mentors == null) return;
 
         Mentor mentor = null;
         while (mentor == null) {
-            try {
-                mentor = mentorDao.getMentorById(Integer.parseInt(adminView.getInput("Enter ID: ")));
-            } catch (Exception e) {
-                adminView.printMsg("Wrong input!");
-            }
+            mentor = pickMentor();
         }
 
         mentor.setFirstName(changeAttribute("First name", mentor.getFirstName()));
@@ -116,11 +83,11 @@ public class AdminController {
         mentor.setPassword(changeAttribute("Password", mentor.getPassword()));
 
         try {
+            MentorDao mentorDao = new MentorDao();
             mentorDao.updateData(mentor);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     private void createClass() {
@@ -129,6 +96,33 @@ public class AdminController {
 
     private void createLevel() {
         adminView.printMsg("Not implemented yet, operation aborted.");
+    }
+
+    private  ArrayList<Mentor> buildMentors() {
+        MentorDao mentorDao = new MentorDao();
+        ArrayList<Mentor> mentors = null;
+
+        try {
+            mentors = mentorDao.getMentors();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (mentors.size() == 0) {
+            adminView.printMsg("Mentor list empty, operation aborted.");
+        }
+        return mentors;
+    }
+
+    private Mentor pickMentor() {
+        Mentor mentor = null;
+        try {
+            MentorDao mentorDao = new MentorDao();
+            mentor = mentorDao.getMentorById(Integer.parseInt(adminView.getInput("Enter ID: ")));
+        } catch (Exception e) {
+            adminView.printMsg("Wrong input!");
+        }
+        return mentor;
     }
 
     private String changeAttribute(String attributeName, String oldValue) {

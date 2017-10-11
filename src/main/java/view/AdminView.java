@@ -1,5 +1,7 @@
 package view;
 
+import model.*;
+
 public class AdminView extends View {
 
     final private String MENU = "\nADMIN MENU: " +
@@ -16,5 +18,13 @@ public class AdminView extends View {
 
     public void printMenu() {
         System.out.println(MENU);
+    }
+
+    public void printPersonalData(Mentor mentor) {
+        printMsg("Name: " + mentor.getFullName());
+        printMsg("Phone: " + mentor.getPhoneNumber());
+        printMsg("E-mail: " + mentor.getEmail());
+        printMsg("Password: " + mentor.getPassword());
+
     }
 }
