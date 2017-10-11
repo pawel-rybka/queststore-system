@@ -66,20 +66,19 @@ public class StudentController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         ArrayList<Artifact> availableArtifacts = this.checkAvailableArtifacts(artifacts);
 
         studentView.printMsg("\nAVAILABLE ARTIFACTS: \n" + artifactView.printTable(availableArtifacts));
 
-        Artifact choosenArtifact = getArtifactFromList(availableArtifacts);
-
-
-        LocalDate localDate = LocalDate.now();
-
-
-        BoughtArtifact boughtArtifact = new BoughtArtifact(this.student.getId(), choosenArtifact.getId(), localDate.toString() );
-
-        try{
+        try {
+            Artifact choosenArtifact = getArtifactFromList(availableArtifacts);
+            LocalDate localDate = LocalDate.now();
+            BoughtArtifact boughtArtifact = new BoughtArtifact(this.student.getId(), choosenArtifact.getId(), localDate.toString() );
             boughtArtifactDao.addObject(boughtArtifact);
+
+        } catch (NullPointerException e){
+            studentView.printMsg("You didn't choose any artifact");
         } catch (SQLException e){
             studentView.printMsg("Somethong went wrong during buying artifact");
         }
@@ -98,13 +97,12 @@ public class StudentController {
     }
 
 
-    private Artifact getArtifactFromList(ArrayList<Artifact> availableArtifacts){
+    private Artifact getArtifactFromList(ArrayList<Artifact> availableArtifacts) throws NullPointerException {
         String artifactName = studentView.getInput("\n Choose the name of artifact to buy: ");
-        System.out.println(artifactName);
+
         Artifact choosenArtifact = null;
 
         for(Artifact artifact : availableArtifacts){
-            System.out.println(artifact.getName());
             if(artifact.getName().equals(artifactName)){
                 choosenArtifact = artifact;
             }
@@ -113,7 +111,7 @@ public class StudentController {
     }
 
     public void donateForArtifact() {
-
+        System.out.println("\nNOT IMPLEMENTED YET");
     }
 
     public void seeMyProfile() {
