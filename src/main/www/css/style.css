@@ -1,6 +1,6 @@
-/*.page {*/
-    /*display:flex;*/
-/*}*/
+body {
+    background-color:#118bd9;
+}
 
 #menu-bar {
     width:150px;
@@ -8,13 +8,11 @@
     background-color: #333;
 }
 
-.admin-menu {
+.menu {
     display: inline-block;
     /*float: left;*/
     /*margin: 0 20px 0 0;*/
-
 }
-
 
 .pure-menu-heading {
     color: white;
@@ -35,8 +33,12 @@
 /*    float: left;*/
 }
 
-.pure-menu-selected {
+.pure-menu-home {
     background-color: #4CAF50;
+}
+
+.pure-menu-logout {
+    background-color: red;
 }
 
 .pure-menu-link {
@@ -56,22 +58,6 @@
     background-color: aqua;
 }
 
-/*
-.home menu ul {
-    padding-left: 0;
-    margin-left: 2.142857142857143em;
-    list-style-type: none;
-}
-*/
-
-/*.content {*/
-    /*background-color:#118bd9;*/
-    /*float:right;*/
-    /*width:85%;*/
-    /*height:100%;*/
-/*}*/
-
-body {
-    background-color:#118bd9;
-    /*text-align: center;*/
+.content {
+    display: inline-block;
 }
