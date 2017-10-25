@@ -1,12 +1,20 @@
-.page {
-    display:flex;
-}
+/*.page {*/
+    /*display:flex;*/
+/*}*/
 
-.menu-bar {
-    width:16%;
+#menu-bar {
+    width:150px;
     height:100%;
     background-color: #333;
 }
+
+.admin-menu {
+    display: inline-block;
+    /*float: left;*/
+    /*margin: 0 20px 0 0;*/
+
+}
+
 
 .pure-menu-heading {
     color: white;
@@ -21,8 +29,6 @@
     background-color: #333;
     position: fixed;
     top: 0;
-    width: 100%;
-    width:15%;
 }
 
 .pure-menu-item {
@@ -58,9 +64,14 @@
 }
 */
 
-.content {
+/*.content {*/
+    /*background-color:#118bd9;*/
+    /*float:right;*/
+    /*width:85%;*/
+    /*height:100%;*/
+/*}*/
+
+body {
     background-color:#118bd9;
-    float:right;
-    width:85%;
-    height:100%;
+    /*text-align: center;*/
 }
