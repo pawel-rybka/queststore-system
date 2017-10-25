@@ -8,10 +8,19 @@
 </head>
 <body>
 
-<div class="admin-menu" w3-include-html="admin-menu.html"></div>
+<div class="menu" w3-include-html="admin-menu.html"></div>
 
-<div style="display: inline-block" >
-    <h2>Mentor creating</h2>
+<div class="content">
+    <h2>Add new Mentor</h2>
+
+    <form action="#">
+        <input type="text" name="first" placeholder="First name"><br><br>
+        <input type="text" name="last" placeholder="Last name"><br><br>
+        <input type="text" name="phone" placeholder="Phone number"><br><br>
+        <input type="text" name="email" placeholder="Email"><br><br>
+        <input type="text" name="passw" placeholder="Password"><br><br>
+        <input type="submit" value="Submit">
+    </form>
 </div>
 
 <script>
