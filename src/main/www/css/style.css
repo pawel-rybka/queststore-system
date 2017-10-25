@@ -61,3 +61,7 @@ body {
 .content {
     display: inline-block;
 }
+
+.student-balance {
+    text-align: center;
+}
