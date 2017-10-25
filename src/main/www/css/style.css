@@ -2,6 +2,12 @@ body {
     background-color:#118bd9;
 }
 
+/*#wrapper {*/
+    /*width: 700px;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+/*}*/
+
 #menu-bar {
     width:150px;
     height:100%;
@@ -60,4 +66,12 @@ body {
 
 .content {
     display: inline-block;
+    text-align: center;
+    width: 100%;
+    /*width: 850px;*/
+
+    /*margin: 0 auto;*/
+    /*margin-left: auto;*/
+    /*margin-rigth: auto;*/
 }
+
