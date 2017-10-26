@@ -76,10 +76,13 @@ body {
     height: 100%;
     margin: 10px;
     text-align: center;
+    font-family: caviar;
 }
 
-.student-balance {
-    text-align: center;
+.student-info {
+    margin-left:  auto;
+    text-align: left;
+    margin-right: 0px;
 }
 
 .log-bar {
@@ -95,4 +98,7 @@ body {
     width: 50%;
     text-align: center;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> bf2090c33a01efd567277cde24f9ef1e4ad3cdda
