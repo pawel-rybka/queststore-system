@@ -9,12 +9,18 @@
 </head>
 <body>
 <div class="log-bar">
-    <h2>You are logged as: $$$$</h2>
+    <p>You are logged as: $$$$</p>
 </div>
 <div class="menu" w3-include-html="student-menu.html"></div>
-<div class="buy-artifact">
-    <p></p>
-    <p></p></div>
+<div class="select">
+        <h1>Choose Artifact:</h1>
+        <select name="Magic-artifact">
+            <option selected="selected">Artifact1</option>
+            <option>Artifact2</option>
+            <option>Artifact3</option>
+        </select>
+        <input type="submit" value="Confirm">
+    </div>
 
 <script>
     w3.includeHTML();
