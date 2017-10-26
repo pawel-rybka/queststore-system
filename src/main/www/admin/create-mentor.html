@@ -4,23 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-<div>
-    <h2>Mentor creating.</h2>
+<div class="menu" w3-include-html="admin-menu.html"></div>
+
+<div class="content">
+    <h2>Add new Mentor</h2>
+
+    <form action="#">
+        <input type="text" name="first" placeholder="First name"><br><br>
+        <input type="text" name="last" placeholder="Last name"><br><br>
+        <input type="text" name="phone" placeholder="Phone number"><br><br>
+        <input type="text" name="email" placeholder="Email"><br><br>
+        <input type="text" name="passw" placeholder="Password"><br><br>
+        <input type="submit" value="Submit">
+    </form>
 </div>
-
-<div w3-include-html="../common/get-personal-data.html"></div>
-
 
 <script>
     w3.includeHTML();
 </script>
-
-
-
-
 
 </body>
 </html>
