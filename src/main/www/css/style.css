@@ -1,4 +1,5 @@
 body {
+    display: block;
     background-color:#118bd9;
 }
 
@@ -9,16 +10,37 @@ body {
 /*}*/
 
 #menu-bar {
-    width:150px;
-    height:100%;
+    /*display: inline-block;*/
+    /*width:20%;*/
+    /*height:100%;*/
     background-color: #333;
 }
 
 .menu {
-    display: inline-block;
-    /*float: left;*/
+    /*position: fixed;*/
+    /*display: inline-block;*/
+    width: 20%;
+    float: left;
     /*margin: 0 20px 0 0;*/
 }
+
+.content {
+    position: fixed;
+    left: 175px;
+    display: inline-block;
+    /*float: left;*/
+    text-align: left;
+    /*width: 100%;*/
+    /*min-width: 500px;*/
+    /*margin: 0 0 0 20px;*/
+    /*width: 1500px;*/
+    /*width: 850px;*/
+
+    /*margin: 0 auto;*/
+    /*margin-left: auto;*/
+    /*margin-rigth: auto;*/
+}
+
 
 .pure-menu-heading {
     color: white;
@@ -64,14 +86,9 @@ body {
     background-color: aqua;
 }
 
-.content {
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-    /*width: 850px;*/
 
-    /*margin: 0 auto;*/
-    /*margin-left: auto;*/
-    /*margin-rigth: auto;*/
+
+.student-balance {
+    text-align: center;
 }
 
