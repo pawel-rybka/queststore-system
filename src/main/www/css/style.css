@@ -78,8 +78,10 @@ body {
     font-family: caviar;
 }
 
-.student-balance {
-    text-align: center;
+.student-info {
+    margin:  auto;
+    text-align: left;
+    margin-right: 0px;
 }
 
 .log-bar {
