@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="menu" w3-include-html="admin-menu.html"></div>
+
+        <div class="content">
+            <p class="log-bar">You are logged as Admin</p>
+            <h2>Edit mentor's data:</h2>
+            <form action="#">
+                <label>First name:&nbsp</label> <input type="text" name="first" value="Zenon"><br><br>
+                <label>Last name:&nbsp</label> <input type="text" name="last" value="Boligłowa"><br><br>
+                <label>Phone number:&nbsp</label> <input type="text" name="phone" value="012-345-678"><br><br>
+                <label>Email:&nbsp</label> <input type="text" name="email" value="jacek@interia.com"><br><br>
+                <label>Password:&nbsp</label> <input type="text" name="passw" value="f33v3"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+    <script>
+        w3.includeHTML();
+    </script>
+
+</body>
+</html>
