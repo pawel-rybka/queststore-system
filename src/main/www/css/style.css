@@ -1,22 +1,30 @@
 body {
+    display: block;
     background-color:#118bd9;
 }
 
-@font-face {
-    font-family: caviar;
-    src: url('../resources/CaviarDreams_Italic.ttf');
+.menu {
+    /*position: fixed;*/
+    /*display: inline-block;*/
+    width: 20%;
+    float: left;
+    /*margin: 0 20px 0 0;*/
+}
+
+.content {
+    position: fixed;
+    left: 175px;
+    display: inline-block;
+    /*float: left;*/
+    text-align: left;
+    padding: 0 10px 0 0;
 }
 
 #menu-bar {
-    width:150px;
-    height:100%;
+    /*display: inline-block;*/
+    /*width:20%;*/
+    /*height:100%;*/
     background-color: #333;
-}
-
-.menu {
-    display: inline-block;
-    /*float: left;*/
-    /*margin: 0 20px 0 0;*/
 }
 
 .pure-menu-heading {
@@ -35,7 +43,7 @@ body {
 }
 
 .pure-menu-item {
-/*    float: left;*/
+    /*float: left;*/
 }
 
 .pure-menu-home {
@@ -54,23 +62,19 @@ body {
     text-decoration: none;
 }
 
-.pure-menu-link:hover:not(.pure-menu-selected) {
-    background-color: #555;
-}
-
-
 .home-menu {
     background-color: aqua;
 }
 
-.content {
-    display: inline-block;
+.pure-menu-link:hover:not(.pure-menu-selected) {
+    background-color: #555;
 }
 
 .student-balance {
     text-align: center;
 }
 
+<<<<<<< HEAD
 .log-bar {
     text-align: right;
     font-family: caviar;
@@ -96,3 +100,5 @@ body {
     font-family: caviar;
     font-size: 20;
 }
+=======
+>>>>>>> 4b929c7d54a966c8e77cc655f5e5b61e40815bbb
