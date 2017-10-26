@@ -78,8 +78,21 @@ body {
 }
 
 .container {
-    font-family: rest;
-    height: 50%;
-    width: 50%;
+    font-family: caviar;
+}
+
+.select {
     text-align: center;
+    font-family: caviar;
+    top: calc(100% + 4px);
+    left: -4px;
+    width: calc(100% + 8px);
+    list-style-type: none;
+    box-sizing: border-box;
+}
+
+.student-balance {
+    text-align: center;
+    font-family: caviar;
+    font-size: 20;
 }
