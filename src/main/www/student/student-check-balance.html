@@ -8,14 +8,21 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<div class="log-bar">
-    <p>You are logged as: $$$$</p>
+    
+<div class="wrapper">
+    <div class="menu" w3-include-html="student-menu.html"></div>
+    
+    <div class="content">
+        <p class="log-bar">You are logged as: Student</p>
+        
+        <div class="student-balance">
+            <p>My current balance: XXXXX</p>
+            <p>My total coins: XXXXXXXX</p>
+        </div>
+    </div>
 </div>
-<div class="menu" w3-include-html="student-menu.html"></div>
-<div class="student-balance">
-    <p>My current balance: XXXXX</p>
-    <p>My total coins: XXXXXXXX</p></div>
-
+    
+    
 <script>
     w3.includeHTML();
 </script>
