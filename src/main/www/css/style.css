@@ -3,7 +3,7 @@ body {
 }
 
 @font-face {
-    font-family: rest;
+    font-family: caviar;
     src: url('../resources/CaviarDreams_Italic.ttf');
 }
 
@@ -73,6 +73,13 @@ body {
 
 .log-bar {
     text-align: right;
+    font-family: caviar;
+    font-size: 14px
+}
+
+.container {
     font-family: rest;
-    font-size: 10px
+    height: 50%;
+    width: 50%;
+    text-align: center;
 }
