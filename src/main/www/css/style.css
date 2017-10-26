@@ -62,7 +62,8 @@ body {
 
 .wrapper {
     display: flex;
-    width: 100%;
+    margin: 0 auto;
+    max-width: 800px;
     height: 100%;
     flex-direction: row;
     justify-content: space-between;
@@ -94,3 +95,4 @@ body {
     width: 50%;
     text-align: center;
 }
+
