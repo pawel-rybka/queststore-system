@@ -1,5 +1,6 @@
 package dao;
 
+import model.Klass;
 import model.Mentor;
 import model.Student;
 import model.User;
@@ -7,7 +8,7 @@ import model.User;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ClassDao {
+public class ClassDao extends AbstractDao<Klass> {
     private Connection c = null;
     private Statement stmt = null;
 
@@ -112,5 +113,22 @@ public class ClassDao {
         pstmt.setInt(1, user.getId());
         pstmt.executeUpdate();
         pstmt.close();
+    }
+
+
+    public void addObject(Klass klass) throws SQLException {
+        String sql = "INSERT INTO Classes (class_name)" +
+                "VALUES (?);";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, klass.getClassName());
+            pstmt.executeUpdate();
+        }
+    }
+
+
+    @Override
+    public void updateData(Klass object) throws SQLException {
+
     }
 }
