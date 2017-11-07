@@ -90,7 +90,15 @@ public class AdminController {
     }
 
     private void createClass() {
-        adminView.printMsg("Not implemented yet, operation aborted.");
+        String className = controllerView.getInput("Enter class name: ");
+        Klass newClass = new Klass(className);
+
+        ClassDao classDao = new ClassDao();
+        try {
+            classDao.addObject(newClass);
+        } catch (SQLException e) {
+            adminView.printMsg("Database error, can't add a class.");
+        }
     }
 
     private void createLevel() {
