@@ -13,6 +13,11 @@ public class Level implements GetIdable {
         this.expLevel = expLevel;
     }
 
+    public Level(String name, Integer expLevel) {
+        this.name = name;
+        this.expLevel = expLevel;
+    }
+
     public Integer getId() {
         return id;
     }

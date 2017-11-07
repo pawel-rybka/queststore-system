@@ -94,7 +94,14 @@ public class AdminController {
     }
 
     private void createLevel() {
-        adminView.printMsg("Not implemented yet, operation aborted.");
+        LevelDao levelDao = new LevelDao();
+        Integer expLevel = Integer.parseInt(adminView.getInput("Enter experience level: "));
+        Level newLevel = new Level(adminView.getInput("Enter level name: "), expLevel);
+        try {
+            levelDao.addObject(newLevel);
+        } catch (SQLException e) {
+            adminView.printMsg("Database error, can't add new level.");
+        }
     }
 
     private  ArrayList<Mentor> buildMentors() {
