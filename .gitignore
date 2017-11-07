@@ -30,3 +30,4 @@ target/
 .project
 .settings/
 /queststore-system.bpt.iml
+/src/main/resources/database.db
