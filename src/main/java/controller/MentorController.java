@@ -60,9 +60,19 @@ public class MentorController {
     }
 
     private void addQuest() {
-        // String category = view.getInput("Enter the category.");
-        mentorView.printMsg("Not implemented yet, operation aborted.");
-        // new Quest(--------);
+        final String[] categories = {"Basic Quest", "Extra Quest"};
+        QuestDao questDao = new QuestDao();
+//        Integer expLevel = -1;
+//
+//        while (expLevel < 0) {
+//            expLevel = validateExpLevel(mentorView.getInput("Enter experience level: "));
+//        }
+//        Quest newLevel = new Quest(mentorView.getInput("Enter level name: "), expLevel);
+//        try {
+//            levelDao.addObject(newLevel);
+//        } catch (SQLException e) {
+//            adminView.printMsg("Database error, can't add new level.");
+//        }
     }
 
     private void addArtifact() {
