@@ -298,6 +298,7 @@ public class MimeTypes {
                 put1("dll", MIME_APPLICATION_OCTET_STREAM);
                 put1("class", MIME_APPLICATION_OCTET_STREAM);
                 put1("jar", MIME_APPLICATION_JAVA_ARCHIVE);
+                put1("ttf", MIME_APPLICATION_OCTET_STREAM);
             }};
     }
 }
