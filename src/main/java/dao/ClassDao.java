@@ -16,6 +16,26 @@ public class ClassDao extends AbstractDao<Klass> {
         this.c = DBConnection.getC();
     }
 
+
+    public ArrayList<Klass> getClasses() throws SQLException {
+        ArrayList<Klass> classes = new ArrayList<>();
+        String sql = "SELECT * FROM Classes;";
+
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while ( rs.next() ) {
+            Integer id = rs.getInt("id");
+            String className = rs.getString("class_name");
+
+            Klass newClass = new Klass(id, className);
+            classes.add(newClass);
+        }
+        stmt.close();
+        return classes;
+    }
+
+
     public ArrayList<Mentor> getMentorsByClassId(Integer classId) throws SQLException {
 
         ArrayList<Integer> mentorsId = getMentorsId(classId);
@@ -73,6 +93,7 @@ public class ClassDao extends AbstractDao<Klass> {
         rs.close();
         return studentsId;
     }
+
 
     public void addUserToClass(User user, Integer classId) throws SQLException {
         if (user instanceof Mentor) {
