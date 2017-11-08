@@ -16,9 +16,11 @@
         <div class="content">
             <p class="log-bar">You are logged as Admin</p>
             <h2>Choose mentor to view:</h2>
-            <div w3-include-html="../static/admin/see-mentor-list.html"></div>
-            
+
             <form>
+                {%for mentor in mentors%}
+                <input type="radio" name="mentor" value="{{ mentor.getId }}"> {{ mentor.getFullName }}<br><br>
+                {%endfor%}
                 <button type="submit" formaction="see-mentor" formmethod="post">See choosen mentor</button>
             </form>
             
