@@ -38,7 +38,45 @@ public class AdminHandler implements HttpHandler {
                 template = JtwigTemplate.classpathTemplate("templates/add-mentor-finished.twig");
                 model  = JtwigModel.newModel();
             }
+
+        }else if (path.equals("/admin/see-mentor")) {
+            if (method.equals("GET")) {
+                template = JtwigTemplate.classpathTemplate("static/admin/see-mentor.html");
+                model  = JtwigModel.newModel();
+
+            } else if (method.equals("POST")) {
+                template = JtwigTemplate.classpathTemplate("static/admin/see-mentor-2.html");
+                model  = JtwigModel.newModel();
+            }
+
+        }else if (path.equals("/admin/edit-mentor")) {
+            if (method.equals("GET")) {
+                template = JtwigTemplate.classpathTemplate("static/admin/edit-mentor.html");
+                model = JtwigModel.newModel();
+
+            } else if (method.equals("POST")) {
+                template = JtwigTemplate.classpathTemplate("static/admin/edit-mentor-2.html");
+                model = JtwigModel.newModel();
+
+            }
+
+        }else if (path.equals("/admin/edit-mentor-finished")){
+            if (method.equals("POST")) {
+                template = JtwigTemplate.classpathTemplate("static/admin/edit-mentor-finished.html");
+                model = JtwigModel.newModel();
+            }
+
+        }else if (path.equals("/admin/add-class")) {
+            template = JtwigTemplate.classpathTemplate("static/admin/add-class.html");
+            model  = JtwigModel.newModel();
+
+        }else if (path.equals("/admin/add-level")) {
+            template = JtwigTemplate.classpathTemplate("static/admin/add-levels.html");
+            model  = JtwigModel.newModel();
+
         }
+
+
 
         response = template.render(model);
 
