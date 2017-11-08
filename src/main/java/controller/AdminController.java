@@ -12,6 +12,7 @@ public class AdminController {
     private AdminView adminView;
     private ControllerView controllerView;
     private MentorDao mentorDao = new MentorDao();
+    private ClassDao classDao = new ClassDao();
     
     public AdminController (Admin admin) {
         this.admin = admin;
@@ -36,6 +37,8 @@ public class AdminController {
                 case "4":
                     createClass();  break;
                 case "5":
+                    assignMentorToClass(); break;
+                case "6":
                     createLevel();  break;
             }
         }
@@ -101,6 +104,38 @@ public class AdminController {
         }
     }
 
+
+    private void assignMentorToClass() {
+
+        ArrayList<Mentor> mentors = null;
+        try{
+            mentors = mentorDao.getMentors();
+        } catch (SQLException e) {
+            adminView.printMsg("Database error, can't load mentors.");
+        }
+
+        ArrayList<Klass> classes = null;
+        try{
+            classes = classDao.getClasses();
+        } catch (SQLException e) {
+            adminView.printMsg("Database error, can't load mentors.");
+        }
+
+        System.out.println(classes.size());
+
+
+        Mentor mentor = chooseMentor(mentors);
+        int classId = chooseClassId(classes);
+
+        try {
+            classDao.addUserToClass(mentor, classId);
+        } catch (SQLException e) {
+            adminView.printMsg("Database error, can't add a mentor to class.");
+        }
+    }
+
+
+
     private void createLevel() {
         adminView.printMsg("Not implemented yet, operation aborted.");
     }
@@ -135,5 +170,65 @@ public class AdminController {
                                         + ". Press Enter to skip change or type new value: ");
         if (newValue.equals("")) newValue = oldValue;
         return newValue;
+    }
+
+
+    private Integer validateOption(String text, int size) {
+        Integer number = 0;
+        Integer id = 0;
+        try {
+            id = Integer.parseInt(text);
+            if (id < 1 || id > size) {
+                number = 0;
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            adminView.printMsg("Wrong input.");
+        }
+        return number;
+    }
+
+
+    private Mentor chooseMentor(ArrayList<Mentor> mentors) {
+
+        int menu = 0;
+        Mentor mentor = null;
+        String mentorId = null;
+
+        if (mentors.size() == 0) {
+            adminView.printMsg("Mentors list empty, operation aborted.");
+        } else {
+            do {
+                mentorId = controllerView.getInput("Enter mentor id: ");
+                menu = validateOption(mentorId, mentors.size());
+            } while (menu != 0);
+
+            try {
+                mentor = mentorDao.getMentorById(Integer.parseInt(mentorId));
+            } catch (SQLException e) {
+                System.out.println("Can't load mentor");
+            }
+        }
+        return mentor;
+    }
+
+
+    private int chooseClassId (ArrayList<Klass> classes) {
+
+        int menu = 0;
+        String inputClassId = null;
+        Integer classId = 0;
+
+        if (classes.size() == 0) {
+            adminView.printMsg("Classes list empty, operation aborted.");
+        } else {
+            do {
+                inputClassId = controllerView.getInput("Enter class id: ");
+                menu = validateOption(inputClassId, classes.size());
+            } while (menu != 0);
+
+            classId = Integer.parseInt(inputClassId);
+        }
+        return classId;
     }
 }
