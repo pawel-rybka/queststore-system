@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import dao.LevelDao;
 import dao.MentorDao;
+import model.Level;
 import model.Mentor;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -131,9 +133,53 @@ public class AdminHandler implements HttpHandler {
         }else if (path.equals("/admin/add-class")) {
             model = createModel("templates/add-class.twig");
 
-        }else if (path.equals("/admin/add-level")) {
-            model = createModel("templates/add-levels.twig");
+        }else if (path.equals("/admin/add-levels")) {
 
+            if (method.equals("GET")) {
+                model = createModel("templates/add-levels.twig");
+
+            } else if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                model = createModel("templates/add-levels-finished.twig");
+
+                try {
+                    String levelName = String.valueOf(inputs.get("name"));
+                    Integer exp = Integer.valueOf(String.valueOf(inputs.get("exp")));
+                    Level level = new Level(levelName, exp);
+                    LevelDao lDao = new LevelDao();
+                    lDao.addObject(level);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }else if (path.equals("/admin/see-all-levels")) {
+
+            if (method.equals("GET")) {
+                model = createModel("templates/see-all-levels.twig");
+                LevelDao lDao = new LevelDao();
+                ArrayList<Level> levels = null;
+
+                try {
+                    levels = lDao.getLevels();
+                    model.with("levels", levels);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }else if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                model = createModel("templates/level-removed.twig");
+
+                try {
+                    LevelDao lDao = new LevelDao();
+                    Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
+                    lDao.removeObject(level);
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
 
