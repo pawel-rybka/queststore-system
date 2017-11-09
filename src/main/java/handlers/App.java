@@ -13,6 +13,7 @@ public class App {
         server.createContext("/admin", new AdminHandler());
         server.createContext("/static", new Static());
         server.createContext("/login", new LoginHandler());
+        server.createContext("/mentor", new MentorHandler());
         server.setExecutor(null);
 
         server.start();
