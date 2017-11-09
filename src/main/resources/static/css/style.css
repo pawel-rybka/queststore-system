@@ -1,0 +1,101 @@
+body {
+    background-color:#118bd9;
+}
+
+@font-face {
+    font-family: caviar;
+    src: url('../../static/CaviarDreams_Italic.ttf');
+}
+
+#menu-bar {
+/*    width:20%;*/
+    height:100%;
+    background-color: #333;
+}
+
+.menu {
+    width:20%;
+    min-width: 100px;
+}
+
+.pure-menu-heading {
+    color: white;
+    display: block;
+}
+
+.pure-menu-list {
+    margin:0;
+    list-style-type: none;
+    padding: 0;
+/*    overflow: hidden;*/
+    background-color: #333;
+}
+
+.pure-menu-item {
+/*    float: left;*/
+}
+
+.pure-menu-home {
+    background-color: #4CAF50;
+}
+
+.pure-menu-logout {
+    background-color: red;
+}
+
+.pure-menu-link {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 15px 16px;
+    text-decoration: none;
+}
+
+.pure-menu-link:hover:not(.pure-menu-selected) {
+    background-color: #555;
+}
+
+
+.home-menu {
+    background-color: aqua;
+}
+
+.wrapper {
+    display: flex;
+    margin: 0 auto;
+    max-width: 800px;
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+    text-align: center;
+    font-family: caviar;
+}
+
+.student-info {
+    margin-left:  auto;
+    text-align: left;
+    margin-right: 0px;
+}
+
+.log-bar {
+    text-align: right;
+    font-family: caviar;
+    font-size: 18px;
+    border-bottom: solid 2px black;
+}
+
+.container {
+    font-family: caviar;
+    height: 50%;
+    width: 50%;
+    text-align: center;
+}
+

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+    <div class="menu" w3-include-html="../static/admin-menu.html"></div>
+
+    <div class="content">
+        <p class="log-bar">You are logged as Admin</p>
+        <h2>Choose mentor to edit:</h2>
+        <div w3-include-html="../static/admin/see-mentor-list.html"></div>
+        <form>
+            <button type="submit" formaction="edit-mentor" formmethod="post">Edit chosen mentor</button>
+        </form>
+
+    </div>
+    </div>
+    <script>
+        w3.includeHTML();
+    </script>
+
+</body>
+</html>

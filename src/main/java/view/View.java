@@ -30,6 +30,8 @@ public class View {
         return choice;
     }
 
+
+
     public void printMenu(String msg) {
         if (msg.equals("Log")){
             System.out.println("LOG IN AS: \n" + "1) Admin \n" + "2) Mentor \n" 
