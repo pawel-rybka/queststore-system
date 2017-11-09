@@ -41,8 +41,8 @@ public class MentorHandler implements HttpHandler {
                 model  = JtwigModel.newModel();
 
             } else if (method.equals("POST")) {
-//                template = JtwigTemplate.classpathTemplate("templates/add-quest.twig");
-//                model  = JtwigModel.newModel();
+                template = JtwigTemplate.classpathTemplate("templates/add-quest-finished.twig");
+                model  = JtwigModel.newModel();
             }
 
         }
