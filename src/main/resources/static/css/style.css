@@ -4,7 +4,7 @@ body {
 
 @font-face {
     font-family: caviar;
-    src: url('../resources/CaviarDreams_Italic.ttf');
+    src: url('../../static/CaviarDreams_Italic.ttf');
 }
 
 #menu-bar {
@@ -93,12 +93,9 @@ body {
 }
 
 .container {
-    font-family: rest;
+    font-family: caviar;
     height: 50%;
     width: 50%;
     text-align: center;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> bf2090c33a01efd567277cde24f9ef1e4ad3cdda
