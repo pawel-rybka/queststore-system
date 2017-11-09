@@ -34,18 +34,19 @@ public class MentorHandler implements HttpHandler {
             template = JtwigTemplate.classpathTemplate("static/mentor/mentor-home.html");
             model  = JtwigModel.newModel();
 
-        } //else if (path.equals("/mentor/add-mentor")) {
-//
-//            if (method.equals("GET")) {
-//                template = JtwigTemplate.classpathTemplate("templates/add-student.twig");
+        } else if (path.equals("/mentor/add-quest")) {
+
+            if (method.equals("GET")) {
+                template = JtwigTemplate.classpathTemplate("templates/add-quest.twig");
+                model  = JtwigModel.newModel();
+
+            } else if (method.equals("POST")) {
+//                template = JtwigTemplate.classpathTemplate("templates/add-quest.twig");
 //                model  = JtwigModel.newModel();
-//
-//            } else if (method.equals("POST")) {
-//                template = JtwigTemplate.classpathTemplate("templates/add-student-finished.twig");
-//                model  = JtwigModel.newModel();
-//            }
-//
-//        } else if (path.equals("/mentor/see-mentor")) {
+            }
+
+        }
+//        else if (path.equals("/mentor/see-mentor")) {
 //            if (method.equals("GET")) {
 //                template = JtwigTemplate.classpathTemplate("templates/see-mentor.twig");
 //                model  = JtwigModel.newModel();
