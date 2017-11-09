@@ -44,7 +44,20 @@ public class AdminHandler implements HttpHandler {
                 model = createModel("templates/add-mentor.twig");
 
             } else if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
                 model = createModel("templates/add-mentor-finished.twig");
+
+                try {
+                    String firstName = String.valueOf(inputs.get("first"));
+                    String lastName = String.valueOf(inputs.get("last"));
+                    String phoneNumber = String.valueOf(inputs.get("phone"));
+                    String email = String.valueOf(inputs.get("email"));
+                    String password = String.valueOf(inputs.get("passw"));
+                    mentor = new Mentor(firstName, lastName, phoneNumber, email, password);
+                    mDao.addObject(mentor);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
 
 

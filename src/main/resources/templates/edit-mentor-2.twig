@@ -14,7 +14,7 @@
             <p class="log-bar">You are logged as Admin</p>
             <h2>Edit mentor's data:</h2>
             <form action="edit-mentor-finished" method="post">
-                <label>id:&nbsp</label> <input type="hidden" name="id" value="{{ mentor.getId }}"/><br><br>
+                <input type="hidden" name="id" value="{{ mentor.getId }}"/>
                 <label>First name:&nbsp</label> <input type="text" name="first" value="{{ mentor.getFirstName }}"/><br><br>
                 <label>Last name:&nbsp</label> <input type="text" name="last" value="{{ mentor.getLastName }}"/><br><br>
                 <label>Phone number:&nbsp</label> <input type="text" name="phone" value="{{ mentor.getPhoneNumber }}"/><br><br>
