@@ -81,27 +81,27 @@ public class AdminHandler implements HttpHandler {
 
         }else if (path.equals("/admin/edit-mentor")) {
             if (method.equals("GET")) {
-                template = JtwigTemplate.classpathTemplate("static/admin/edit-mentor.html");
+                template = JtwigTemplate.classpathTemplate("templates/edit-mentor.twig");
                 model = JtwigModel.newModel();
 
             } else if (method.equals("POST")) {
-                template = JtwigTemplate.classpathTemplate("static/admin/edit-mentor-2.html");
+                template = JtwigTemplate.classpathTemplate("templates/edit-mentor-2.twig");
                 model = JtwigModel.newModel();
 
             }
 
         }else if (path.equals("/admin/edit-mentor-finished")){
             if (method.equals("POST")) {
-                template = JtwigTemplate.classpathTemplate("static/admin/edit-mentor-finished.html");
+                template = JtwigTemplate.classpathTemplate("templates/edit-mentor-finished.twig");
                 model = JtwigModel.newModel();
             }
 
         }else if (path.equals("/admin/add-class")) {
-            template = JtwigTemplate.classpathTemplate("static/admin/add-class.html");
+            template = JtwigTemplate.classpathTemplate("templates/add-class.twig");
             model  = JtwigModel.newModel();
 
         }else if (path.equals("/admin/add-level")) {
-            template = JtwigTemplate.classpathTemplate("static/admin/add-levels.html");
+            template = JtwigTemplate.classpathTemplate("templates/add-levels.twig");
             model  = JtwigModel.newModel();
 
         }
