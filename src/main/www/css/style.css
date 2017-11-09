@@ -1,20 +1,22 @@
-/*.page {*/
-    /*display:flex;*/
-/*}*/
+body {
+    background-color:#118bd9;
+}
+
+@font-face {
+    font-family: caviar;
+    src: url('../resources/CaviarDreams_Italic.ttf');
+}
 
 #menu-bar {
-    width:150px;
+/*    width:20%;*/
     height:100%;
     background-color: #333;
 }
 
-.admin-menu {
-    display: inline-block;
-    /*float: left;*/
-    /*margin: 0 20px 0 0;*/
-
+.menu {
+    width:20%;
+    min-width: 100px;
 }
-
 
 .pure-menu-heading {
     color: white;
@@ -22,21 +24,23 @@
 }
 
 .pure-menu-list {
+    margin:0;
     list-style-type: none;
-    margin-top: 8;
     padding: 0;
-    overflow: hidden;
+/*    overflow: hidden;*/
     background-color: #333;
-    position: fixed;
-    top: 0;
 }
 
 .pure-menu-item {
 /*    float: left;*/
 }
 
-.pure-menu-selected {
+.pure-menu-home {
     background-color: #4CAF50;
+}
+
+.pure-menu-logout {
+    background-color: red;
 }
 
 .pure-menu-link {
@@ -56,22 +60,45 @@
     background-color: aqua;
 }
 
-/*
-.home menu ul {
-    padding-left: 0;
-    margin-left: 2.142857142857143em;
-    list-style-type: none;
+.wrapper {
+    display: flex;
+    margin: 0 auto;
+    max-width: 800px;
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
 }
-*/
-
-/*.content {*/
-    /*background-color:#118bd9;*/
-    /*float:right;*/
-    /*width:85%;*/
-    /*height:100%;*/
-/*}*/
-
-body {
-    background-color:#118bd9;
-    /*text-align: center;*/
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+    text-align: center;
+    font-family: caviar;
 }
+
+.student-info {
+    margin-left:  auto;
+    text-align: left;
+    margin-right: 0px;
+}
+
+.log-bar {
+    text-align: right;
+    font-family: caviar;
+    font-size: 18px;
+    border-bottom: solid 2px black;
+}
+
+.container {
+    font-family: rest;
+    height: 50%;
+    width: 50%;
+    text-align: center;
+}
+<<<<<<< HEAD
+
+=======
+>>>>>>> bf2090c33a01efd567277cde24f9ef1e4ad3cdda

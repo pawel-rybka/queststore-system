@@ -1,5 +1,6 @@
 package dao;
 
+import model.Klass;
 import model.Mentor;
 import model.Student;
 import model.User;
@@ -7,13 +8,33 @@ import model.User;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ClassDao {
+public class ClassDao extends AbstractDao<Klass> {
     private Connection c = null;
     private Statement stmt = null;
 
     public ClassDao() {
         this.c = DBConnection.getC();
     }
+
+
+    public ArrayList<Klass> getClasses() throws SQLException {
+        ArrayList<Klass> classes = new ArrayList<>();
+        String sql = "SELECT * FROM Classes;";
+
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while ( rs.next() ) {
+            Integer id = rs.getInt("id");
+            String className = rs.getString("class_name");
+
+            Klass newClass = new Klass(id, className);
+            classes.add(newClass);
+        }
+        stmt.close();
+        return classes;
+    }
+
 
     public ArrayList<Mentor> getMentorsByClassId(Integer classId) throws SQLException {
 
@@ -73,6 +94,7 @@ public class ClassDao {
         return studentsId;
     }
 
+
     public void addUserToClass(User user, Integer classId) throws SQLException {
         if (user instanceof Mentor) {
             String sql = "INSERT INTO mentors_classes (class_id, mentor_id)" +
@@ -112,5 +134,22 @@ public class ClassDao {
         pstmt.setInt(1, user.getId());
         pstmt.executeUpdate();
         pstmt.close();
+    }
+
+
+    public void addObject(Klass klass) throws SQLException {
+        String sql = "INSERT INTO Classes (class_name)" +
+                "VALUES (?);";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, klass.getClassName());
+            pstmt.executeUpdate();
+        }
+    }
+
+
+    @Override
+    public void updateData(Klass object) throws SQLException {
+
     }
 }

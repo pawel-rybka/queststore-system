@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<script src="../lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Magic Artifact</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="menu" w3-include-html="student-menu.html"></div>
+    
+    <div class="content">
+        <p class="log-bar">You are logged as: Student</p>
+
+        <div class="select">
+            <p>Choose Artifact:</p>
+            <select name="Magic-artifact">
+                <option selected="selected">Artifact1</option>
+                <option>Artifact2</option>
+                <option>Artifact3</option>
+            </select>
+            <input type="submit" value="Confirm">
+        </div>
+    </div>
+</div>
+
+<script>
+    w3.includeHTML();
+</script>
+
+</body>
+</html>
