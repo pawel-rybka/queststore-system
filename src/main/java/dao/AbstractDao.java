@@ -14,7 +14,6 @@ import model.Student;
 
 
 public abstract class AbstractDao <T extends GetIdable> {
-//    private Connection c = null;
 
     public void removeObject(T object) throws SQLException {
         Connection c = DBConnection.getC();

@@ -68,12 +68,4 @@ public class LevelDao extends AbstractDao<Level> {
         return level;
     }
 
-//    public void removeObject(Level level) throws SQLException {
-//        c = DBConnection.getC();
-//        String sql = "DELETE FROM levels WHERE id = ?;";
-//        PreparedStatement pstmt = c.prepareStatement(sql);
-//        pstmt.setString(1, String.valueOf(level.getId()));
-//        pstmt.executeUpdate();
-//
-//    }
 }
