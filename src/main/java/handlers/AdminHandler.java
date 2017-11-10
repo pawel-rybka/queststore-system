@@ -13,6 +13,7 @@ import java.util.Map;
 
 import dao.LevelDao;
 import dao.MentorDao;
+import handlers.helpers.ParserFormData;
 import model.Level;
 import model.Mentor;
 import org.jtwig.JtwigModel;
@@ -25,6 +26,7 @@ public class AdminHandler implements HttpHandler {
     private MentorDao mDao = new MentorDao();
     private Map inputs;
     private Mentor mentor;
+    private LevelDao lDao = new LevelDao();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -146,7 +148,6 @@ public class AdminHandler implements HttpHandler {
                     String levelName = String.valueOf(inputs.get("name"));
                     Integer exp = Integer.valueOf(String.valueOf(inputs.get("exp")));
                     Level level = new Level(levelName, exp);
-                    LevelDao lDao = new LevelDao();
                     lDao.addObject(level);
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -157,7 +158,6 @@ public class AdminHandler implements HttpHandler {
 
             if (method.equals("GET")) {
                 model = createModel("templates/see-all-levels.twig");
-                LevelDao lDao = new LevelDao();
                 ArrayList<Level> levels = null;
 
                 try {
@@ -172,7 +172,6 @@ public class AdminHandler implements HttpHandler {
                 model = createModel("templates/level-removed.twig");
 
                 try {
-                    LevelDao lDao = new LevelDao();
                     Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
                     lDao.removeObject(level);
 
@@ -193,27 +192,12 @@ public class AdminHandler implements HttpHandler {
 
     }
 
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            if (keyValue.length == 1) {
-                map.put(keyValue[0], "");
-            } else {
-                String value = URLDecoder.decode(keyValue[1], "UTF-8");
-                map.put(keyValue[0], value);
-            }
-        }
-        return map;
-    }
-
     private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {
         InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "UTF-8");
         BufferedReader br = new BufferedReader(isr);
         String formData = br.readLine();
 
-        inputs = parseFormData(formData);
+        inputs = ParserFormData.parseFormData(formData);
 
         return inputs;
     }
