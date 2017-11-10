@@ -51,67 +51,6 @@ public class MentorHandler implements HttpHandler {
             }
         }
 
-//        else if (path.equals("/mentor/see-mentor")) {
-//            if (method.equals("GET")) {
-//                template = JtwigTemplate.classpathTemplate("templates/see-mentor.twig");
-//                model  = JtwigModel.newModel();
-//                MentorDao mDao = new MentorDao();
-//                ArrayList<Mentor> mentors = null;
-//                try {
-//                    mentors = mDao.getMentors();
-//                    model.with("mentors", mentors);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            } else if (method.equals("POST")) {
-//
-//                InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "UTF-8");
-//                BufferedReader br = new BufferedReader(isr);
-//                String formData = br.readLine();
-//
-//                Map inputs = parseFormData(formData);
-//                MentorDao mDao = new MentorDao();
-//                template = JtwigTemplate.classpathTemplate("templates/see-mentor-2.twig");
-//                model  = JtwigModel.newModel();
-//
-//                try {
-//                    Mentor mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
-//                    model.with("mentor", mentor);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//        }else if (path.equals("/admin/edit-mentor")) {
-//            if (method.equals("GET")) {
-//                template = JtwigTemplate.classpathTemplate("templates/edit-mentor.twig");
-//                model = JtwigModel.newModel();
-//
-//            } else if (method.equals("POST")) {
-//                template = JtwigTemplate.classpathTemplate("templates/edit-mentor-2.twig");
-//                model = JtwigModel.newModel();
-//
-//            }
-//
-//        }else if (path.equals("/admin/edit-mentor-finished")){
-//            if (method.equals("POST")) {
-//                template = JtwigTemplate.classpathTemplate("templates/edit-mentor-finished.twig");
-//                model = JtwigModel.newModel();
-//            }
-//
-//        }else if (path.equals("/admin/add-class")) {
-//            template = JtwigTemplate.classpathTemplate("templates/add-class.twig");
-//            model  = JtwigModel.newModel();
-//
-//        }else if (path.equals("/admin/add-level")) {
-//            template = JtwigTemplate.classpathTemplate("templates/add-levels.twig");
-//            model  = JtwigModel.newModel();
-//
-//        }
-
-
 
         response = template.render(model);
 
