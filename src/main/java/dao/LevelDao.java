@@ -52,4 +52,20 @@ public class LevelDao extends AbstractDao<Level> {
             pstmt.executeUpdate();
         }
     }
+
+    public Level getLevelById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM levels WHERE id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        String name = rs.getString("name");
+        Integer expLevel = rs.getInt("expLevel");
+
+        Level level = new Level(id, name, expLevel);
+
+        return level;
+    }
+
 }
