@@ -48,17 +48,8 @@ public class AdminHandler implements HttpHandler {
                 model = createModel("templates/add-mentor.twig");
 
             } else if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/add-mentor-finished.twig");
-
                 try {
-                    String firstName = String.valueOf(inputs.get("first"));
-                    String lastName = String.valueOf(inputs.get("last"));
-                    String phoneNumber = String.valueOf(inputs.get("phone"));
-                    String email = String.valueOf(inputs.get("email"));
-                    String password = String.valueOf(inputs.get("passw"));
-                    mentor = new Mentor(firstName, lastName, phoneNumber, email, password);
-                    mDao.addObject(mentor);
+                    addMentor(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -66,57 +57,36 @@ public class AdminHandler implements HttpHandler {
 
 
         }else if (path.equals("/admin/see-mentor")) {
+
             if (method.equals("GET")) {
-                model = createModel("templates/see-mentor.twig");
-                ArrayList<Mentor> mentors = null;
                 try {
-                    mentors = mDao.getMentors();
-                    model.with("mentors", mentors);
+                    listMentors(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
 
             } else if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/see-mentor-2.twig");
-
                 try {
-                    Mentor mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
-                    model.with("mentor", mentor);
+                    seeMentor(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }
 
         }else if (path.equals("/admin/edit-mentor")) {
 
             if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/edit-mentor-2.twig");
-
                 try {
-                    Mentor mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
-                    model.with("mentor", mentor);
+                    chooseMentorToEdit(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }
 
         }else if (path.equals("/admin/edit-mentor-finished")){
             if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/edit-mentor-finished.twig");
-
                 try {
-                    mentor = mDao.getMentorById(Integer.valueOf(inputs.get("id").toString()));
-                    mentor.setFirstName(String.valueOf(inputs.get("first")));
-                    mentor.setLastName(String.valueOf(inputs.get("last")));
-                    mentor.setPhoneNumber(String.valueOf(inputs.get("phone")));
-                    mentor.setEmail(String.valueOf(inputs.get("email")));
-                    mentor.setPassword(String.valueOf(inputs.get("passw")));
-                    mDao.updateData(mentor);
+                    updateMentorData(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -124,12 +94,8 @@ public class AdminHandler implements HttpHandler {
 
         }else if (path.equals("/admin/remove-mentor")){
             if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/mentor-removed.twig");
-
                 try {
-                    mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
-                    mDao.removeObject(mentor);
+                    removeMentor(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -144,14 +110,8 @@ public class AdminHandler implements HttpHandler {
                 model = createModel("templates/add-levels.twig");
 
             } else if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/add-levels-finished.twig");
-
                 try {
-                    String levelName = String.valueOf(inputs.get("name"));
-                    Integer exp = Integer.valueOf(String.valueOf(inputs.get("exp")));
-                    Level level = new Level(levelName, exp);
-                    lDao.addObject(level);
+                    createLevel(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -160,27 +120,17 @@ public class AdminHandler implements HttpHandler {
         }else if (path.equals("/admin/see-all-levels")) {
 
             if (method.equals("GET")) {
-                model = createModel("templates/see-all-levels.twig");
-                ArrayList<Level> levels = null;
-
                 try {
-                    levels = lDao.getLevels();
-                    model.with("levels", levels);
+                    listLevels(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }
 
         }else if (path.equals("/admin/remove-level")) {
             if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/level-removed.twig");
-
                 try {
-                    Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
-                    lDao.removeObject(level);
-
+                    removeLevel(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -188,27 +138,17 @@ public class AdminHandler implements HttpHandler {
 
         }else if (path.equals("/admin/edit-level")) {
             if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/edit-level.twig");
-
                 try {
-                    Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
-                    model.with("level", level);
-
+                    chooseLevelToEdit(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
+
         }else if (path.equals("/admin/edit-level-finished")) {
             if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/edit-level-finished.twig");
-
                 try {
-                    Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
-                    level.setName(inputs.get("name").toString());
-                    level.setExpLevel(Integer.valueOf(inputs.get("exp").toString()));
-
+                    updateLeveData(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -238,6 +178,84 @@ public class AdminHandler implements HttpHandler {
         mentor = new Mentor(firstName, lastName, phoneNumber, email, password);
         mDao.addObject(mentor);
 
+    }
+
+    private void listMentors(HttpExchange httpExchange) throws SQLException {
+        model = createModel("templates/see-mentor.twig");
+        ArrayList<Mentor> mentors = null;
+        mentors = mDao.getMentors();
+        model.with("mentors", mentors);
+    }
+
+    private void seeMentor(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/see-mentor-2.twig");
+        Mentor mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
+        model.with("mentor", mentor);
+    }
+
+    private void chooseMentorToEdit(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-mentor-2.twig");
+        Mentor mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
+        model.with("mentor", mentor);
+    }
+
+    private void updateMentorData(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-mentor-finished.twig");
+        mentor = mDao.getMentorById(Integer.valueOf(inputs.get("id").toString()));
+        mentor.setFirstName(String.valueOf(inputs.get("first")));
+        mentor.setLastName(String.valueOf(inputs.get("last")));
+        mentor.setPhoneNumber(String.valueOf(inputs.get("phone")));
+        mentor.setEmail(String.valueOf(inputs.get("email")));
+        mentor.setPassword(String.valueOf(inputs.get("passw")));
+        mDao.updateData(mentor);
+    }
+
+    private void removeMentor(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/mentor-removed.twig");
+        mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
+        mDao.removeObject(mentor);
+    }
+
+    private void createLevel(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/add-levels-finished.twig");
+        String levelName = String.valueOf(inputs.get("name"));
+        Integer exp = Integer.valueOf(String.valueOf(inputs.get("exp")));
+        Level level = new Level(levelName, exp);
+        lDao.addObject(level);
+    }
+
+    private void listLevels(HttpExchange httpExchange) throws SQLException {
+        model = createModel("templates/see-all-levels.twig");
+        ArrayList<Level> levels = null;
+        levels = lDao.getLevels();
+        model.with("levels", levels);
+    }
+
+    private void removeLevel(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/level-removed.twig");
+        Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
+        lDao.removeObject(level);
+    }
+
+    private void chooseLevelToEdit(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-level.twig");
+        Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
+        model.with("level", level);
+    }
+
+    private void updateLeveData(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-level-finished.twig");
+        Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
+        level.setName(inputs.get("name").toString());
+        level.setExpLevel(Integer.valueOf(inputs.get("exp").toString()));
     }
 
     private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {
