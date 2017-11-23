@@ -19,9 +19,10 @@
 
         <form>
             {%for level in levels%}
-                <input type="radio" name="level" value="{{ level.getId }}"> {{ level.getName }}              {{ level.getExpLevel }}<br><br>
+                <input type="radio" name="level" value="{{ level.getId }}" required>Level name: {{ level.getName }} ||  EXP: {{ level.getExpLevel }}<br><br>
             {%endfor%}
-            <button type="submit" formaction="see-all-levels" formmethod="post">Remove choosen level</button>
+            <button type="submit" formaction="remove-level" formmethod="post">Remove Level</button>
+            <button type="submit" formaction="edit-level" formmethod="post">Edit Level</button>
         </form>
 
     </div>

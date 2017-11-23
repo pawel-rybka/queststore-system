@@ -13,6 +13,8 @@
         <div class="content">
             <p class="log-bar">You are logged as Admin</p>
             <h2>Mentor's data:</h2>
+            <form>
+                <input type="hidden" name="mentor" value="{{ mentor.getId }}"/>
             <p>
                 {{ mentor.getFirstName }}<br>
                 {{ mentor.getLastName }}<br>
@@ -20,6 +22,9 @@
                 {{ mentor.getEmail }}<br>
                 {{ mentor.getPassword }}
             <p>
+                    <button type="submit" formaction="edit-mentor" formmethod="post">Edit</button>
+                    <button type="submit" formaction="remove-mentor" formmethod="post">Delete</button>
+            </form>
         </div>
     </div>
     <script>
