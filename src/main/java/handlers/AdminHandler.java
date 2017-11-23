@@ -90,18 +90,8 @@ public class AdminHandler implements HttpHandler {
             }
 
         }else if (path.equals("/admin/edit-mentor")) {
-            if (method.equals("GET")) {
-                model = createModel("templates/edit-mentor.twig");
-                ArrayList<Mentor> mentors = null;
 
-                try {
-                    mentors = mDao.getMentors();
-                    model.with("mentors", mentors);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (method.equals("POST")) {
+            if (method.equals("POST")) {
                 inputs = getInputs(httpExchange);
                 model = createModel("templates/edit-mentor-2.twig");
 
@@ -127,6 +117,19 @@ public class AdminHandler implements HttpHandler {
                     mentor.setEmail(String.valueOf(inputs.get("email")));
                     mentor.setPassword(String.valueOf(inputs.get("passw")));
                     mDao.updateData(mentor);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }else if (path.equals("/admin/remove-mentor")){
+            if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                model = createModel("templates/mentor-removed.twig");
+
+                try {
+                    mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
+                    mDao.removeObject(mentor);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -167,7 +170,10 @@ public class AdminHandler implements HttpHandler {
                     e.printStackTrace();
                 }
 
-            }else if (method.equals("POST")) {
+            }
+
+        }else if (path.equals("/admin/remove-level")) {
+            if (method.equals("POST")) {
                 inputs = getInputs(httpExchange);
                 model = createModel("templates/level-removed.twig");
 
@@ -179,8 +185,35 @@ public class AdminHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             }
-        }
 
+        }else if (path.equals("/admin/edit-level")) {
+            if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                model = createModel("templates/edit-level.twig");
+
+                try {
+                    Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
+                    model.with("level", level);
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else if (path.equals("/admin/edit-level-finished")) {
+            if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                model = createModel("templates/edit-level-finished.twig");
+
+                try {
+                    Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
+                    level.setName(inputs.get("name").toString());
+                    level.setExpLevel(Integer.valueOf(inputs.get("exp").toString()));
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
 
         response = template.render(model);
@@ -189,6 +222,21 @@ public class AdminHandler implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+
+    }
+
+    private void addMentor(HttpExchange httpExchange) throws IOException, SQLException {
+
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/add-mentor-finished.twig");
+
+        String firstName = String.valueOf(inputs.get("first"));
+        String lastName = String.valueOf(inputs.get("last"));
+        String phoneNumber = String.valueOf(inputs.get("phone"));
+        String email = String.valueOf(inputs.get("email"));
+        String password = String.valueOf(inputs.get("passw"));
+        mentor = new Mentor(firstName, lastName, phoneNumber, email, password);
+        mDao.addObject(mentor);
 
     }
 
