@@ -19,7 +19,7 @@
 
             <form>
                 {%for mentor in mentors%}
-                <input type="radio" name="mentor" value="{{ mentor.getId }}"> {{ mentor.getFullName }}<br><br>
+                <input type="radio" name="mentor" value="{{ mentor.getId }}" required> {{ mentor.getFullName }}<br><br>
                 {%endfor%}
                 <button type="submit" formaction="see-mentor" formmethod="post">See choosen mentor</button>
             </form>
