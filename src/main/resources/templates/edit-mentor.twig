@@ -15,7 +15,10 @@
         <h2>Choose mentor to edit:</h2>
         <div w3-include-html="../static/admin/see-mentor-list.html"></div>
         <form>
-            <button type="submit" formaction="edit-mentor" formmethod="post">Edit chosen mentor</button>
+            {%for mentor in mentors%}
+                <input type="radio" name="mentor" value="{{ mentor.getId }}"> {{ mentor.getFullName }}<br><br>
+            {%endfor%}
+            <button type="submit" formaction="edit-mentor" formmethod="post">See choosen mentor</button>
         </form>
 
     </div>

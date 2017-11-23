@@ -13,13 +13,14 @@
         <div class="content">
             <p class="log-bar">You are logged as Admin</p>
             <h2>Edit mentor's data:</h2>
-            <form action="#">
-                <label>First name:&nbsp</label> <input type="text" name="first" value="Zenon"><br><br>
-                <label>Last name:&nbsp</label> <input type="text" name="last" value="Boligłowa"><br><br>
-                <label>Phone number:&nbsp</label> <input type="text" name="phone" value="012-345-678"><br><br>
-                <label>Email:&nbsp</label> <input type="text" name="email" value="jacek@interia.com"><br><br>
-                <label>Password:&nbsp</label> <input type="text" name="passw" value="f33v3"><br><br>
-                <button type="submit" formaction="edit-mentor-finished" formmethod="post">Save changes</button>
+            <form action="edit-mentor-finished" method="post">
+                <input type="hidden" name="id" value="{{ mentor.getId }}"/>
+                <label>First name:&nbsp</label> <input type="text" name="first" value="{{ mentor.getFirstName }}"/><br><br>
+                <label>Last name:&nbsp</label> <input type="text" name="last" value="{{ mentor.getLastName }}"/><br><br>
+                <label>Phone number:&nbsp</label> <input type="text" name="phone" value="{{ mentor.getPhoneNumber }}"/><br><br>
+                <label>Email:&nbsp</label> <input type="text" name="email" value="{{ mentor.getEmail }}"/><br><br>
+                <label>Password:&nbsp</label> <input type="text" name="passw" value="{{ mentor.getPassword }}"/><br><br>
+                <input type="submit" value="Save changes"/>
             </form>
         </div>
     </div>

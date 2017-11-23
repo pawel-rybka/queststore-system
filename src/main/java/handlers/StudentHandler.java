@@ -3,6 +3,7 @@ package handlers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.ArtifactDao;
+import handlers.helpers.ParserFormData;
 import model.Artifact;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -10,6 +11,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.*;
 import java.net.URI;
 import java.net.URLDecoder;
+import java.sql.ParameterMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +59,7 @@ public class StudentHandler implements HttpHandler {
                 BufferedReader br = new BufferedReader(isr);
                 String formData = br.readLine();
 
-                Map inputs = parseFormData(formData);
+                Map inputs = ParserFormData.parseFormData(formData);
                 ArtifactDao aDao = new ArtifactDao();
                 template = JtwigTemplate.classpathTemplate("templates/student-buy-artifact-2.twig");
                 model = JtwigModel.newModel();
@@ -76,38 +78,5 @@ public class StudentHandler implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
-    }
-
-
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            if (keyValue.length == 1) {
-                map.put(keyValue[0], "");
-            } else {
-                String value = URLDecoder.decode(keyValue[1], "UTF-8");
-                map.put(keyValue[0], value);
-            }
-        }
-        return map;
-    }
-
-    private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {
-        InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "UTF-8");
-        BufferedReader br = new BufferedReader(isr);
-        String formData = br.readLine();
-
-        inputs = parseFormData(formData);
-
-        return inputs;
-    }
-
-    private JtwigModel createModel(String path) {
-        template = JtwigTemplate.classpathTemplate(path);
-        model  = JtwigModel.newModel();
-
-        return model;
     }
 }

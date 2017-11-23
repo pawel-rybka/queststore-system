@@ -1,6 +1,7 @@
-package handlers;
+package application;
 
 import com.sun.net.httpserver.HttpServer;
+import handlers.*;
 
 import java.net.InetSocketAddress;
 
@@ -13,6 +14,7 @@ public class App {
         server.createContext("/admin", new AdminHandler());
         server.createContext("/static", new Static());
         server.createContext("/login", new LoginHandler());
+        server.createContext("/mentor", new MentorHandler());
         server.createContext("/student", new StudentHandler());
         server.setExecutor(null);
 
