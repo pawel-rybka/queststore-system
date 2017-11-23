@@ -17,6 +17,12 @@ import java.util.Map;
 
 public class StudentHandler implements HttpHandler {
 
+    private JtwigModel model;
+    private JtwigTemplate template;
+    private ArtifactDao mDao = new ArtifactDao();
+    private Map inputs;
+    private Artifact artifact;
+
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "";
@@ -73,8 +79,6 @@ public class StudentHandler implements HttpHandler {
     }
 
 
-
-
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
@@ -88,5 +92,22 @@ public class StudentHandler implements HttpHandler {
             }
         }
         return map;
+    }
+
+    private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {
+        InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "UTF-8");
+        BufferedReader br = new BufferedReader(isr);
+        String formData = br.readLine();
+
+        inputs = parseFormData(formData);
+
+        return inputs;
+    }
+
+    private JtwigModel createModel(String path) {
+        template = JtwigTemplate.classpathTemplate(path);
+        model  = JtwigModel.newModel();
+
+        return model;
     }
 }
