@@ -1,6 +1,7 @@
-package handlers;
+package application;
 
 import com.sun.net.httpserver.HttpServer;
+import handlers.*;
 
 import java.net.InetSocketAddress;
 

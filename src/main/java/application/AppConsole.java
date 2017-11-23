@@ -4,11 +4,11 @@ package application;
 
 import controller.*;
 
-public class Application {
+public class AppConsole {
 
     Controller controller;
 
-    Application () {
+    AppConsole() {
         this.controller = new Controller();
 
     }
@@ -18,7 +18,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        Application app = new Application();
+        AppConsole app = new AppConsole();
         app.run();
     }
 }
