@@ -108,6 +108,4 @@ public class MentorHandler implements HttpHandler {
         return model;
     }
 
-
-
 }
