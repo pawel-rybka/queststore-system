@@ -19,6 +19,12 @@ import java.util.Map;
 
 public class StudentHandler implements HttpHandler {
 
+    private JtwigModel model;
+    private JtwigTemplate template;
+    private ArtifactDao mDao = new ArtifactDao();
+    private Map inputs;
+    private Artifact artifact;
+
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "";
@@ -73,5 +79,4 @@ public class StudentHandler implements HttpHandler {
         os.write(response.getBytes());
         os.close();
     }
-
 }
