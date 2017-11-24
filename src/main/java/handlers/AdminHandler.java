@@ -148,7 +148,7 @@ public class AdminHandler implements HttpHandler {
         }else if (path.equals("/admin/edit-level-finished")) {
             if (method.equals("POST")) {
                 try {
-                    updateLeveData(httpExchange);
+                    updateLevelData(httpExchange);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -250,12 +250,13 @@ public class AdminHandler implements HttpHandler {
         model.with("level", level);
     }
 
-    private void updateLeveData(HttpExchange httpExchange) throws SQLException, IOException {
+    private void updateLevelData(HttpExchange httpExchange) throws SQLException, IOException {
         inputs = getInputs(httpExchange);
         model = createModel("templates/edit-level-finished.twig");
         Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
         level.setName(inputs.get("name").toString());
         level.setExpLevel(Integer.valueOf(inputs.get("exp").toString()));
+        lDao.updateData(level);
     }
 
     private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {
