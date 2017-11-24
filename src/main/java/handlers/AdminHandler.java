@@ -38,11 +38,10 @@ public class AdminHandler implements HttpHandler {
         String path = uri.getPath();
         System.out.println(path);
 
-
         if (path.equals("/admin")) {
             model = createModel("static/admin/admin-home.html");
 
-        }else if (path.equals("/admin/add-mentor")) {
+        } else if (path.equals("/admin/add-mentor")) {
 
             if (method.equals("GET")) {
                 model = createModel("templates/add-mentor.twig");
@@ -65,7 +64,7 @@ public class AdminHandler implements HttpHandler {
             }
 
 
-        }else if (path.equals("/admin/see-mentor")) {
+        } else if (path.equals("/admin/see-mentor")) {
             if (method.equals("GET")) {
                 model = createModel("templates/see-mentor.twig");
                 ArrayList<Mentor> mentors = null;
@@ -89,7 +88,7 @@ public class AdminHandler implements HttpHandler {
 
             }
 
-        }else if (path.equals("/admin/edit-mentor")) {
+        } else if (path.equals("/admin/edit-mentor")) {
             if (method.equals("GET")) {
                 model = createModel("templates/edit-mentor.twig");
                 ArrayList<Mentor> mentors = null;
@@ -166,15 +165,12 @@ public class AdminHandler implements HttpHandler {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }else if (method.equals("POST")) {
                 inputs = getInputs(httpExchange);
                 model = createModel("templates/level-removed.twig");
-
                 try {
                     Level level = lDao.getLevelById(Integer.valueOf(inputs.get("level").toString()));
                     lDao.removeObject(level);
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -205,7 +201,6 @@ public class AdminHandler implements HttpHandler {
     private JtwigModel createModel(String path) {
         template = JtwigTemplate.classpathTemplate(path);
         model  = JtwigModel.newModel();
-
         return model;
     }
 }

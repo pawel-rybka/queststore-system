@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+    
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+    
+<body>
+    <div class="wrapper">
+        
+        <div class="menu" w3-include-html="../static/mentor/mentor-menu.html"></div>
+
+        <div class="content">
+            <p class="log-bar">You are logged as Mentor</p>
+            <h2>Choose student to view:</h2>
+
+            <form>
+                {%for student in students%}
+                <input type="radio" name="student" value="{{ student.getId }}"> {{ student.getFullName }}<br><br>
+                {%endfor%}
+                <button type="submit" formaction="see-students-wallet" formmethod="post">See choosen student</button>
+            </form>
+            
+        </div>
+    </div>
+    
+    <script>
+        w3.includeHTML();
+    </script>
+    
+</body>
+    
+</html>
