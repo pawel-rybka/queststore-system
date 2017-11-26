@@ -35,6 +35,20 @@ public class ClassDao extends AbstractDao<Klass> {
         return classes;
     }
 
+    public Klass getClassById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM classes WHERE id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        String name = rs.getString("class_name");
+
+        Klass klass = new Klass(id, name);
+        rs.close();
+        return klass;
+    }
+
 
     public ArrayList<Mentor> getMentorsByClassId(Integer classId) throws SQLException {
 
@@ -150,12 +164,21 @@ public class ClassDao extends AbstractDao<Klass> {
 
     public void updateData(Klass klass) throws SQLException {
 
-        String sql = "UPDATE classes SET name = ? WHERE id = ?;";
+        String sql = "UPDATE classes SET class_name = ? WHERE id = ?;";
 
         try (PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, klass.getClassName());
+            pstmt.setInt(2, klass.getId());
 
             pstmt.executeUpdate();
         }
+    }
+
+    public void removeObject(Klass object) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE id = ?;", "classes");
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, object.getId());
+        pstmt.executeUpdate();
+
     }
 }
