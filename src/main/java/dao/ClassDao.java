@@ -21,7 +21,7 @@ public class ClassDao extends AbstractDao<Klass> {
         ArrayList<Klass> classes = new ArrayList<>();
         String sql = "SELECT * FROM Classes;";
 
-        Statement stmt = c.createStatement();
+        stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
 
         while ( rs.next() ) {
@@ -97,12 +97,12 @@ public class ClassDao extends AbstractDao<Klass> {
 
     public void addUserToClass(User user, Integer classId) throws SQLException {
         if (user instanceof Mentor) {
-            String sql = "INSERT INTO mentors_classes (class_id, mentor_id)" +
+            String sql = "INSERT INTO mentors_classes (mentor_id, class_id)" +
                     "VALUES (?, ?)";
 
             PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, classId);
-            pstmt.setInt(2, user.getId());
+            pstmt.setInt(1, user.getId());
+            pstmt.setInt(2, classId);
             pstmt.executeUpdate();
             pstmt.close();
 
@@ -148,8 +148,14 @@ public class ClassDao extends AbstractDao<Klass> {
     }
 
 
-    @Override
-    public void updateData(Klass object) throws SQLException {
+    public void updateData(Klass klass) throws SQLException {
 
+        String sql = "UPDATE classes SET name = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, klass.getClassName());
+
+            pstmt.executeUpdate();
+        }
     }
 }

@@ -1,16 +1,16 @@
 package model;
 
-public class Class implements GetIdable {
+public class Klass implements GetIdable {
 
     private Integer id;
     private String name;
 
-    public Class(Integer id, String name) {
+    public Klass(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Class(String name) {
+    public Klass(String name) {
         this.name = name;
     }
 
