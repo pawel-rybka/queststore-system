@@ -1,0 +1,10 @@
+INSERT INTO `students_classes` VALUES (1,1);
+INSERT INTO `students_classes` VALUES (2,1);
+INSERT INTO `students_classes` VALUES (3,2);
+INSERT INTO `students_classes` VALUES (4,1);
+INSERT INTO `students_classes` VALUES (5,2);
+INSERT INTO `students_classes` VALUES (6,2);
+INSERT INTO `students_classes` VALUES (7,2);
+INSERT INTO `students_classes` VALUES (8,1);
+INSERT INTO `students_classes` VALUES (9,2);
+INSERT INTO `students_classes` VALUES (10,1);

@@ -1,0 +1,7 @@
+CREATE TABLE `classes` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`class_name`	TEXT
+);
+INSERT INTO `classes` VALUES (1,'2017.1');
+INSERT INTO `classes` VALUES (2,'2017.2');
+
