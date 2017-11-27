@@ -15,15 +15,27 @@
             <h2>Mentor's data:</h2>
             <form>
                 <input type="hidden" name="mentor" value="{{ mentor.getId }}"/>
-            <p>
-                {{ mentor.getFirstName }}<br>
-                {{ mentor.getLastName }}<br>
-                {{ mentor.getPhoneNumber }}<br>
-                {{ mentor.getEmail }}<br>
-                {{ mentor.getPassword }}
-            <p>
-                    <button type="submit" formaction="edit-mentor" formmethod="post">Edit</button>
-                    <button type="submit" formaction="remove-mentor" formmethod="post">Delete</button>
+                <div class="two-columns">
+                    <div class="form-labels">
+                        <p>First name:</p>
+                        <p>Last name:</p>
+                        <p>Phone number:</p>
+                        <p>Email:</p>
+                        <p>Password:</p>
+                        <p>Class:</p>
+                    </div>
+
+                    <div class="form-values">
+                        <p>{{ mentor.getFirstName }}</p>
+                        <p>{{ mentor.getLastName }}</p>
+                        <p>{{ mentor.getPhoneNumber }}</p>
+                        <p>{{ mentor.getEmail }}</p>
+                        <p>{{ mentor.getPassword }}</p>
+                        <p>{{ klass.getClassName }}</p>
+                    </div>
+                </div>
+                <button type="submit" formaction="edit-mentor" formmethod="post">Edit</button>
+                <button type="submit" formaction="remove-mentor" formmethod="post">Delete</button>
             </form>
         </div>
     </div>
