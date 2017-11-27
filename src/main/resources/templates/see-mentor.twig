@@ -17,7 +17,7 @@
             <p class="log-bar">You are logged as Admin</p>
             <h2>Choose mentor to view:</h2>
 
-            <form>
+            <form class="choose-form">
                 {%for mentor in mentors%}
                 <input type="radio" name="mentor" value="{{ mentor.getId }}" required> {{ mentor.getFullName }}<br><br>
                 {%endfor%}
