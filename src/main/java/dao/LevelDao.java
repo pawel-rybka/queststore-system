@@ -68,4 +68,26 @@ public class LevelDao extends AbstractDao<Level> {
         return level;
     }
 
+
+    public String getLevelByCoinAmount(Integer coins) throws SQLException {
+        String sql = "SELECT * " +
+                    "FROM levels " +
+                    "WHERE expLevel >= ?" +
+                    "ORDER BY expLevel ASC " +
+                    "LIMIT 1;";
+
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, coins);
+        ResultSet rs = pstmt.executeQuery();
+
+        Integer id = rs.getInt("id");
+        String name = rs.getString("name");
+        Integer expLevel = rs.getInt("expLevel");
+
+        Level level = new Level(id, name, expLevel);
+
+        return level.getName();
+    }
+
 }
