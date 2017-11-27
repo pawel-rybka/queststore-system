@@ -12,11 +12,10 @@
 
     <div class="content">
         <p class="log-bar">You are logged as Admin</p>
-        <h2>Edit level's data:</h2>
-        <form action="edit-level-finished" method="post">
-            <input type="hidden" name="level" value="{{ level.getId }}"/>
-            <label>Level name:&nbsp</label> <input type="text" name="name" value="{{ level.getName }}" required/><br><br>
-            <label>Req. Exp:&nbsp</label> <input type="text" name="exp" value="{{ level.getExpLevel }}" required/><br><br>
+        <h2>Edit class name:</h2>
+        <form action="edit-class-finished" method="post">
+            <input type="hidden" name="class" value="{{ class.getId }}"/>
+            <label>Class name:&nbsp</label> <input type="text" name="name" value="{{ class.getClassName }}"/><br><br>
             <input type="submit" value="Save changes"/>
         </form>
     </div>

@@ -21,7 +21,7 @@ public class ClassDao extends AbstractDao<Klass> {
         ArrayList<Klass> classes = new ArrayList<>();
         String sql = "SELECT * FROM Classes;";
 
-        Statement stmt = c.createStatement();
+        stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
 
         while ( rs.next() ) {
@@ -33,6 +33,20 @@ public class ClassDao extends AbstractDao<Klass> {
         }
         stmt.close();
         return classes;
+    }
+
+    public Klass getClassById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM classes WHERE id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        String name = rs.getString("class_name");
+
+        Klass klass = new Klass(id, name);
+        rs.close();
+        return klass;
     }
 
 
@@ -96,26 +110,24 @@ public class ClassDao extends AbstractDao<Klass> {
 
 
     public void addUserToClass(User user, Integer classId) throws SQLException {
+
+        String sql = null;
+
         if (user instanceof Mentor) {
-            String sql = "INSERT INTO mentors_classes (class_id, mentor_id)" +
+            sql = "INSERT INTO mentors_classes (mentor_id, class_id)" +
                     "VALUES (?, ?)";
 
-            PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, classId);
-            pstmt.setInt(2, user.getId());
-            pstmt.executeUpdate();
-            pstmt.close();
 
         } else if (user instanceof Student) {
-            String sql = "INSERT INTO students_classes (student_id, class_id)" +
+            sql = "INSERT INTO students_classes (student_id, class_id)" +
                     "VALUES (?, ?)";
-
-            PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, user.getId());
-            pstmt.setInt(2, classId);
-            pstmt.executeUpdate();
-            pstmt.close();
         }
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, user.getId());
+        pstmt.setInt(2, classId);
+        pstmt.executeUpdate();
+        pstmt.close();
     }
 
     public void removeUserFromClass(User user) throws SQLException {
@@ -148,8 +160,44 @@ public class ClassDao extends AbstractDao<Klass> {
     }
 
 
-    @Override
-    public void updateData(Klass object) throws SQLException {
+    public void updateData(Klass klass) throws SQLException {
+
+        String sql = "UPDATE classes SET class_name = ? WHERE id = ?;";
+
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, klass.getClassName());
+            pstmt.setInt(2, klass.getId());
+
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void removeObject(Klass object) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE id = ?;", "classes");
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, object.getId());
+        pstmt.executeUpdate();
+
+    }
+
+    public Klass getClassByMentor(Mentor mentor) throws SQLException {
+        Klass klass = null;
+
+        String sql = "SELECT * FROM classes INNER JOIN mentors_classes " +
+                "ON classes.id = mentors_classes.class_id WHERE mentors_classes.mentor_id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, mentor.getId());
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            String name = rs.getString("class_name");
+            Integer id = rs.getInt("id");
+
+            klass = new Klass(id, name);
+        }
+        rs.close();
+        return klass;
 
     }
 }
