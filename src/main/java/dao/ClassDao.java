@@ -173,8 +173,14 @@ public class ClassDao extends AbstractDao<Klass> {
     }
 
     public void removeObject(Klass object) throws SQLException {
-        String sql = String.format("DELETE FROM %s WHERE id = ?;", "classes");
+        String sql = "DELETE FROM classes WHERE id = ?;";
+
         PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, object.getId());
+        pstmt.executeUpdate();
+
+        sql = "DELETE FROM mentors_classes WHERE class_id = ?;";
+        pstmt = c.prepareStatement(sql);
         pstmt.setInt(1, object.getId());
         pstmt.executeUpdate();
 
