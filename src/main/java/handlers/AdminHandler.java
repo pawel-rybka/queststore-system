@@ -225,7 +225,6 @@ public class AdminHandler implements HttpHandler {
 
         inputs = getInputs(httpExchange);
         model = createModel("templates/add-mentor-finished.twig");
-
         String firstName = String.valueOf(inputs.get("first"));
         String lastName = String.valueOf(inputs.get("last"));
         String phoneNumber = String.valueOf(inputs.get("phone"));
@@ -295,7 +294,9 @@ public class AdminHandler implements HttpHandler {
         inputs = getInputs(httpExchange);
         model = createModel("templates/edit-mentor-2.twig");
         Mentor mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
+        ArrayList<Klass> klasses = cDao.getClasses();
         model.with("mentor", mentor);
+        model.with("classes", klasses);
     }
 
     private void updateMentorData(HttpExchange httpExchange) throws SQLException, IOException {

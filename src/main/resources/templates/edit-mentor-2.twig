@@ -26,7 +26,6 @@
                 <label>Password:&nbsp</label>
                 <input type="text" name="passw" value="{{ mentor.getPassword }}"/><br><br>
                 <select name="class-id">
-                    <option>{{ mentor-class.getClassName }}</option>
                     {% for class in classes %}
                         <option value="{{ class.getId }}">{{ class.getClassName }}</option>
                     {% endfor %}
