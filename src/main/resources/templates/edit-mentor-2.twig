@@ -15,12 +15,24 @@
             <h2>Edit mentor's data:</h2>
             <form action="edit-mentor-finished" method="post">
                 <input type="hidden" name="id" value="{{ mentor.getId }}"/>
-                <label>First name:&nbsp</label> <input type="text" name="first" value="{{ mentor.getFirstName }}"/><br><br>
-                <label>Last name:&nbsp</label> <input type="text" name="last" value="{{ mentor.getLastName }}"/><br><br>
-                <label>Phone number:&nbsp</label> <input type="text" name="phone" value="{{ mentor.getPhoneNumber }}"/><br><br>
-                <label>Email:&nbsp</label> <input type="text" name="email" value="{{ mentor.getEmail }}"/><br><br>
-                <label>Password:&nbsp</label> <input type="text" name="passw" value="{{ mentor.getPassword }}"/><br><br>
-                <input type="submit" value="Save changes"/>
+                <label for="first">First name:&nbsp</label>
+                <input type="text" name="first" value="{{ mentor.getFirstName }}"/><br><br>
+                <label>Last name:&nbsp</label>
+                <input type="text" name="last" value="{{ mentor.getLastName }}"/><br><br>
+                <label>Phone number:&nbsp</label>
+                <input type="text" name="phone" value="{{ mentor.getPhoneNumber }}"/><br><br>
+                <label>Email:&nbsp</label>
+                <input type="text" name="email" value="{{ mentor.getEmail }}"/><br><br>
+                <label>Password:&nbsp</label>
+                <input type="text" name="passw" value="{{ mentor.getPassword }}"/><br><br>
+                <select name="class-id">
+                    <option>{{ mentor-class.getClassName }}</option>
+                    {% for class in classes %}
+                        <option value="{{ class.getId }}">{{ class.getClassName }}</option>
+                    {% endfor %}
+                </select><br><br>
+                <button type="submit">Save changes</button>
+
             </form>
         </div>
     </div>
