@@ -110,26 +110,24 @@ public class ClassDao extends AbstractDao<Klass> {
 
 
     public void addUserToClass(User user, Integer classId) throws SQLException {
+
+        String sql = null;
+
         if (user instanceof Mentor) {
-            String sql = "INSERT INTO mentors_classes (mentor_id, class_id)" +
+            sql = "INSERT INTO mentors_classes (mentor_id, class_id)" +
                     "VALUES (?, ?)";
 
-            PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, user.getId());
-            pstmt.setInt(2, classId);
-            pstmt.executeUpdate();
-            pstmt.close();
 
         } else if (user instanceof Student) {
-            String sql = "INSERT INTO students_classes (student_id, class_id)" +
+            sql = "INSERT INTO students_classes (student_id, class_id)" +
                     "VALUES (?, ?)";
-
-            PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, user.getId());
-            pstmt.setInt(2, classId);
-            pstmt.executeUpdate();
-            pstmt.close();
         }
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, user.getId());
+        pstmt.setInt(2, classId);
+        pstmt.executeUpdate();
+        pstmt.close();
     }
 
     public void removeUserFromClass(User user) throws SQLException {
@@ -179,6 +177,27 @@ public class ClassDao extends AbstractDao<Klass> {
         PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setInt(1, object.getId());
         pstmt.executeUpdate();
+
+    }
+
+    public Klass getClassByMentor(Mentor mentor) throws SQLException {
+        Klass klass = null;
+
+        String sql = "SELECT * FROM classes INNER JOIN mentors_classes " +
+                "ON classes.id = mentors_classes.class_id WHERE mentors_classes.mentor_id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, mentor.getId());
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            String name = rs.getString("class_name");
+            Integer id = rs.getInt("id");
+
+            klass = new Klass(id, name);
+        }
+        rs.close();
+        return klass;
 
     }
 }

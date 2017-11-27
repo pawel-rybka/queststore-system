@@ -112,6 +112,15 @@ public class AdminHandler implements HttpHandler {
 
             }
 
+        }else if (path.equals("/admin/class-info")) {
+            if (method.equals("POST")) {
+                try {
+                    seeClassInfo(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }else if (path.equals("/admin/remove-class")) {
             if (method.equals("POST")) {
                 try {
@@ -241,6 +250,16 @@ public class AdminHandler implements HttpHandler {
         model.with("classes", classes);
     }
 
+    private void seeClassInfo(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/mentors-in-class.twig");
+        ArrayList<Mentor> mentors = null;
+        mentors = cDao.getMentorsByClassId(Integer.valueOf(inputs.get("class").toString()));
+        Klass klass = cDao.getClassById(Integer.valueOf(inputs.get("class").toString()));
+        model.with("klass", klass);
+        model.with("mentors", mentors);
+    }
+
     private void removeClass(HttpExchange httpExchange) throws SQLException, IOException {
         inputs = getInputs(httpExchange);
         model = createModel("templates/class-removed.twig");
@@ -252,7 +271,9 @@ public class AdminHandler implements HttpHandler {
         inputs = getInputs(httpExchange);
         model = createModel("templates/see-mentor-2.twig");
         Mentor mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
+        Klass mentorClass = cDao.getClassByMentor(mentor);
         model.with("mentor", mentor);
+        model.with("klass", mentorClass);
     }
 
     private void chooseClassToEdit(HttpExchange httpExchange) throws IOException, SQLException {
@@ -287,6 +308,8 @@ public class AdminHandler implements HttpHandler {
         mentor.setEmail(String.valueOf(inputs.get("email")));
         mentor.setPassword(String.valueOf(inputs.get("passw")));
         mDao.updateData(mentor);
+        cDao.removeUserFromClass(mentor);
+        cDao.addUserToClass(mentor, Integer.valueOf(inputs.get("class-id").toString()));
     }
 
     private void removeMentor(HttpExchange httpExchange) throws SQLException, IOException {

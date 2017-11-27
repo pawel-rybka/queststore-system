@@ -15,15 +15,13 @@
 
     <div class="content">
         <p class="log-bar">You are logged as Admin</p>
-        <h2>Choose class to view:</h2>
+        <h2>Mentors from class:</h2>
 
         <form>
-            {%for class in classes%}
-            <input type="radio" name="class" value="{{ class.getId }}" required> {{ class.getClassName }}<br><br>
+            {%for mentor in mentors%}
+                <input type="radio" name="mentor" value="{{ mentor.getId }}" required> {{ mentor.getFullName }}<br><br>
             {%endfor%}
-            <button type="submit" formaction="remove-class" formmethod="post">Remove class</button>
-            <button type="submit" formaction="edit-class" formmethod="post">Edit class</button>
-            <button type="submit" formaction="class-info" formmethod="post">See class</button>
+            <button type="submit" formaction="see-mentor" formmethod="post">See choosen mentor</button>
         </form>
 
     </div>
