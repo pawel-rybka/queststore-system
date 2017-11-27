@@ -17,9 +17,9 @@
         <p class="log-bar">You are logged as Admin</p>
         <h2>Levels:</h2>
 
-        <form>
+        <form class="choose-form">
             {%for level in levels%}
-                <input type="radio" name="level" value="{{ level.getId }}" required>Level name: {{ level.getName }} ||  EXP: {{ level.getExpLevel }}<br><br>
+                <input type="radio" name="level" value="{{ level.getId }}" required>{{ level.getName }}  ({{ level.getExpLevel }} cc)<br><br>
             {%endfor%}
             <button type="submit" formaction="remove-level" formmethod="post">Remove Level</button>
             <button type="submit" formaction="edit-level" formmethod="post">Edit Level</button>
