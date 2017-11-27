@@ -86,8 +86,9 @@ public class LevelDao extends AbstractDao<Level> {
         Integer expLevel = rs.getInt("expLevel");
 
         Level level = new Level(id, name, expLevel);
-
+        
         return level.getName();
+
     }
 
 }

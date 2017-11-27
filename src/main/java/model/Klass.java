@@ -18,6 +18,10 @@ public class Klass implements GetIdable {
         return this.name;
     }
 
+    public void setName(String newName) {
+        this.name = newName;
+    }
+
     @Override
     public Integer getId() {
         return this.id;

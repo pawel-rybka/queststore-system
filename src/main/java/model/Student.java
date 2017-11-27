@@ -1,7 +1,7 @@
 package model;
 
 import dao.LevelDao;
-import dao.StudentDao;
+
 
 import java.sql.SQLException;
 
@@ -28,6 +28,7 @@ public class Student extends User {
         this.level = this.setLevel(this.totalCoins);
     }
 
+
     public Integer getCoins() {
         return coins;
     }
@@ -36,10 +37,16 @@ public class Student extends User {
         return totalCoins;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
 
     public void setCoins(Integer coins) {
         this.coins = coins;
+        this.checkLevel();
     }
+
 
     public void setTotalCoins(Integer totalCoins) {
         this.totalCoins = totalCoins;
@@ -54,7 +61,12 @@ public class Student extends User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return level;
     }
+
+
+    public void checkLevel() {
+        this.level = setLevel(this.totalCoins);
+    }
+
 }

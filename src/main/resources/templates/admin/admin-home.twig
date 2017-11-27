@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav id="menu-bar">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item pure-menu-home"><a href="/admin" class="pure-menu-link">Home</a></li>
+                <li class="pure-menu-item"><a href="/admin/see-mentor" class="pure-menu-link">See mentor</a></li>
+                <li class="pure-menu-item"><a href="/admin/add-mentor" class="pure-menu-link">Add new mentor</a></li>
+                <li class="pure-menu-item"><a href="/admin/edit-mentor" class="pure-menu-link">Edit mentor</a></li>
+                <li class="pure-menu-item"><a href="/admin/add-class" class="pure-menu-link">Add class</a></li>
+                <li class="pure-menu-item"><a href="/admin/add-levels" class="pure-menu-link">Add levels</a></li>
+                <li class="pure-menu-item"><a href="/admin/see-all-levels" class="pure-menu-link">See all levels</a></li>
+                <li class="pure-menu-item pure-menu-logout"><a href="/login" class="pure-menu-link">Logout</a></li>
+            </ul>
+        </nav>
+
+        <div class="content">
+            <p class="log-bar">You are logged as: Admin</p>
+            {% block content %}
+                <h2>Home</h2>
+            {% endblock %}
+        </div>
+    </div>
+
+</body>
+
+
+</html>

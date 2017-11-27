@@ -1,5 +1,6 @@
 body {
-    background-color:#118bd9;
+    background-color: #6d7dd9;
+    /*height: 400px;*/
 }
 
 @font-face {
@@ -11,6 +12,8 @@ body {
 /*    width:20%;*/
     height:100%;
     background-color: #333;
+    font-family: caviar;
+    font-weight: 600;
 }
 
 .menu {
@@ -36,11 +39,13 @@ body {
 }
 
 .pure-menu-home {
-    background-color: #4CAF50;
+    /*background-color: #4CAF50;*/
+    background-color: #73af6d;
 }
 
 .pure-menu-logout {
-    background-color: red;
+    /*background-color: red;*/
+    background-color: #ff2121;
 }
 
 .pure-menu-link {
@@ -99,3 +104,40 @@ body {
     text-align: center;
 }
 
+.choose-form {
+    padding-left: 33.3%;
+    text-align: left;
+}
+
+.content > form > button {
+    font-family: caviar;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.content > form > label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+
+}
+
+.content > form > input {
+    font-family: caviar;
+    font-size: 16px;
+}
+
+.two-columns {
+    display: flex;
+}
+
+.form-labels {
+    width: 40%;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.form-values {
+    width: 60%;
+    text-align: left;
+}

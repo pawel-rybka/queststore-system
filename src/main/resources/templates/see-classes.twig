@@ -15,14 +15,15 @@
 
     <div class="content">
         <p class="log-bar">You are logged as Admin</p>
-        <h2>Levels:</h2>
+        <h2>Choose class to view:</h2>
 
-        <form class="choose-form">
-            {%for level in levels%}
-                <input type="radio" name="level" value="{{ level.getId }}" required>{{ level.getName }}  ({{ level.getExpLevel }} cc)<br><br>
+        <form>
+            {%for class in classes%}
+            <input type="radio" name="class" value="{{ class.getId }}" required> {{ class.getClassName }}<br><br>
             {%endfor%}
-            <button type="submit" formaction="remove-level" formmethod="post">Remove Level</button>
-            <button type="submit" formaction="edit-level" formmethod="post">Edit Level</button>
+            <button type="submit" formaction="remove-class" formmethod="post">Remove class</button>
+            <button type="submit" formaction="edit-class" formmethod="post">Edit class</button>
+            <button type="submit" formaction="class-info" formmethod="post">See class</button>
         </form>
 
     </div>
