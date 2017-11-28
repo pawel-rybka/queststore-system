@@ -33,9 +33,12 @@ public class Quest implements GetIdable{
         return category;
     }
 
+    public Integer getValue() {
+        return value;
+    }
+
 
     public void setId(Integer id) { this.id = id; }
-
 
     public void setName(String name) {
         this.name = name;
@@ -43,10 +46,6 @@ public class Quest implements GetIdable{
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public Integer getValue() {
-        return value;
     }
 
     public void setValue(Integer value) {
