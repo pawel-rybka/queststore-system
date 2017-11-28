@@ -2,11 +2,13 @@ package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dao.ClassDao;
 import dao.StudentDao;
 import dao.QuestDao;
 import dao.ArtifactDao;
 import handlers.helpers.ParserFormData;
 import model.Artifact;
+import model.Klass;
 import model.Quest;
 import model.Student;
 import org.jtwig.JtwigModel;
@@ -27,6 +29,7 @@ public class MentorHandler implements HttpHandler {
     private QuestDao qDao = new QuestDao();
     private ArtifactDao aDao = new ArtifactDao();
     private Map inputs;
+    private ClassDao cDao = new ClassDao();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -83,7 +86,7 @@ public class MentorHandler implements HttpHandler {
                 }
             }
 
-        } else if (path.equals("/mentor/see-students-wallet")) {
+        } else if (path.equals("/mentor/see-students")) {
             if (method.equals("GET")) {
 
                 model = createModel("templates/see-all-students.twig");
@@ -101,7 +104,9 @@ public class MentorHandler implements HttpHandler {
 
                 try {
                     Student student = sDao.getStudentById(Integer.valueOf(inputs.get("student").toString()));
+                    Klass studentClass = cDao.getClassByStudent(student);
                     model.with("student", student);
+                    model.with("klass", studentClass);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
