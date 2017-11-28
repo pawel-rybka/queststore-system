@@ -23,6 +23,8 @@
                         <p>Phone number:</p>
                         <p>Email:</p>
                         <p>Password:</p>
+                        <p>Coins:</p>
+                        <p>Total coins:</p>
                         <p>Class:</p>
                     </div>
 
@@ -32,16 +34,14 @@
                         <p>{{ student.getPhoneNumber }}</p>
                         <p>{{ student.getEmail }}</p>
                         <p>{{ student.getPassword }}</p>
+                        <p>{{ student.getCoins }}</p>
+                        <p>{{ student.getTotalCoins }}</p>
                         <p>{{ klass.getClassName }}</p>
                     </div>
                 </div>
                 <button type="submit" formaction="edit-student" formmethod="post">Edit</button>
                 <button type="submit" formaction="remove-student" formmethod="post">Delete</button>
             </form>
-            {#<p>#}
-                {#Coins: {{ student.getCoins }}<br>#}
-                {#Total coins: {{ student.getTotalCoins }}<br>#}
-            {#<p>#}
         </div>
     </div>
     <script>

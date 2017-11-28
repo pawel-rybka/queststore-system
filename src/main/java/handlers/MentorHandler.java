@@ -200,6 +200,8 @@ public class MentorHandler implements HttpHandler {
         student.setPhoneNumber(String.valueOf(inputs.get("phone")));
         student.setEmail(String.valueOf(inputs.get("email")));
         student.setPassword(String.valueOf(inputs.get("passw")));
+        student.setCoins(Integer.valueOf(inputs.get("coins").toString()));
+        student.setTotalCoins(Integer.valueOf(inputs.get("tcoins").toString()));
         sDao.updateData(student);
         cDao.removeUserFromClass(student);
         cDao.addUserToClass(student, Integer.valueOf(inputs.get("class-id").toString()));

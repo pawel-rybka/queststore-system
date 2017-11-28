@@ -25,6 +25,10 @@
             <input type="text" name="email" value="{{ student.getEmail }}"/><br><br>
             <label>Password:&nbsp</label>
             <input type="text" name="passw" value="{{ student.getPassword }}"/><br><br>
+            <label>Coins:&nbsp</label>
+            <input type="text" name="coins" value="{{ student.getCoins }}"/><br><br>
+            <label>Total coins:&nbsp</label>
+            <input type="text" name="tcoins" value="{{ student.getTotalCoins }}"/><br><br>
             <select name="class-id">
                 {% for class in classes %}
                 <option value="{{ class.getId }}">{{ class.getClassName }}</option>
