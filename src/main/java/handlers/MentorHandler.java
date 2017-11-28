@@ -104,7 +104,45 @@ public class MentorHandler implements HttpHandler {
                 }
             }
 
+/***********************************************************************/
 
+        } else if (path.equals("/mentor/edit-quest")) {
+
+            if (method.equals("GET")) {
+
+                model = createModel("templates/see-all-quests.twig");
+                ArrayList<Quest> quests;
+                try {
+                    quests = qDao.getQuests();
+                    model.with("quests", quests);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                System.out.println(inputs);
+                model = createModel("templates/edit-quest.twig");
+
+
+                try {
+                    Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
+                    model.with("quest", quest);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (path.equals("/mentor/edit-quest-finished")) {
+
+            if (method.equals("POST")) {
+                try {
+                    updateQuestData(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+/***************************************************************/
 
         } else if (path.equals("/mentor/add-student")) {
 
@@ -160,6 +198,16 @@ public class MentorHandler implements HttpHandler {
         artifact.setCategory(String.valueOf(inputs.get("category")));
         artifact.setPrice(Integer.parseInt(inputs.get("price").toString()));
         aDao.updateData(artifact);
+    }
+
+    private void updateQuestData(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-quest-finished.twig");
+        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("id").toString()));
+        quest.setName(String.valueOf(inputs.get("name")));
+        quest.setCategory(String.valueOf(inputs.get("category")));
+        quest.setValue(Integer.parseInt(inputs.get("value").toString()));
+        qDao.updateData(quest);
     }
 
     private void createArtifact(HttpExchange httpExchange) throws IOException, SQLException {
