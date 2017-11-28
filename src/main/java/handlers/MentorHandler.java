@@ -7,10 +7,7 @@ import dao.StudentDao;
 import dao.QuestDao;
 import dao.ArtifactDao;
 import handlers.helpers.ParserFormData;
-import model.Artifact;
-import model.Klass;
-import model.Quest;
-import model.Student;
+import model.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -30,6 +27,7 @@ public class MentorHandler implements HttpHandler {
     private ArtifactDao aDao = new ArtifactDao();
     private Map inputs;
     private ClassDao cDao = new ClassDao();
+    private Student student;
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -114,6 +112,24 @@ public class MentorHandler implements HttpHandler {
             }
 
 
+        }else if (path.equals("/mentor/edit-student")) {
+            if (method.equals("POST")) {
+                try {
+                    chooseStudentToEdit(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }else if (path.equals("/mentor/edit-student-finished")){
+            if (method.equals("POST")) {
+                try {
+                    updateStudentData(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
         response = template.render(model);
@@ -155,6 +171,29 @@ public class MentorHandler implements HttpHandler {
         String password = String.valueOf(inputs.get("passw"));
         Student student = new Student(firstName, lastName, phoneNumber, email, password);
         sDao.addObject(student);
+    }
+
+    private void chooseStudentToEdit(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-student-2.twig");
+        student = sDao.getStudentById(Integer.valueOf(inputs.get("student").toString()));
+        ArrayList<Klass> klasses = cDao.getClasses();
+        model.with("student", student);
+        model.with("classes", klasses);
+    }
+
+    private void updateStudentData(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-student-finished.twig");
+        student = sDao.getStudentById(Integer.valueOf(inputs.get("id").toString()));
+        student.setFirstName(String.valueOf(inputs.get("first")));
+        student.setLastName(String.valueOf(inputs.get("last")));
+        student.setPhoneNumber(String.valueOf(inputs.get("phone")));
+        student.setEmail(String.valueOf(inputs.get("email")));
+        student.setPassword(String.valueOf(inputs.get("passw")));
+        sDao.updateData(student);
+        cDao.removeUserFromClass(student);
+        cDao.addUserToClass(student, Integer.valueOf(inputs.get("class-id").toString()));
     }
 
     private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {

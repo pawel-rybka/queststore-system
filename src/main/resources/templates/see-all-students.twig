@@ -19,7 +19,7 @@
 
             <form class="choose-form">
                 {%for student in students%}
-                <input type="radio" name="student" value="{{ student.getId }}"> {{ student.getFullName }}<br><br>
+                <input type="radio" name="student" value="{{ student.getId }}" required> {{ student.getFullName }}<br><br>
                 {%endfor%}
                 <button type="submit" formaction="see-students" formmethod="post">See choosen student</button>
             </form>
