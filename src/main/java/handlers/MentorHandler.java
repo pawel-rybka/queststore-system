@@ -70,6 +70,42 @@ public class MentorHandler implements HttpHandler {
                 }
             }
 
+        } else if (path.equals("/mentor/edit-artifact")) {
+
+            if (method.equals("GET")) {
+
+                model = createModel("templates/see-all-artifacts.twig");
+                ArrayList<Artifact> artifacts;
+                try {
+                    artifacts = aDao.getArtifacts();
+                    model.with("artifacts", artifacts);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                model = createModel("templates/edit-artifact.twig");
+
+                try {
+                    Artifact artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
+                    model.with("artifact", artifact);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (path.equals("/mentor/edit-artifact-finished")) {
+
+            if (method.equals("POST")) {
+                try {
+                    updateArtifactData(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
         } else if (path.equals("/mentor/add-student")) {
 
             if (method.equals("GET")) {
@@ -105,10 +141,7 @@ public class MentorHandler implements HttpHandler {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }
-
-
         }
 
         response = template.render(model);
@@ -117,6 +150,16 @@ public class MentorHandler implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private void updateArtifactData(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-artifact-finished.twig");
+        Artifact artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("id").toString()));
+        artifact.setName(String.valueOf(inputs.get("name")));
+        artifact.setCategory(String.valueOf(inputs.get("category")));
+        artifact.setPrice(Integer.parseInt(inputs.get("price").toString()));
+        aDao.updateData(artifact);
     }
 
     private void createArtifact(HttpExchange httpExchange) throws IOException, SQLException {
@@ -128,7 +171,6 @@ public class MentorHandler implements HttpHandler {
         Artifact artifact = new Artifact(name, category, price);
         aDao.addObject(artifact);
     }
-
 
     private void createQuest(HttpExchange httpExchange) throws IOException, SQLException {
         inputs = getInputs(httpExchange);
