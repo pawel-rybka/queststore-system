@@ -47,6 +47,7 @@ public class MentorHandler implements HttpHandler {
                 template = JtwigTemplate.classpathTemplate("templates/add-quest-finished.twig");
                 model = JtwigModel.newModel();
             }
+
         } else if (path.equals("/mentor/add-artifact")) {
             if (method.equals("GET")) {
                 template = JtwigTemplate.classpathTemplate("templates/add-artifact.twig");
@@ -56,7 +57,29 @@ public class MentorHandler implements HttpHandler {
                 model = JtwigModel.newModel();
             }
 
-        } else if (path.equals("/mentor/see-students-wallet")) {
+        } else if (path.equals("/mentor/add-student")) {
+
+            if (method.equals("GET")) {
+                model = createModel("templates/add-student.twig");
+
+            } else if (method.equals("POST")) {
+                try {
+                    createStudent(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+//                if (method.equals("GET")) {
+//                    template = JtwigTemplate.classpathTemplate("templates/add-student.twig");
+//                    model = JtwigModel.newModel();
+//                } else if (method.equals("POST")) {
+//                    template = JtwigTemplate.classpathTemplate("templates/add-student-finished.twig");
+//                    model = JtwigModel.newModel();
+//                }
+
+
+
+            } else if (path.equals("/mentor/see-students-wallet")) {
             if (method.equals("GET")) {
 
                 model = createModel("templates/see-all-students.twig");
@@ -92,6 +115,19 @@ public class MentorHandler implements HttpHandler {
         os.close();
     }
 
+    private void createStudent(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        System.out.println(inputs);
+        model = createModel("templates/add-student-finished.twig");
+        String firstName = String.valueOf(inputs.get("first"));
+        String lastName = String.valueOf(inputs.get("last"));
+        String phoneNumber = String.valueOf(inputs.get("phone"));
+        String email = String.valueOf(inputs.get("email"));
+        String password = String.valueOf(inputs.get("passw"));
+        Student student = new Student(firstName, lastName, phoneNumber, email, password);
+        sDao.addObject(student);
+    }
+
     private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {
         InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "UTF-8");
         BufferedReader br = new BufferedReader(isr);
@@ -107,7 +143,5 @@ public class MentorHandler implements HttpHandler {
         model  = JtwigModel.newModel();
         return model;
     }
-
-
 
 }
