@@ -211,4 +211,25 @@ public class ClassDao extends AbstractDao<Klass> {
         return klass;
 
     }
+
+    public Klass getClassByStudent(Student student) throws SQLException {
+        Klass klass = null;
+
+        String sql = "SELECT * FROM classes INNER JOIN students_classes " +
+                "ON classes.id = students_classes.class_id WHERE students_classes.student_id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, student.getId());
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            String name = rs.getString("class_name");
+            Integer id = rs.getInt("id");
+
+            klass = new Klass(id, name);
+        }
+        rs.close();
+        return klass;
+
+    }
 }

@@ -17,11 +17,11 @@
             <p class="log-bar">You are logged as Mentor</p>
             <h2>Choose student to view:</h2>
 
-            <form>
+            <form class="choose-form">
                 {%for student in students%}
-                <input type="radio" name="student" value="{{ student.getId }}"> {{ student.getFullName }}<br><br>
+                <input type="radio" name="student" value="{{ student.getId }}" required> {{ student.getFullName }}<br><br>
                 {%endfor%}
-                <button type="submit" formaction="see-students-wallet" formmethod="post">See choosen student</button>
+                <button type="submit" formaction="see-students" formmethod="post">See choosen student</button>
             </form>
             
         </div>

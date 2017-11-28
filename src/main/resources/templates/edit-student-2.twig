@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="menu" w3-include-html="../static/mentor/mentor-menu.html"></div>
+
+    <div class="content">
+        <p class="log-bar">You are logged as Mentor</p>
+        <h2>Edit student's data:</h2>
+        <form action="edit-student-finished" method="post">
+            <input type="hidden" name="id" value="{{ student.getId }}"/>
+            <label for="first">First name:&nbsp</label>
+            <input type="text" name="first" value="{{ student.getFirstName }}"/><br><br>
+            <label>Last name:&nbsp</label>
+            <input type="text" name="last" value="{{ student.getLastName }}"/><br><br>
+            <label>Phone number:&nbsp</label>
+            <input type="text" name="phone" value="{{ student.getPhoneNumber }}"/><br><br>
+            <label>Email:&nbsp</label>
+            <input type="text" name="email" value="{{ student.getEmail }}"/><br><br>
+            <label>Password:&nbsp</label>
+            <input type="text" name="passw" value="{{ student.getPassword }}"/><br><br>
+            <label>Coins:&nbsp</label>
+            <input type="text" name="coins" value="{{ student.getCoins }}"/><br><br>
+            <label>Total coins:&nbsp</label>
+            <input type="text" name="tcoins" value="{{ student.getTotalCoins }}"/><br><br>
+            <select name="class-id">
+                {% for class in classes %}
+                <option value="{{ class.getId }}">{{ class.getClassName }}</option>
+                {% endfor %}
+            </select><br><br>
+            <button type="submit">Save changes</button>
+
+        </form>
+    </div>
+</div>
+<script>
+    w3.includeHTML();
+</script>
+
+</body>
+</html>
