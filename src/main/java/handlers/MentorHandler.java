@@ -3,8 +3,11 @@ package handlers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.StudentDao;
+import dao.QuestDao;
+import dao.ArtifactDao;
 import handlers.helpers.ParserFormData;
-import model.Mentor;
+import model.Artifact;
+import model.Quest;
 import model.Student;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -21,8 +24,9 @@ public class MentorHandler implements HttpHandler {
     private JtwigModel model;
     private JtwigTemplate template;
     private StudentDao sDao = new StudentDao();
+    private QuestDao qDao = new QuestDao();
+    private ArtifactDao aDao = new ArtifactDao();
     private Map inputs;
-    private Student student;
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -40,13 +44,18 @@ public class MentorHandler implements HttpHandler {
             template = JtwigTemplate.classpathTemplate("static/mentor/mentor-home.html");
             model = JtwigModel.newModel();
         } else if (path.equals("/mentor/add-quest")) {
+
             if (method.equals("GET")) {
-                template = JtwigTemplate.classpathTemplate("templates/add-quest.twig");
-                model = JtwigModel.newModel();
+                model = createModel("templates/add-quest.twig");
+
             } else if (method.equals("POST")) {
-                template = JtwigTemplate.classpathTemplate("templates/add-quest-finished.twig");
-                model = JtwigModel.newModel();
+                try {
+                    createQuest(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
+
 
         } else if (path.equals("/mentor/add-artifact")) {
             if (method.equals("GET")) {
@@ -69,21 +78,12 @@ public class MentorHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             }
-//                if (method.equals("GET")) {
-//                    template = JtwigTemplate.classpathTemplate("templates/add-student.twig");
-//                    model = JtwigModel.newModel();
-//                } else if (method.equals("POST")) {
-//                    template = JtwigTemplate.classpathTemplate("templates/add-student-finished.twig");
-//                    model = JtwigModel.newModel();
-//                }
 
-
-
-            } else if (path.equals("/mentor/see-students-wallet")) {
+        } else if (path.equals("/mentor/see-students-wallet")) {
             if (method.equals("GET")) {
 
                 model = createModel("templates/see-all-students.twig");
-                ArrayList<Student> students = null;
+                ArrayList<Student> students;
                 try {
                     students = sDao.getStudents();
                     model.with("students", students);
@@ -115,9 +115,20 @@ public class MentorHandler implements HttpHandler {
         os.close();
     }
 
-    private void createStudent(HttpExchange httpExchange) throws IOException, SQLException {
+    private void createQuest(HttpExchange httpExchange) throws IOException, SQLException {
         inputs = getInputs(httpExchange);
         System.out.println(inputs);
+        model = createModel("templates/add-quest-finished.twig");
+        String name = String.valueOf(inputs.get("name"));
+        String category = String.valueOf(inputs.get("category"));
+        Integer value = Integer.parseInt(inputs.get("value").toString());
+        Quest quest = new Quest(name, category, value);
+        System.out.println(name+category+value*2);
+        qDao.addObject(quest);
+    }
+
+    private void createStudent(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
         model = createModel("templates/add-student-finished.twig");
         String firstName = String.valueOf(inputs.get("first"));
         String lastName = String.valueOf(inputs.get("last"));
