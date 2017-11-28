@@ -184,6 +184,11 @@ public class ClassDao extends AbstractDao<Klass> {
         pstmt.setInt(1, object.getId());
         pstmt.executeUpdate();
 
+        sql = "DELETE FROM students_classes WHERE class_id = ?;";
+        pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, object.getId());
+        pstmt.executeUpdate();
+
     }
 
     public Klass getClassByMentor(Mentor mentor) throws SQLException {
