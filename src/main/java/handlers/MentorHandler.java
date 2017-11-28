@@ -130,6 +130,15 @@ public class MentorHandler implements HttpHandler {
                 }
             }
 
+        }else if (path.equals("/mentor/remove-student")) {
+            if (method.equals("POST")) {
+                try {
+                    removeStudent(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
         response = template.render(model);
@@ -194,6 +203,14 @@ public class MentorHandler implements HttpHandler {
         sDao.updateData(student);
         cDao.removeUserFromClass(student);
         cDao.addUserToClass(student, Integer.valueOf(inputs.get("class-id").toString()));
+    }
+
+    private void removeStudent(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/student-removed.twig");
+        student = sDao.getStudentById(Integer.valueOf(inputs.get("student").toString()));
+        sDao.removeObject(student);
+        cDao.removeUserFromClass(student);
     }
 
     private Map<String, String> getInputs(HttpExchange httpExchange) throws IOException {
