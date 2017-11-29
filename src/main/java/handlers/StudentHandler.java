@@ -5,17 +5,16 @@ import com.sun.net.httpserver.HttpHandler;
 import dao.ArtifactDao;
 import handlers.helpers.ParserFormData;
 import model.Artifact;
+import model.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.sql.ParameterMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class StudentHandler implements HttpHandler {
 
@@ -24,6 +23,11 @@ public class StudentHandler implements HttpHandler {
     private ArtifactDao mDao = new ArtifactDao();
     private Map inputs;
     private Artifact artifact;
+    private Map<UUID, User> sessionsData;
+
+    public StudentHandler(Map<UUID, User> sessionsData) {
+        this.sessionsData = sessionsData;
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
