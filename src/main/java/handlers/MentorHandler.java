@@ -6,6 +6,7 @@ import dao.StudentDao;
 import handlers.helpers.ParserFormData;
 import model.Mentor;
 import model.Student;
+import model.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class MentorHandler implements HttpHandler {
     private JtwigModel model;
@@ -23,6 +25,11 @@ public class MentorHandler implements HttpHandler {
     private StudentDao sDao = new StudentDao();
     private Map inputs;
     private Student student;
+    private Map<UUID, User> sessionsData;
+
+    public MentorHandler(Map<UUID, User> sessionsData) {
+        this.sessionsData = sessionsData;
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
