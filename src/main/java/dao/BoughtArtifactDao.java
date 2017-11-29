@@ -1,5 +1,6 @@
 package dao;
 
+import model.Artifact;
 import model.BoughtArtifact;
 import model.Student;
 
@@ -75,4 +76,38 @@ public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
             pstmt.executeUpdate();
         }
     }
+
+    public ArrayList<BoughtArtifact> getUnmarkedArtifacts() throws SQLException {
+        ArrayList<BoughtArtifact> boughtArtifact = new ArrayList<>();
+        String sql = "SELECT * FROM bought_artifacts WHERE usage_date = '0';";
+
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery( sql );
+
+        while ( rs.next() ) {
+            Integer id = rs.getInt("id");
+            Integer studentId = rs.getInt("student_id");
+            Integer artifactId = rs.getInt("artifact_id");
+            String usageData = rs.getString("usage_date");
+            BoughtArtifact newBoughtArtifact = new BoughtArtifact(id, studentId, artifactId, usageData);
+            boughtArtifact.add(newBoughtArtifact);
+        }
+
+        stmt.close();
+        return boughtArtifact;
+    }
+
+    public BoughtArtifact getBoughtArtifactById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM bought_artifacts WHERE id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        Integer studentId = rs.getInt("student_id");
+        Integer artifactId = rs.getInt("artifact_id");
+        BoughtArtifact newBoughtArtifact = new BoughtArtifact(id, studentId, artifactId, "1");
+        return newBoughtArtifact;
+    }
+
 }
