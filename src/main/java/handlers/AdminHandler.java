@@ -6,21 +6,15 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 import java.net.HttpCookie;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import dao.ClassDao;
 import dao.LevelDao;
 import dao.MentorDao;
 import handlers.helpers.ParserFormData;
-import model.Klass;
-import model.Level;
-import model.Mentor;
-import model.User;
+import model.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -50,11 +44,10 @@ public class AdminHandler implements HttpHandler {
         System.out.println(path);
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
-        String sesionId = cookie.getValue();
+        String sessionId = cookie.getValue();
 
         if (path.equals("/admin")) {
-            showHomePage(httpExchange);
-            model = createModel("static/admin/admin-home.html");
+            showHomePage(httpExchange, sessionId);
 
         } else if (path.equals("/admin/add-mentor")) {
 
@@ -233,8 +226,10 @@ public class AdminHandler implements HttpHandler {
 
     }
 
-    private void showHomePage(HttpExchange httpExchange) {
-        model = createModel("static/admin/admin-home.html");
+    private void showHomePage(HttpExchange httpExchange, String sessionId) {
+        User admin = sessionsData.get(sessionId);
+        model = createModel("templates/admin/admin-home.twig");
+        model.with("admin", admin);
 
     }
 
