@@ -13,11 +13,11 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
 
 public class MentorHandler implements HttpHandler {
     private JtwigModel model;
@@ -44,177 +44,189 @@ public class MentorHandler implements HttpHandler {
         URI uri = httpExchange.getRequestURI();
         String path = uri.getPath();
         System.out.println(path);
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
+        String sessionId = cookie.getValue();
+        User mentor = sessionsData.get(sessionId);
 
 
-        if (path.equals("/mentor")) {
-            template = JtwigTemplate.classpathTemplate("static/mentor/mentor-home.html");
-            model = JtwigModel.newModel();
-        } else if (path.equals("/mentor/add-quest")) {
+        if (sessionsData.containsKey(sessionId)) {
 
-            if (method.equals("GET")) {
-                model = createModel("templates/add-quest.twig");
+            if (path.equals("/mentor")) {
+                template = JtwigTemplate.classpathTemplate("static/mentor/mentor-home.twig");
+                model = JtwigModel.newModel();
+                model.with("mentor", mentor);
+            } else if (path.equals("/mentor/add-quest")) {
 
-            } else if (method.equals("POST")) {
-                try {
-                    createQuest(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                if (method.equals("GET")) {
+                    model = createModel("templates/add-quest.twig");
+
+                } else if (method.equals("POST")) {
+                    try {
+                        createQuest(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+
+            } else if (path.equals("/mentor/add-artifact")) {
+
+                if (method.equals("GET")) {
+                    model = createModel("templates/add-artifact.twig");
+
+                } else if (method.equals("POST")) {
+                    try {
+                        createArtifact(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/edit-artifact")) {
+
+                if (method.equals("GET")) {
+
+                    model = createModel("templates/see-all-artifacts.twig");
+                    ArrayList<Artifact> artifacts;
+                    try {
+                        artifacts = aDao.getArtifacts();
+                        model.with("artifacts", artifacts);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    inputs = getInputs(httpExchange);
+                    model = createModel("templates/edit-artifact.twig");
+
+                    try {
+                        Artifact artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
+                        model.with("artifact", artifact);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/edit-artifact-finished")) {
+
+                if (method.equals("POST")) {
+                    try {
+                        updateArtifactData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/edit-quest")) {
+
+                if (method.equals("GET")) {
+
+                    model = createModel("templates/see-all-quests.twig");
+                    ArrayList<Quest> quests;
+                    try {
+                        quests = qDao.getQuests();
+                        model.with("quests", quests);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    inputs = getInputs(httpExchange);
+                    System.out.println(inputs);
+                    model = createModel("templates/edit-quest.twig");
+
+
+                    try {
+                        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
+                        model.with("quest", quest);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (path.equals("/mentor/edit-quest-finished")) {
+
+                if (method.equals("POST")) {
+                    try {
+                        updateQuestData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            } else if (path.equals("/mentor/add-student")) {
+
+                if (method.equals("GET")) {
+                    model = createModel("templates/add-student.twig");
+
+                } else if (method.equals("POST")) {
+                    try {
+                        createStudent(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/see-students")) {
+                if (method.equals("GET")) {
+
+                    model = createModel("templates/see-all-students.twig");
+                    ArrayList<Student> students;
+                    try {
+                        students = sDao.getStudents();
+                        model.with("students", students);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    inputs = getInputs(httpExchange);
+                    model = createModel("templates/see-student.twig");
+
+                    try {
+                        Student student = sDao.getStudentById(Integer.valueOf(inputs.get("student").toString()));
+                        Klass studentClass = cDao.getClassByStudent(student);
+                        model.with("student", student);
+                        model.with("klass", studentClass);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            } else if (path.equals("/mentor/edit-student")) {
+                if (method.equals("POST")) {
+                    try {
+                        chooseStudentToEdit(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/edit-student-finished")) {
+                if (method.equals("POST")) {
+                    try {
+                        updateStudentData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/remove-student")) {
+                if (method.equals("POST")) {
+                    try {
+                        removeStudent(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
-
-        } else if (path.equals("/mentor/add-artifact")) {
-
-            if (method.equals("GET")) {
-                model = createModel("templates/add-artifact.twig");
-
-            } else if (method.equals("POST")) {
-                try {
-                    createArtifact(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else if (path.equals("/mentor/edit-artifact")) {
-
-            if (method.equals("GET")) {
-
-                model = createModel("templates/see-all-artifacts.twig");
-                ArrayList<Artifact> artifacts;
-                try {
-                    artifacts = aDao.getArtifacts();
-                    model.with("artifacts", artifacts);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/edit-artifact.twig");
-
-                try {
-                    Artifact artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
-                    model.with("artifact", artifact);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-          
-        } else if (path.equals("/mentor/edit-artifact-finished")) {
-
-            if (method.equals("POST")) {
-                try {
-                    updateArtifactData(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else if (path.equals("/mentor/edit-quest")) {
-
-            if (method.equals("GET")) {
-
-                model = createModel("templates/see-all-quests.twig");
-                ArrayList<Quest> quests;
-                try {
-                    quests = qDao.getQuests();
-                    model.with("quests", quests);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                System.out.println(inputs);
-                model = createModel("templates/edit-quest.twig");
-
-
-                try {
-                    Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
-                    model.with("quest", quest);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (path.equals("/mentor/edit-quest-finished")) {
-
-            if (method.equals("POST")) {
-                try {
-                    updateQuestData(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        } else if (path.equals("/mentor/add-student")) {
-
-            if (method.equals("GET")) {
-                model = createModel("templates/add-student.twig");
-
-            } else if (method.equals("POST")) {
-                try {
-                    createStudent(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else if (path.equals("/mentor/see-students")) {
-            if (method.equals("GET")) {
-
-                model = createModel("templates/see-all-students.twig");
-                ArrayList<Student> students;
-                try {
-                    students = sDao.getStudents();
-                    model.with("students", students);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/see-student.twig");
-
-                try {
-                    Student student = sDao.getStudentById(Integer.valueOf(inputs.get("student").toString()));
-                    Klass studentClass = cDao.getClassByStudent(student);
-                    model.with("student", student);
-                    model.with("klass", studentClass);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        }else if (path.equals("/mentor/edit-student")) {
-            if (method.equals("POST")) {
-                try {
-                    chooseStudentToEdit(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/mentor/edit-student-finished")){
-            if (method.equals("POST")) {
-                try {
-                    updateStudentData(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/mentor/remove-student")) {
-            if (method.equals("POST")) {
-                try {
-                    removeStudent(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
+        } else {
+            httpExchange.getResponseHeaders().add("Location", "/login" );
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
         response = template.render(model);
