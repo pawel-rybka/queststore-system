@@ -6,6 +6,7 @@ import dao.ClassDao;
 import dao.StudentDao;
 import dao.QuestDao;
 import dao.ArtifactDao;
+import dao.BoughtArtifactDao;
 import handlers.helpers.ParserFormData;
 import model.*;
 
@@ -17,7 +18,6 @@ import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
 
 public class MentorHandler implements HttpHandler {
     private JtwigModel model;
@@ -25,6 +25,7 @@ public class MentorHandler implements HttpHandler {
     private StudentDao sDao = new StudentDao();
     private QuestDao qDao = new QuestDao();
     private ArtifactDao aDao = new ArtifactDao();
+    private BoughtArtifactDao baDao = new BoughtArtifactDao();
     private Map inputs;
     private ClassDao cDao = new ClassDao();
     private Student student;
@@ -188,7 +189,7 @@ public class MentorHandler implements HttpHandler {
             }
 
 
-        }else if (path.equals("/mentor/edit-student")) {
+        } else if (path.equals("/mentor/edit-student")) {
             if (method.equals("POST")) {
                 try {
                     chooseStudentToEdit(httpExchange);
@@ -206,10 +207,38 @@ public class MentorHandler implements HttpHandler {
                 }
             }
 
-        }else if (path.equals("/mentor/remove-student")) {
+        } else if (path.equals("/mentor/remove-student")) {
             if (method.equals("POST")) {
                 try {
                     removeStudent(httpExchange);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else if (path.equals("/mentor/mark-artifacts")) {
+
+            if (method.equals("GET")) {
+
+                model = createModel("templates/mark-artifact.twig");
+                ArrayList<BoughtArtifact> boughtArtifacts;
+                try {
+                    boughtArtifacts = baDao.getUnmarkedArtifacts();
+                    model.with("boughtArtifacts", boughtArtifacts);
+                    model.with("sDao", sDao);
+                    model.with("aDao", aDao);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (method.equals("POST")) {
+                inputs = getInputs(httpExchange);
+                model = createModel("templates/mark-artifact-finished.twig");
+                int id = Integer.parseInt(inputs.get("boughtArtifact").toString());
+                try {
+                    BoughtArtifact boughtArtifactToUpdate = baDao.getBoughtArtifactById(id);
+                    boughtArtifactToUpdate.setUsageDate("1");
+                    baDao.updateData(boughtArtifactToUpdate);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
