@@ -54,6 +54,29 @@ public class MentorDao extends AbstractDao<Mentor> {
         return newMentor;
     }
 
+    public Mentor getMentorByLogin(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM mentors WHERE email = ? AND password = ?;";
+        Mentor newMentor = null;
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Integer id = rs.getInt("id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String phoneNumber = rs.getString("phone_number");
+
+                newMentor = new Mentor(id, firstName, lastName,
+                        phoneNumber, email, password);
+            }
+        }
+
+        return newMentor;
+    }
+
     public Mentor createUserObject(String inputEmail, String inputPassword) throws SQLException {
         Mentor newMentor = null;
         String sql = "SELECT * FROM Mentors WHERE email = ? AND password = ?;";
