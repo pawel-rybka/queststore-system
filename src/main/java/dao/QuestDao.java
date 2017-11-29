@@ -69,4 +69,18 @@ public class QuestDao extends AbstractDao<Quest> {
             pstmt.executeUpdate();
         }
     }
+
+    public Quest getQuestById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM Quests WHERE id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        String name = rs.getString("name");
+        String category = rs.getString("category");
+        Integer value = rs.getInt("value");
+        Quest newQuest = new Quest(id, name, category, value);
+        return newQuest;
+    }
 }

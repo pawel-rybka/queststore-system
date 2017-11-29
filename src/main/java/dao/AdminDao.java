@@ -54,6 +54,29 @@ public class AdminDao extends AbstractDao<Admin> {
         return newAdmin;
     }
 
+    public Admin getAdminByLogin(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM Admins WHERE email = ? AND password = ?;";
+        Admin newAdmin = null;
+        try(PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Integer id = rs.getInt("id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String phoneNumber = rs.getString("phone_number");
+
+                newAdmin = new Admin(id, firstName, lastName,
+                        phoneNumber, email, password);
+            }
+        }
+
+        return newAdmin;
+    }
+
     public Admin createUserObject(String inputEmail, String inputPassword) throws SQLException{
         String sql = "SELECT * FROM Admins WHERE email = ? AND password = ?;";
 

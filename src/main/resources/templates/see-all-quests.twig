@@ -15,13 +15,13 @@
 
         <div class="content">
             <p class="log-bar">You are logged as Mentor</p>
-            <h2>Choose student to view:</h2>
+            <h2>Choose quest to edit:</h2>
 
-            <form class="choose-form">
-                {%for student in students%}
-                <input type="radio" name="student" value="{{ student.getId }}" required> {{ student.getFullName }}<br><br>
+            <form>
+                {%for quest in quests%}
+                <input type="radio" name="quest" value="{{ quest.getId }}"> {{ quest.getName }}<br><br>
                 {%endfor%}
-                <button type="submit" formaction="see-students" formmethod="post">See choosen student</button>
+                <button type="submit" formaction="edit-quest" formmethod="post">Edit choosen quest</button>
             </form>
             
         </div>

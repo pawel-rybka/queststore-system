@@ -14,8 +14,9 @@ public class Artifact implements GetIdable{
         this.price = price;
     }
 
-    public Artifact(String category, Integer price) {
+    public Artifact(String name, String category, Integer price) {
         this.id = null;
+        this.name = name;
         this.category = category;
         this.price = price;
     }

@@ -10,19 +10,19 @@ import model.Artifact;
 import model.BoughtArtifact;
 import model.Quest;
 import model.Student;
+import model.User;
+
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.sql.ParameterMetaData;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class StudentHandler implements HttpHandler {
 
@@ -32,6 +32,11 @@ public class StudentHandler implements HttpHandler {
     private QuestDao qDao = new QuestDao();
     private Map inputs;
     private Artifact artifact;
+    private Map<String, User> sessionsData;
+
+    public StudentHandler(Map<String, User> sessionsData) {
+        this.sessionsData = sessionsData;
+    }
 
 
 
