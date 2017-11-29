@@ -81,14 +81,14 @@ public class LevelDao extends AbstractDao<Level> {
         pstmt.setInt(1, coins);
         ResultSet rs = pstmt.executeQuery();
 
-        Integer id = rs.getInt("id");
+//        Integer id = rs.getInt("id");
         String name = rs.getString("name");
-        Integer expLevel = rs.getInt("expLevel");
+//        Integer expLevel = rs.getInt("expLevel");
 
-        Level level = new Level(id, name, expLevel);
-        
-        return level.getName();
+//        Level level = new Level(id, name, expLevel);
 
+//        return level.getName();
+        return name;
     }
 
 }

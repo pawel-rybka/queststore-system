@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+
+<div class="wrapper">
+
+    <div class="menu" w3-include-html="../static/student/student-menu.html"></div>
+
+    <div class="content">
+        <p class="log-bar">You are logged as: STUDENT </p>
+        <div class="student-info">Name: {{ student.getFirstName }} {{student.getLastName }} <br> Current coins: {{ student.getCoins }} <br> Total coins: {{ student.getTotalCoins }} <br> Level: {{ student.getLevel }} <br> </div>
+    </div>
+
+</div>
+
+<script>
+    w3.includeHTML();
+</script>
+
+</body>
+</html>
+
