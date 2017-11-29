@@ -13,10 +13,35 @@
         <div class="content">
             <p class="log-bar">You are logged as Mentor</p>
             <h2>Student's data:</h2>
-            <p>
-                Coins: {{ student.getCoins }}<br>
-                Total coins: {{ student.getTotalCoins }}<br>
-            <p>
+            <form>
+                <input type="hidden" name="student" value="{{ student.getId }}"/>
+
+                <div class="two-columns">
+                    <div class="form-labels">
+                        <p>First name:</p>
+                        <p>Last name:</p>
+                        <p>Phone number:</p>
+                        <p>Email:</p>
+                        <p>Password:</p>
+                        <p>Coins:</p>
+                        <p>Total coins:</p>
+                        <p>Class:</p>
+                    </div>
+
+                    <div class="form-values">
+                        <p>{{ student.getFirstName }}</p>
+                        <p>{{ student.getLastName }}</p>
+                        <p>{{ student.getPhoneNumber }}</p>
+                        <p>{{ student.getEmail }}</p>
+                        <p>{{ student.getPassword }}</p>
+                        <p>{{ student.getCoins }}</p>
+                        <p>{{ student.getTotalCoins }}</p>
+                        <p>{{ klass.getClassName }}</p>
+                    </div>
+                </div>
+                <button type="submit" formaction="edit-student" formmethod="post">Edit</button>
+                <button type="submit" formaction="remove-student" formmethod="post">Delete</button>
+            </form>
         </div>
     </div>
     <script>

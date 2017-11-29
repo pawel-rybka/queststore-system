@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="menu" w3-include-html="../static/mentor/mentor-menu.html"></div>
+
+        <div class="content">
+            <p class="log-bar">You are logged as Mentor</p>
+            <h2>Edit artifact's data:</h2>
+            <form action="edit-artifact-finished" method="post">
+                <input type="hidden" name="id" value="{{ artifact.getId }}"/>
+                <label for="first">Name:&nbsp</label>
+                <input type="text" name="name" value="{{ artifact.getName }}"/><br><br>
+                <label>Category:&nbsp</label>
+                <input type="text" name="category" value="{{ artifact.getCategory }}"/><br><br>
+                <label>Price:&nbsp</label>
+                <input type="text" name="price" value="{{ artifact.getPrice }}"/><br><br>
+                <button type="submit">Save changes</button>
+
+            </form>
+        </div>
+    </div>
+    <script>
+        w3.includeHTML();
+    </script>
+
+</body>
+</html>

@@ -325,6 +325,7 @@ public class AdminHandler implements HttpHandler {
         model = createModel("templates/mentor-removed.twig");
         mentor = mDao.getMentorById(Integer.valueOf(inputs.get("mentor").toString()));
         mDao.removeObject(mentor);
+        cDao.removeUserFromClass(mentor);
     }
 
     private void createLevel(HttpExchange httpExchange) throws SQLException, IOException {

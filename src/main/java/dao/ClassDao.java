@@ -173,8 +173,19 @@ public class ClassDao extends AbstractDao<Klass> {
     }
 
     public void removeObject(Klass object) throws SQLException {
-        String sql = String.format("DELETE FROM %s WHERE id = ?;", "classes");
+        String sql = "DELETE FROM classes WHERE id = ?;";
+
         PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, object.getId());
+        pstmt.executeUpdate();
+
+        sql = "DELETE FROM mentors_classes WHERE class_id = ?;";
+        pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, object.getId());
+        pstmt.executeUpdate();
+
+        sql = "DELETE FROM students_classes WHERE class_id = ?;";
+        pstmt = c.prepareStatement(sql);
         pstmt.setInt(1, object.getId());
         pstmt.executeUpdate();
 
@@ -188,6 +199,27 @@ public class ClassDao extends AbstractDao<Klass> {
 
         PreparedStatement pstmt = c.prepareStatement(sql);
         pstmt.setInt(1, mentor.getId());
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            String name = rs.getString("class_name");
+            Integer id = rs.getInt("id");
+
+            klass = new Klass(id, name);
+        }
+        rs.close();
+        return klass;
+
+    }
+
+    public Klass getClassByStudent(Student student) throws SQLException {
+        Klass klass = null;
+
+        String sql = "SELECT * FROM classes INNER JOIN students_classes " +
+                "ON classes.id = students_classes.class_id WHERE students_classes.student_id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, student.getId());
         ResultSet rs = pstmt.executeQuery();
 
         if (rs.next()) {
