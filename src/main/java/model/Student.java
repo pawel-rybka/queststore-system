@@ -17,7 +17,7 @@ public class Student extends User {
         super(id, firstName, lastName, phoneNumber, email, password);
         this.coins = coins;
         this.totalCoins = totalCoins;
-        this.level = this.setLevel(this.totalCoins);
+        this.level = setLevel(this.totalCoins);
     }
 
     public Student(String firstName, String lastName, String phoneNumber, String email, String password) {
@@ -55,8 +55,9 @@ public class Student extends User {
 
     public String setLevel(Integer coins) {
         LevelDao lvlDao = new LevelDao();
+        String level = "";
         try {
-            String level = lvlDao.getLevelByCoinAmount(coins);
+            level = lvlDao.getLevelByCoinAmount(coins);
         } catch (SQLException e) {
             e.printStackTrace();
         }
