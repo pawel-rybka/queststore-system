@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import dao.ClassDao;
 import dao.LevelDao;
@@ -18,6 +19,7 @@ import handlers.helpers.ParserFormData;
 import model.Klass;
 import model.Level;
 import model.Mentor;
+import model.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -30,6 +32,11 @@ public class AdminHandler implements HttpHandler {
     private Mentor mentor;
     private LevelDao lDao = new LevelDao();
     private ClassDao cDao = new ClassDao();
+    private Map<UUID, User> sessionsData;
+
+    public AdminHandler(Map<UUID, User> sessionsData) {
+        this.sessionsData = sessionsData;
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
