@@ -44,6 +44,30 @@ public class ArtifactDao extends AbstractDao<Artifact> {
         return newArtifact;
     }
 
+
+    public ArrayList<Artifact> getArtifactToBuyByUser(Integer coin) throws SQLException {
+        ArrayList<Artifact> artifactsToBuy = new ArrayList<Artifact>();
+
+        String sql = "SELECT * FROM Artifacts WHERE price <= ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, coin);
+        ResultSet rs = pstmt.executeQuery();
+
+        while ( rs.next() ) {
+            Integer id = rs.getInt("id");
+            String name = rs.getString("name");
+            String category = rs.getString("category");
+            Integer price = rs.getInt("price");
+            Artifact newArtifact = new Artifact(id, name, category, price);
+            artifactsToBuy.add(newArtifact);
+        }
+
+        return artifactsToBuy;
+    }
+
+
+
     public void addObject(Artifact artifact) throws SQLException {
         String sql = "INSERT INTO Artifacts (name, category, price)" +
                 "VALUES (?, ?, ?)";

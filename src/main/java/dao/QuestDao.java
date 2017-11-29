@@ -69,5 +69,4 @@ public class QuestDao extends AbstractDao<Quest> {
             pstmt.executeUpdate();
         }
     }
-
 }

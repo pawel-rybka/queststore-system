@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import dao.ArtifactDao;
 import dao.BoughtArtifactDao;
 import dao.QuestDao;
+import dao.StudentDao;
 import handlers.helpers.ParserFormData;
 import model.Artifact;
 import model.BoughtArtifact;
@@ -16,6 +17,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URI;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -30,6 +32,7 @@ public class StudentHandler implements HttpHandler {
     private JtwigTemplate template;
     private ArtifactDao aDao = new ArtifactDao();
     private QuestDao qDao = new QuestDao();
+    private StudentDao sDao = new StudentDao();
     private Map inputs;
     private Artifact artifact;
     private Map<String, User> sessionsData;
@@ -37,7 +40,6 @@ public class StudentHandler implements HttpHandler {
     public StudentHandler(Map<String, User> sessionsData) {
         this.sessionsData = sessionsData;
     }
-
 
 
     @Override
@@ -50,46 +52,56 @@ public class StudentHandler implements HttpHandler {
         String path = uri.getPath();
         System.out.println(path);
 
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
+        String sessionId = cookie.getValue();
 
-        if (path.equals("/student")) {
-            Student student = new Student(5, "dupa", "dupa1", "586758378", "dupa2", "2qfg43we", 100, 1000);
-            model = createModel("templates/student-home-page.twig");
-            model.with("student", student);
+        if(sessionsData.containsKey(sessionId)) {
+
+            if (path.equals("/student")) {
+                User student = this.sessionsData.get(sessionId);
+                model = createModel("templates/student-home-page.twig");
+                model.with("student", student);
 
 
-        } else if (path.equals("/student/student-buy-artifact")) {
+            } else if (path.equals("/student/student-buy-artifact")) {
+                User student = this.sessionsData.get(sessionId);
 
-            if (method.equals("GET")) {
-                try {
-                    listArtifacts(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                if (method.equals("GET")) {
+                    try {
+                        listArtifacts(httpExchange, (Student) student);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    try {
+                        buyArtifact(httpExchange, (Student) student);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
 
-            } else if (method.equals("POST")) {
-                try {
-                    buyArtifact(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+            } else if (path.equals("/student/student-do-quest")) {
+
+                if (method.equals("GET")) {
+                    try {
+                        listQuestsToDo(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    try {
+                        submitQuest(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-
-        } else if (path.equals("/student/student-do-quest")) {
-
-            if (method.equals("GET")) {
-                try {
-                    listQuestsToDo(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (method.equals("POST")) {
-                try {
-                    submitQuest(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+        } else {
+            httpExchange.getResponseHeaders().add("Location", "/login" );
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
         response = template.render(model);
@@ -102,32 +114,31 @@ public class StudentHandler implements HttpHandler {
 
 
 
-    private void listArtifacts (HttpExchange httpExchange) throws SQLException {
+
+    private void listArtifacts (HttpExchange httpExchange, Student student) throws SQLException {
         model = createModel("templates/student-buy-artifact.twig");
-        ArrayList<Artifact> allArtifacts = aDao.getArtifacts();
-        ArrayList<Artifact> artifactsForUser = null;
-        // TU MUSI BYC PODANY STUDENT ZEBY SPRAWDZIC KTÓRE ARTEFAKTY DLA NIEGO WYPRINTOWAC
-//        for(Artifact artifact : allArtifacts) {
-//            if(artifact.getPrice() <= student.getCoins()) {
-//                artifactsForUser.add(artifact);
-//            }
-//        }
-        model.with("artifacts", artifactsForUser);
+        ArrayList<Artifact> allArtifacts = aDao.getArtifactToBuyByUser(student.getCoins());
+
+        model.with("artifacts", allArtifacts);
     }
 
 
-    private void buyArtifact(HttpExchange httpExchange) throws SQLException, IOException {
+    private void buyArtifact(HttpExchange httpExchange, Student student) throws SQLException, IOException {
         inputs = getInputs(httpExchange);
         model = createModel("templates/student-buy-artifact-2.twig");
-        Artifact artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
+        artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
         model.with("artifact", artifact);
-        //TUTAJ MUSI BYC DODANE createBoughtArtifact ALE MUSIMY TU MIEC STUDENTA ZEBY GO PODAC DALEJ
+
+        student.setCoins(student.getCoins() - artifact.getPrice());
+        sDao.updateData(student);
+
+        this.createBoughtArtifact(student, artifact);
     }
 
 
     private void createBoughtArtifact (Student student, Artifact artifact) {
         BoughtArtifactDao baDao = new BoughtArtifactDao();
-        String usageDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String usageDate = "0";
         BoughtArtifact newBoughtArtifact = new BoughtArtifact(student.getId(), artifact.getId(), usageDate);
         try {
             baDao.addObject(newBoughtArtifact);
