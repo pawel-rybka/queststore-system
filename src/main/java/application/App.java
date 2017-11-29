@@ -13,7 +13,7 @@ public class App {
 
 
     public static void main(String[] args) throws Exception {
-        Map<UUID, User> sessionsData = new HashMap<>();
+        Map<String, User> sessionsData = new HashMap<>();
         HttpServer server = HttpServer.create(new InetSocketAddress(8010), 0);
 
         server.createContext("/login", new LoginHandler(sessionsData));

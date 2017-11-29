@@ -28,9 +28,9 @@ public class MentorHandler implements HttpHandler {
     private Map inputs;
     private ClassDao cDao = new ClassDao();
     private Student student;
-    private Map<UUID, User> sessionsData;
+    private Map<String, User> sessionsData;
 
-    public MentorHandler(Map<UUID, User> sessionsData) {
+    public MentorHandler(Map<String, User> sessionsData) {
         this.sessionsData = sessionsData;
     }
 

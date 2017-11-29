@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public class LogoutHandler implements HttpHandler{
 
-    private Map<UUID, User> sessionsData;
+    private Map<String, User> sessionsData;
 
-    public LogoutHandler(Map<UUID,User> sessionsData) {
+    public LogoutHandler(Map<String,User> sessionsData) {
         this.sessionsData = sessionsData;
     }
 

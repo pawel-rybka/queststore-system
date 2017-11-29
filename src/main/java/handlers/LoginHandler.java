@@ -22,9 +22,9 @@ import java.util.UUID;
 
 public class LoginHandler implements HttpHandler {
 
-    private Map<UUID, User> sessionsData;
+    private Map<String, User> sessionsData;
 
-    public LoginHandler(Map<UUID, User> sessionsData) {
+    public LoginHandler(Map<String, User> sessionsData) {
         this.sessionsData = sessionsData;
     }
 
@@ -47,7 +47,7 @@ public class LoginHandler implements HttpHandler {
             }
 
             if (user != null) {
-                UUID sessionId = UUID.randomUUID();
+                String sessionId = UUID.randomUUID().toString();
                 this.sessionsData.put(sessionId, user);
 
                 HttpCookie cookie = new HttpCookie("sessionId", sessionId.toString());

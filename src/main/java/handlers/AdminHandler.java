@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.sql.SQLException;
@@ -32,9 +33,9 @@ public class AdminHandler implements HttpHandler {
     private Mentor mentor;
     private LevelDao lDao = new LevelDao();
     private ClassDao cDao = new ClassDao();
-    private Map<UUID, User> sessionsData;
+    private Map<String, User> sessionsData;
 
-    public AdminHandler(Map<UUID, User> sessionsData) {
+    public AdminHandler(Map<String, User> sessionsData) {
         this.sessionsData = sessionsData;
     }
 
@@ -47,8 +48,12 @@ public class AdminHandler implements HttpHandler {
         URI uri = httpExchange.getRequestURI();
         String path = uri.getPath();
         System.out.println(path);
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
+        String sesionId = cookie.getValue();
 
         if (path.equals("/admin")) {
+            showHomePage(httpExchange);
             model = createModel("static/admin/admin-home.html");
 
         } else if (path.equals("/admin/add-mentor")) {
@@ -225,6 +230,11 @@ public class AdminHandler implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+
+    }
+
+    private void showHomePage(HttpExchange httpExchange) {
+        model = createModel("static/admin/admin-home.html");
 
     }
 

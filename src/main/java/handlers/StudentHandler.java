@@ -23,9 +23,9 @@ public class StudentHandler implements HttpHandler {
     private ArtifactDao mDao = new ArtifactDao();
     private Map inputs;
     private Artifact artifact;
-    private Map<UUID, User> sessionsData;
+    private Map<String, User> sessionsData;
 
-    public StudentHandler(Map<UUID, User> sessionsData) {
+    public StudentHandler(Map<String, User> sessionsData) {
         this.sessionsData = sessionsData;
     }
 
