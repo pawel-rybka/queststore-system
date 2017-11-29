@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="menu" w3-include-html="../static/student/student-menu.html"></div>
+
+    <div class="content">
+        <p class="log-bar">You are logged as Student</p>
+        <h2>Choose Quest</h2>
+
+        <form>
+            {% for quest in quests %}
+            <input type="radio" name="quest" value="{{ quest.getId }}"> {{ quest.getName }}<br><br>
+            {% endfor %}
+            <button type="submit" formaction="student-do-quest" formmethod="post">Do it</button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    w3.includeHTML();
+</script>
+
+</body>
+</html>
+
