@@ -46,174 +46,182 @@ public class AdminHandler implements HttpHandler {
         HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
         String sessionId = cookie.getValue();
 
-        if (path.equals("/admin")) {
-            showHomePage(httpExchange, sessionId);
 
-        } else if (path.equals("/admin/add-mentor")) {
+        if (sessionsData.containsKey(sessionId)) {
 
-            if (method.equals("GET")) {
-                model = createModel("templates/add-mentor.twig");
+            if (path.equals("/admin")) {
+                showHomePage(httpExchange, sessionId);
 
-            } else if (method.equals("POST")) {
-                try {
-                    addMentor(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+            } else if (path.equals("/admin/add-mentor")) {
+
+                if (method.equals("GET")) {
+                    model = createModel("templates/add-mentor.twig");
+
+                } else if (method.equals("POST")) {
+                    try {
+                        addMentor(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/see-mentor")) {
+
+                if (method.equals("GET")) {
+                    try {
+                        listMentors(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    try {
+                        seeMentor(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/edit-mentor")) {
+
+                if (method.equals("POST")) {
+                    try {
+                        chooseMentorToEdit(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/edit-mentor-finished")) {
+                if (method.equals("POST")) {
+                    try {
+                        updateMentorData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/remove-mentor")) {
+                if (method.equals("POST")) {
+                    try {
+                        removeMentor(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/classes")) {
+                if (method.equals("GET")) {
+                    try {
+                        listClasses(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            } else if (path.equals("/admin/class-info")) {
+                if (method.equals("POST")) {
+                    try {
+                        seeClassInfo(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/remove-class")) {
+                if (method.equals("POST")) {
+                    try {
+                        removeClass(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/edit-class")) {
+                if (method.equals("POST")) {
+                    try {
+                        chooseClassToEdit(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/edit-class-finished")) {
+                if (method.equals("POST")) {
+                    try {
+                        updateClassData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/add-class")) {
+                if (method.equals("GET")) {
+                    model = createModel("templates/add-class.twig");
+
+                } else if (method.equals("POST")) {
+                    try {
+                        createClass(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/add-levels")) {
+
+                if (method.equals("GET")) {
+                    model = createModel("templates/add-levels.twig");
+
+                } else if (method.equals("POST")) {
+                    try {
+                        createLevel(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/see-all-levels")) {
+
+                if (method.equals("GET")) {
+                    try {
+                        listLevels(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/remove-level")) {
+                if (method.equals("POST")) {
+                    try {
+                        removeLevel(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/edit-level")) {
+                if (method.equals("POST")) {
+                    try {
+                        chooseLevelToEdit(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/admin/edit-level-finished")) {
+                if (method.equals("POST")) {
+                    try {
+                        updateLevelData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
-        }else if (path.equals("/admin/see-mentor")) {
-
-            if (method.equals("GET")) {
-                try {
-                    listMentors(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (method.equals("POST")) {
-                try {
-                    seeMentor(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/edit-mentor")) {
-
-            if (method.equals("POST")) {
-                try {
-                    chooseMentorToEdit(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/edit-mentor-finished")){
-            if (method.equals("POST")) {
-                try {
-                    updateMentorData(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/remove-mentor")) {
-            if (method.equals("POST")) {
-                try {
-                    removeMentor(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/classes")) {
-            if (method.equals("GET")) {
-                try {
-                    listClasses(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        }else if (path.equals("/admin/class-info")) {
-            if (method.equals("POST")) {
-                try {
-                    seeClassInfo(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/remove-class")) {
-            if (method.equals("POST")) {
-                try {
-                    removeClass(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/edit-class")) {
-            if (method.equals("POST")) {
-                try {
-                    chooseClassToEdit(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/edit-class-finished")) {
-            if (method.equals("POST")) {
-                try {
-                    updateClassData(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/add-class")) {
-            if (method.equals("GET")) {
-                model = createModel("templates/add-class.twig");
-
-            } else if (method.equals("POST")) {
-                try {
-                    createClass(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/add-levels")) {
-
-            if (method.equals("GET")) {
-                model = createModel("templates/add-levels.twig");
-
-            } else if (method.equals("POST")) {
-                try {
-                    createLevel(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/see-all-levels")) {
-
-            if (method.equals("GET")) {
-                try {
-                    listLevels(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/remove-level")) {
-            if (method.equals("POST")) {
-                try {
-                    removeLevel(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/edit-level")) {
-            if (method.equals("POST")) {
-                try {
-                    chooseLevelToEdit(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if (path.equals("/admin/edit-level-finished")) {
-            if (method.equals("POST")) {
-                try {
-                    updateLevelData(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+        } else {
+            httpExchange.getResponseHeaders().add("Location", "/login" );
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
 

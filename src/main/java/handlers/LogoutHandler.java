@@ -21,7 +21,7 @@ public class LogoutHandler implements HttpHandler{
     public void handle(HttpExchange httpExchange) throws IOException {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
-        UUID sessionId = UUID.fromString(cookie.getValue());
+        String sessionId = cookie.getValue();
 
         this.sessionsData.remove(sessionId);
         httpExchange.getResponseHeaders().add("Location", "/login");
