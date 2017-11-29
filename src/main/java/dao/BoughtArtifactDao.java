@@ -106,7 +106,8 @@ public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
 
         Integer studentId = rs.getInt("student_id");
         Integer artifactId = rs.getInt("artifact_id");
-        BoughtArtifact newBoughtArtifact = new BoughtArtifact(id, studentId, artifactId, "1");
+        String usageData = rs.getString("usage_date");
+        BoughtArtifact newBoughtArtifact = new BoughtArtifact(id, studentId, artifactId, usageData);
         return newBoughtArtifact;
     }
 
