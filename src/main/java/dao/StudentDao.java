@@ -59,6 +59,30 @@ public class StudentDao extends AbstractDao<Student>{
         return newStudent;
     }
 
+    public Student getStudentByLogin(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM students WHERE email = ? AND password = ?;";
+        Student newStudent = null;
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Integer id = rs.getInt("id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String phoneNumber = rs.getString("phone_number");
+                Integer coins = rs.getInt("coins");
+                Integer totalCoins = rs.getInt("total_coins");
+
+                newStudent = new Student(id, firstName, lastName,
+                        phoneNumber, email, password, coins, totalCoins);
+            }
+        }
+
+        return newStudent;
+    }
     public Student createUserObject(String inputEmail, String inputPassword) throws SQLException{
         String sql = "SELECT * FROM students WHERE email = ? AND password = ?;";
 
