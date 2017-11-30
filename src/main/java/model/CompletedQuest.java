@@ -11,14 +11,14 @@ public class CompletedQuest implements GetIdable{
         this.id = id;
         this.studentId = studentId;
         this.questId = questId;
-        this.completeDate = null;
+        this.completeDate = completeDate;
     }
 
     public CompletedQuest(Integer studentId, Integer questId, String completeDate) {
         this.id = null;
         this.studentId = studentId;
         this.questId = questId;
-        this.completeDate = null;
+        this.completeDate = completeDate;
     }
 
     public Integer getId() {
