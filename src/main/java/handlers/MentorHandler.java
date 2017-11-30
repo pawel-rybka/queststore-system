@@ -31,6 +31,7 @@ public class MentorHandler implements HttpHandler {
     private ClassDao cDao = new ClassDao();
     private Student student;
     private Map<String, User> sessionsData;
+    private Artifact artifact;
 
     public MentorHandler(Map<String, User> sessionsData) {
         this.sessionsData = sessionsData;
@@ -55,9 +56,9 @@ public class MentorHandler implements HttpHandler {
         if (sessionsData.containsKey(sessionId)) {
 
             if (path.equals("/mentor")) {
-                template = JtwigTemplate.classpathTemplate("static/mentor/mentor-home.twig");
-                model = JtwigModel.newModel();
+                model = createModel("static/mentor/mentor-home.twig");
                 model.with("mentor", mentor);
+
             } else if (path.equals("/mentor/add-quest")) {
 
                 if (method.equals("GET")) {
@@ -70,7 +71,6 @@ public class MentorHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 }
-
 
             } else if (path.equals("/mentor/add-artifact")) {
 
@@ -85,26 +85,27 @@ public class MentorHandler implements HttpHandler {
                     }
                 }
 
-            } else if (path.equals("/mentor/edit-artifact")) {
+            } else if (path.equals("/mentor/see-artifacts")) {
 
                 if (method.equals("GET")) {
-
-                    model = createModel("templates/see-all-artifacts.twig");
-                    ArrayList<Artifact> artifacts;
                     try {
-                        artifacts = aDao.getArtifacts();
-                        model.with("artifacts", artifacts);
+                        listAllArtifacts(httpExchange);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
                 } else if (method.equals("POST")) {
-                    inputs = getInputs(httpExchange);
-                    model = createModel("templates/edit-artifact.twig");
-
                     try {
-                        Artifact artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
-                        model.with("artifact", artifact);
+                        seeChosenArtifact(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/edit-artifact")) {
+                if (method.equals("POST")) {
+                    try {
+                        chooseArtifactToEdit(httpExchange);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -120,37 +121,56 @@ public class MentorHandler implements HttpHandler {
                     }
                 }
 
-            } else if (path.equals("/mentor/edit-quest")) {
+            } else if (path.equals("/mentor/remove-artifact")) {
+                if (method.equals("POST")) {
+                    try {
+                        removeArtifact(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/see-quests")) {
 
                 if (method.equals("GET")) {
-
-                    model = createModel("templates/see-all-quests.twig");
-                    ArrayList<Quest> quests;
                     try {
-                        quests = qDao.getQuests();
-                        model.with("quests", quests);
+                        listAllQuests(httpExchange);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
                 } else if (method.equals("POST")) {
-                    inputs = getInputs(httpExchange);
-                    System.out.println(inputs);
-                    model = createModel("templates/edit-quest.twig");
-
-
                     try {
-                        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
-                        model.with("quest", quest);
+                        seeChosenQuest(httpExchange);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
+
+            } else if (path.equals("/mentor/edit-quest")) {
+
+                if (method.equals("POST")) {
+                    try {
+                        chooseQuestToEdit(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             } else if (path.equals("/mentor/edit-quest-finished")) {
 
                 if (method.equals("POST")) {
                     try {
                         updateQuestData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/remove-quest")) {
+                if (method.equals("POST")) {
+                    try {
+                        removeQuest(httpExchange);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -172,25 +192,15 @@ public class MentorHandler implements HttpHandler {
 
             } else if (path.equals("/mentor/see-students")) {
                 if (method.equals("GET")) {
-
-                    model = createModel("templates/see-all-students.twig");
-                    ArrayList<Student> students;
                     try {
-                        students = sDao.getStudents();
-                        model.with("students", students);
+                        listAllStudents(httpExchange);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
                 } else if (method.equals("POST")) {
-                    inputs = getInputs(httpExchange);
-                    model = createModel("templates/see-student.twig");
-
                     try {
-                        Student student = sDao.getStudentById(Integer.valueOf(inputs.get("student").toString()));
-                        Klass studentClass = cDao.getClassByStudent(student);
-                        model.with("student", student);
-                        model.with("klass", studentClass);
+                        seeChosenStudent(httpExchange);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -267,20 +277,75 @@ public class MentorHandler implements HttpHandler {
         }
     }
 
+    private void listAllQuests(HttpExchange httpExchange) throws SQLException {
+        model = createModel("templates/see-all-quests.twig");
+        ArrayList<Quest> quests = qDao.getQuests();
+        model.with("quests", quests);
+    }
+
+    private void seeChosenQuest(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/see-quest.twig");
+        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
+        model.with("quest", quest);
+    }
+
+    private void chooseQuestToEdit(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-quest.twig");
+        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
+        model.with("quest", quest);
+    }
+
+    private void removeQuest(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/quest-removed.twig");
+        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
+        qDao.removeObject(quest);
+    }
+
+
+    private void listAllArtifacts(HttpExchange httpExchange) throws SQLException {
+        model = createModel("templates/see-all-artifacts.twig");
+        ArrayList<Artifact> artifacts = aDao.getArtifacts();
+        model.with("artifacts", artifacts);
+    }
+
+    private void seeChosenArtifact(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/see-artifact.twig");
+        artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
+        model.with("artifact", artifact);
+    }
+
+    private void chooseArtifactToEdit(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/edit-artifact.twig");
+        artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
+        model.with("artifact", artifact);
+    }
+
     private void updateArtifactData(HttpExchange httpExchange) throws SQLException, IOException {
         inputs = getInputs(httpExchange);
         model = createModel("templates/edit-artifact-finished.twig");
-        Artifact artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("id").toString()));
+        artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
         artifact.setName(String.valueOf(inputs.get("name")));
         artifact.setCategory(String.valueOf(inputs.get("category")));
         artifact.setPrice(Integer.parseInt(inputs.get("price").toString()));
         aDao.updateData(artifact);
     }
 
+    private void removeArtifact(HttpExchange httpExchange) throws IOException, SQLException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/artifact-removed.twig");
+        artifact = aDao.getArtifactById(Integer.valueOf(inputs.get("artifact").toString()));
+        aDao.removeObject(artifact);
+    }
+
     private void updateQuestData(HttpExchange httpExchange) throws SQLException, IOException {
         inputs = getInputs(httpExchange);
         model = createModel("templates/edit-quest-finished.twig");
-        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("id").toString()));
+        Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
         quest.setName(String.valueOf(inputs.get("name")));
         quest.setCategory(String.valueOf(inputs.get("category")));
         quest.setValue(Integer.parseInt(inputs.get("value").toString()));
@@ -293,7 +358,7 @@ public class MentorHandler implements HttpHandler {
         String name = String.valueOf(inputs.get("name"));
         String category = String.valueOf(inputs.get("category"));
         Integer price = Integer.parseInt(inputs.get("price").toString());
-        Artifact artifact = new Artifact(name, category, price);
+        artifact = new Artifact(name, category, price);
         aDao.addObject(artifact);
     }
 
@@ -305,6 +370,21 @@ public class MentorHandler implements HttpHandler {
         Integer value = Integer.parseInt(inputs.get("value").toString());
         Quest quest = new Quest(name, category, value);
         qDao.addObject(quest);
+    }
+
+    private void listAllStudents(HttpExchange httpExchange) throws SQLException {
+        model = createModel("templates/see-all-students.twig");
+        ArrayList<Student> students = sDao.getStudents();
+        model.with("students", students);
+    }
+
+    private void seeChosenStudent(HttpExchange httpExchange) throws SQLException, IOException {
+        inputs = getInputs(httpExchange);
+        model = createModel("templates/see-student.twig");
+        Student student = sDao.getStudentById(Integer.valueOf(inputs.get("student").toString()));
+        Klass studentClass = cDao.getClassByStudent(student);
+        model.with("student", student);
+        model.with("klass", studentClass);
     }
 
     private void createStudent(HttpExchange httpExchange) throws IOException, SQLException {

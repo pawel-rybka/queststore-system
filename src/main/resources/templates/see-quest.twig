@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="menu" w3-include-html="../static/mentor/mentor-menu.html"></div>
+
+    <div class="content">
+        <p class="log-bar">You are logged as Mentor</p>
+        <h2>Quest's data:</h2>
+        <form>
+            <input type="hidden" name="quest" value="{{ quest.getId }}"/>
+
+            <div class="two-columns">
+                <div class="form-labels">
+                    <p>Name:</p>
+                    <p>Category:</p>
+                    <p>Value:</p>
+                </div>
+
+                <div class="form-values">
+                    <p>{{ quest.getName }}</p>
+                    <p>{{ quest.getCategory }}</p>
+                    <p>{{ quest.getValue }}</p>
+                </div>
+            </div>
+            <button type="submit" formaction="edit-quest" formmethod="post">Edit</button>
+            <button type="submit" formaction="remove-quest" formmethod="post">Delete</button>
+        </form>
+    </div>
+</div>
+<script>
+    w3.includeHTML();
+</script>
+
+</body>
+</html>
