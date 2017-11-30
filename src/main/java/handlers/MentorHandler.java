@@ -263,7 +263,7 @@ public class MentorHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 }
-/**************************************************************/
+
             } else if (path.equals("/mentor/mark-quest")) {
 
                 if (method.equals("GET")) {
@@ -281,17 +281,22 @@ public class MentorHandler implements HttpHandler {
 
                 } else if (method.equals("POST")) {
                     inputs = getInputs(httpExchange);
+System.out.println(inputs);
                     model = createModel("templates/mark-quest-finished.twig");
                     int id = Integer.parseInt(inputs.get("completedQuest").toString());
                     try {
                         CompletedQuest completedQuestToUpdate = cqDao.getCompletedQuestById(id);
                         completedQuestToUpdate.setCompleteDate("1");
                         cqDao.updateData(completedQuestToUpdate);
+                        int studentId = completedQuestToUpdate.getStudentId();
+                        int questId = completedQuestToUpdate.getQuestId();
+                        int value = qDao.getQuestById(questId).getValue();
+                        sDao.getStudentById(studentId).addCoins(value);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+
                 }
-/***************************************************************/
 
             } else {
                 httpExchange.getResponseHeaders().add("Location", "/login");
