@@ -14,7 +14,7 @@
             <p class="log-bar">You are logged as Mentor</p>
             <h2>Edit quest's data:</h2>
             <form action="edit-quest-finished" method="post">
-                <input type="hidden" name="id" value="{{ quest.getId }}"/>
+                <input type="hidden" name="quest" value="{{ quest.getId }}"/>
                 <label for="first">Name:&nbsp</label>
                 <input type="text" name="name" value="{{ quest.getName }}"/><br><br>
                 <label>Category:&nbsp</label>
