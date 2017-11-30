@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/lib/w3.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+
+<div class="wrapper">
+
+    <div class="menu" w3-include-html="../static/student/student-menu.html"></div>
+
+    <div class="content">
+        <p class="log-bar">You are logged as: STUDENT </p>
+        <div class="student-wallet"><b>Current coins:</b> {{ student.getCoins }} <br> <b>Total coins:</b> {{ student.getTotalCoins }} <br> <b>Level:</b> {{ student.getLevel }} <br> </div>
+        <br>
+        <div>
+            <p> <u><b>Bought artifacts: </b></u> </p> <br>
+            <p> <b>Artifact name</b> -- <b>Price</b> </p>
+            {%for artifact in boughtArtifacts%}
+                <p> {{ artifact.getName }} -- {{ artifact.getPrice }} </p>
+            {%endfor%}
+        </div>
+    </div>
+
+</div>
+
+<script>
+    w3.includeHTML();
+</script>
+
+</body>
+</html>
+

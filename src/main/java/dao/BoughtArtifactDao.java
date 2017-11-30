@@ -51,6 +51,30 @@ public class BoughtArtifactDao extends AbstractDao<BoughtArtifact> {
         return boughtByUser;
     }
 
+
+    public ArrayList<Artifact> getUserBoughtArtifactAcceptedByMentor(Integer studentID) throws SQLException {
+        ArrayList<Artifact> boughtByUser = new ArrayList<>();
+
+        String sql = "SELECT * FROM artifacts LEFT JOIN bought_artifacts ON artifacts.id = bought_artifacts.artifact_id " +
+                "WHERE student_id = ? AND usage_date != \"0\";";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, studentID);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            String name = rs.getString("name");
+            String category = rs.getString("category");
+            Integer price = rs.getInt("price");
+
+            Artifact userArtifact = new Artifact(name, category, price);
+            boughtByUser.add(userArtifact);
+        }
+        pstmt.close();
+        return boughtByUser;
+    }
+
+
     public void addObject(BoughtArtifact boughtArtifact) throws SQLException {
         String sql = "INSERT INTO bought_artifacts (student_id, artifact_id, usage_date)" +
                 "VALUES (?, ?, ?)";

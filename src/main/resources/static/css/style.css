@@ -90,6 +90,12 @@ body {
     margin-right: 0px;
 }
 
+.student-wallet {
+    margin-left:  100px;
+    text-align: center;
+    margin-right: auto;
+}
+
 .log-bar {
     text-align: right;
     font-family: caviar;
