@@ -7,6 +7,7 @@ import dao.StudentDao;
 import dao.QuestDao;
 import dao.ArtifactDao;
 import dao.BoughtArtifactDao;
+import dao.CompletedQuestDao;
 import handlers.helpers.ParserFormData;
 import model.*;
 
@@ -28,6 +29,7 @@ public class MentorHandler implements HttpHandler {
     private ArtifactDao aDao = new ArtifactDao();
     private Map inputs;
     private BoughtArtifactDao baDao = new BoughtArtifactDao();
+    private CompletedQuestDao cqDao = new CompletedQuestDao();
     private ClassDao cDao = new ClassDao();
     private Student student;
     private Map<String, User> sessionsData;
@@ -261,7 +263,35 @@ public class MentorHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 }
+/**************************************************************/
+            } else if (path.equals("/mentor/mark-quest")) {
 
+                if (method.equals("GET")) {
+
+                    model = createModel("templates/mark-quest.twig");
+                    ArrayList<CompletedQuest> completedQuests;
+                    try {
+                        completedQuests = cqDao.getUnmarkedQuests();
+                        model.with("completedQuests", completedQuests);
+                        model.with("sDao", sDao);
+                        model.with("qDao", qDao);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    inputs = getInputs(httpExchange);
+                    model = createModel("templates/mark-quest-finished.twig");
+                    int id = Integer.parseInt(inputs.get("completedQuest").toString());
+                    try {
+                        CompletedQuest completedQuestToUpdate = cqDao.getCompletedQuestById(id);
+                        completedQuestToUpdate.setCompleteDate("1");
+                        cqDao.updateData(completedQuestToUpdate);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+/***************************************************************/
 
             } else {
                 httpExchange.getResponseHeaders().add("Location", "/login");

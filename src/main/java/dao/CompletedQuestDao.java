@@ -58,4 +58,40 @@ public class CompletedQuestDao extends AbstractDao<CompletedQuest>{
             System.out.println(e.getMessage());
         }
     }
+    
+    public ArrayList<CompletedQuest> getUnmarkedQuests() throws SQLException {
+        ArrayList<CompletedQuest> completedQuest = new ArrayList<>();
+        String sql = "SELECT * FROM completed_quests WHERE complete_date = '0';";
+
+        Statement stmt = c.createStatement();
+        ResultSet rs = stmt.executeQuery( sql );
+
+        while ( rs.next() ) {
+            Integer id = rs.getInt("id");
+            Integer studentId = rs.getInt("student_id");
+            Integer questId = rs.getInt("quest_id");
+            String completeData = rs.getString("complete_date");
+            CompletedQuest newCompletedQuest = new CompletedQuest(id, studentId, questId, completeData);
+            completedQuest.add(newCompletedQuest);
+        }
+
+        stmt.close();
+        return completedQuest;
+    }
+
+    public CompletedQuest getCompletedQuestById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM completed_quests WHERE id = ?;";
+
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        Integer studentId = rs.getInt("student_id");
+        Integer questId = rs.getInt("quest_id");
+        String completeData = rs.getString("complete_date");
+        CompletedQuest newCompletedQuest = new CompletedQuest(id, studentId, questId, completeData);
+        return newCompletedQuest;
+    }
+
+
 }
