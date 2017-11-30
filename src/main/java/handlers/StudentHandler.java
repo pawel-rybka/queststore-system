@@ -2,16 +2,9 @@ package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dao.ArtifactDao;
-import dao.BoughtArtifactDao;
-import dao.QuestDao;
-import dao.StudentDao;
+import dao.*;
 import handlers.helpers.ParserFormData;
-import model.Artifact;
-import model.BoughtArtifact;
-import model.Quest;
-import model.Student;
-import model.User;
+import model.*;
 
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -83,6 +76,7 @@ public class StudentHandler implements HttpHandler {
                 }
 
             } else if (path.equals("/student/student-do-quest")) {
+                User student = this.sessionsData.get(sessionId);
 
                 if (method.equals("GET")) {
                     try {
@@ -93,7 +87,7 @@ public class StudentHandler implements HttpHandler {
 
                 } else if (method.equals("POST")) {
                     try {
-                        submitQuest(httpExchange);
+                        submitQuest(httpExchange, (Student) student );
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -155,11 +149,25 @@ public class StudentHandler implements HttpHandler {
     }
 
 
-    private void submitQuest(HttpExchange httpExchange) throws SQLException, IOException {
+    private void submitQuest(HttpExchange httpExchange, Student student) throws SQLException, IOException {
         inputs = getInputs(httpExchange);
         model = createModel("templates/student-do-quest-2.twig");
         Quest quest = qDao.getQuestById(Integer.valueOf(inputs.get("quest").toString()));
         model.with("quest", quest);
+
+        this.createCompletedQuests(student, quest);
+    }
+
+
+    private void createCompletedQuests (Student student, Quest quest) {
+        CompletedQuestDao compQuestDao = new CompletedQuestDao();
+        String completeDate = "0";
+        CompletedQuest newCompletedQuest = new CompletedQuest(student.getId(), quest.getId(), completeDate);
+        try {
+            compQuestDao.addObject(newCompletedQuest);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
