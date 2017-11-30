@@ -281,7 +281,6 @@ public class MentorHandler implements HttpHandler {
 
                 } else if (method.equals("POST")) {
                     inputs = getInputs(httpExchange);
-System.out.println(inputs);
                     model = createModel("templates/mark-quest-finished.twig");
                     int id = Integer.parseInt(inputs.get("completedQuest").toString());
                     try {
