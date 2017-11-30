@@ -291,7 +291,9 @@ System.out.println(inputs);
                         int studentId = completedQuestToUpdate.getStudentId();
                         int questId = completedQuestToUpdate.getQuestId();
                         int value = qDao.getQuestById(questId).getValue();
-                        sDao.getStudentById(studentId).addCoins(value);
+                        Student studentToUpdate = sDao.getStudentById(studentId);
+                        studentToUpdate.addCoins(value);
+                        sDao.updateData(studentToUpdate);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
