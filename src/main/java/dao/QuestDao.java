@@ -42,6 +42,8 @@ public class QuestDao extends AbstractDao<Quest> {
         String category = rs.getString("category");
         Integer value = rs.getInt("value");
         Quest newQuest = new Quest(id, name, category, value);
+
+        rs.close();
         return newQuest;
     }
 
