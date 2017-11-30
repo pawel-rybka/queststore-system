@@ -254,7 +254,7 @@ public class MentorHandler implements HttpHandler {
                     }
                 }
 /**************************************************************/
-            } else if (path.equals("/mentor/mark-quests")) {
+            } else if (path.equals("/mentor/mark-quest")) {
 
                 if (method.equals("GET")) {
 
