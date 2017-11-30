@@ -26,8 +26,8 @@ public class MentorHandler implements HttpHandler {
     private StudentDao sDao = new StudentDao();
     private QuestDao qDao = new QuestDao();
     private ArtifactDao aDao = new ArtifactDao();
-    private BoughtArtifactDao baDao = new BoughtArtifactDao();
     private Map inputs;
+    private BoughtArtifactDao baDao = new BoughtArtifactDao();
     private ClassDao cDao = new ClassDao();
     private Student student;
     private Map<String, User> sessionsData;
@@ -196,72 +196,75 @@ public class MentorHandler implements HttpHandler {
                     }
                 }
 
-        } else if (path.equals("/mentor/edit-student")) {
-            if (method.equals("POST")) {
-                try {
-                    chooseStudentToEdit(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+
+            } else if (path.equals("/mentor/edit-student")) {
+                if (method.equals("POST")) {
+                    try {
+                        chooseStudentToEdit(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+            } else if (path.equals("/mentor/edit-student-finished")) {
+                if (method.equals("POST")) {
+                    try {
+                        updateStudentData(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/remove-student")) {
+                if (method.equals("POST")) {
+                    try {
+                        removeStudent(httpExchange);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (path.equals("/mentor/mark-artifacts")) {
+
+                if (method.equals("GET")) {
+
+                    model = createModel("templates/mark-artifact.twig");
+                    ArrayList<BoughtArtifact> boughtArtifacts;
+                    try {
+                        boughtArtifacts = baDao.getUnmarkedArtifacts();
+                        model.with("boughtArtifacts", boughtArtifacts);
+                        model.with("sDao", sDao);
+                        model.with("aDao", aDao);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (method.equals("POST")) {
+                    inputs = getInputs(httpExchange);
+                    model = createModel("templates/mark-artifact-finished.twig");
+                    int id = Integer.parseInt(inputs.get("boughtArtifact").toString());
+                    try {
+                        BoughtArtifact boughtArtifactToUpdate = baDao.getBoughtArtifactById(id);
+                        boughtArtifactToUpdate.setUsageDate("1");
+                        baDao.updateData(boughtArtifactToUpdate);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            } else {
+                httpExchange.getResponseHeaders().add("Location", "/login");
+                httpExchange.sendResponseHeaders(302, -1);
             }
 
-        } else if (path.equals("/mentor/edit-student-finished")) {
-            if (method.equals("POST")) {
-                try {
-                    updateStudentData(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            response = template.render(model);
 
-        } else if (path.equals("/mentor/remove-student")) {
-            if (method.equals("POST")) {
-                try {
-                    removeStudent(httpExchange);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else if (path.equals("/mentor/mark-artifacts")) {
-
-            if (method.equals("GET")) {
-
-                model = createModel("templates/mark-artifact.twig");
-                ArrayList<BoughtArtifact> boughtArtifacts;
-                try {
-                    boughtArtifacts = baDao.getUnmarkedArtifacts();
-                    model.with("boughtArtifacts", boughtArtifacts);
-                    model.with("sDao", sDao);
-                    model.with("aDao", aDao);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (method.equals("POST")) {
-                inputs = getInputs(httpExchange);
-                model = createModel("templates/mark-artifact-finished.twig");
-                int id = Integer.parseInt(inputs.get("boughtArtifact").toString());
-                try {
-                    BoughtArtifact boughtArtifactToUpdate = baDao.getBoughtArtifactById(id);
-                    boughtArtifactToUpdate.setUsageDate("1");
-                    baDao.updateData(boughtArtifactToUpdate);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else {
-            httpExchange.getResponseHeaders().add("Location", "/login" );
-            httpExchange.sendResponseHeaders(302, -1);
+            httpExchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
         }
-
-        response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
     private void updateArtifactData(HttpExchange httpExchange) throws SQLException, IOException {
