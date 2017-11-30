@@ -17,7 +17,7 @@
             <p class="log-bar">You are logged as Mentor</p>
             <h2>Choose artifact to edit:</h2>
 
-            <form>
+            <form class="choose-form">
                 {%for artifact in artifacts%}
                 <input type="radio" name="artifact" value="{{ artifact.getId }}"> {{ artifact.getName }}<br><br>
                 {%endfor%}
