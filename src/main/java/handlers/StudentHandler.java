@@ -91,6 +91,16 @@ public class StudentHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 }
+            } else if (path.equals("/student/student-see-wallet")) {
+                User student = this.sessionsData.get(sessionId);
+
+                if (method.equals("GET")) {
+                    try {
+                        seeMyWallet(httpExchange, (Student) student);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             response = template.render(model);
             httpExchange.sendResponseHeaders(200, response.getBytes().length);
@@ -170,6 +180,18 @@ public class StudentHandler implements HttpHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void seeMyWallet(HttpExchange httpExchange, Student student) throws SQLException {
+        BoughtArtifactDao baDao = new BoughtArtifactDao();
+
+        ArrayList<Artifact> boughtArtifacts = baDao.getUserBoughtArtifactAcceptedByMentor(student.getId());
+
+
+        model = createModel("templates/student-see-wallet.twig");
+        model.with("student", student);
+        model.with("boughtArtifacts", boughtArtifacts);
+
     }
 
 

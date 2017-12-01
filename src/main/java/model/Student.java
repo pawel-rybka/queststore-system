@@ -69,4 +69,8 @@ public class Student extends User {
         this.level = setLevel(this.totalCoins);
     }
 
+    public void addCoins(int value) {
+        this.coins += value;
+        this.totalCoins += value;
+    }
 }

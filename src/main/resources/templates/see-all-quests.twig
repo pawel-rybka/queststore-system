@@ -17,11 +17,11 @@
             <p class="log-bar">You are logged as Mentor</p>
             <h2>Choose quest to edit:</h2>
 
-            <form>
+            <form class="choose-form">
                 {%for quest in quests%}
                 <input type="radio" name="quest" value="{{ quest.getId }}"> {{ quest.getName }}<br><br>
                 {%endfor%}
-                <button type="submit" formaction="edit-quest" formmethod="post">Edit choosen quest</button>
+                <button type="submit" formaction="see-quests" formmethod="post">See choosen quest</button>
             </form>
             
         </div>
