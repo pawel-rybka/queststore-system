@@ -19,7 +19,7 @@
 
             <form class="choose-form">
                 {%for artifact in artifacts%}
-                <input type="radio" name="artifact" value="{{ artifact.getId }}"> {{ artifact.getName }}<br><br>
+                <input type="radio" name="artifact" value="{{ artifact.getId }}" required> {{ artifact.getName }}<br><br>
                 {%endfor%}
                 <button type="submit" formaction="see-artifacts" formmethod="post">See choosen artifact</button>
             </form>
