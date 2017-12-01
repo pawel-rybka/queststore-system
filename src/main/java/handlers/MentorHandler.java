@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static handlers.helpers.Utilities.redirectLoggedUser;
+
 public class MentorHandler implements HttpHandler {
     private JtwigModel model;
     private JtwigTemplate template;
@@ -49,15 +51,15 @@ public class MentorHandler implements HttpHandler {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
         String sessionId = cookie.getValue();
-        User mentor = sessionsData.get(sessionId);
+        User user = this.sessionsData.get(sessionId);
 
 
-        if (sessionsData.containsKey(sessionId)) {
+        if (this.sessionsData.containsKey(sessionId) && user instanceof Mentor) {
 
             if (path.equals("/mentor")) {
                 template = JtwigTemplate.classpathTemplate("static/mentor/mentor-home.twig");
                 model = JtwigModel.newModel();
-                model.with("mentor", mentor);
+                model.with("mentor", user);
             } else if (path.equals("/mentor/add-quest")) {
 
                 if (method.equals("GET")) {
@@ -251,21 +253,24 @@ public class MentorHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 }
-
-
-            } else {
-                httpExchange.getResponseHeaders().add("Location", "/login");
-                httpExchange.sendResponseHeaders(302, -1);
             }
+                response = template.render(model);
+                httpExchange.sendResponseHeaders(200, response.getBytes().length);
 
-            response = template.render(model);
+        } else if (this.sessionsData.containsKey(sessionId)){
+            redirectLoggedUser(user, httpExchange);
 
-            httpExchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+        } else {
+            httpExchange.getResponseHeaders().add("Location", "/login");
+            httpExchange.sendResponseHeaders(302, -1);
         }
+
+
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
+
 
     private void updateArtifactData(HttpExchange httpExchange) throws SQLException, IOException {
         inputs = getInputs(httpExchange);
