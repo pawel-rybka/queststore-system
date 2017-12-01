@@ -13,11 +13,10 @@ import java.io.*;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
+
+import static handlers.helpers.Utilities.redirectLoggedUser;
 
 public class StudentHandler implements HttpHandler {
 
@@ -48,59 +47,62 @@ public class StudentHandler implements HttpHandler {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
         String sessionId = cookie.getValue();
-
-        if(sessionsData.containsKey(sessionId)) {
+        User user = this.sessionsData.get(sessionId);
+        if (this.sessionsData.containsKey(sessionId) && user instanceof Student) {
 
             if (path.equals("/student")) {
-                User student = this.sessionsData.get(sessionId);
+//                student = this.sessionsData.get(sessionId);
                 model = createModel("templates/student-home-page.twig");
-                model.with("student", student);
+                model.with("student", user);
 
 
             } else if (path.equals("/student/student-buy-artifact")) {
-                User student = this.sessionsData.get(sessionId);
+//                student = this.sessionsData.get(sessionId);
 
                 if (method.equals("GET")) {
                     try {
-                        listArtifacts(httpExchange, (Student) student);
+                        listArtifacts((Student) user);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
                 } else if (method.equals("POST")) {
                     try {
-                        buyArtifact(httpExchange, (Student) student);
+                        buyArtifact(httpExchange, (Student) user);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
 
             } else if (path.equals("/student/student-do-quest")) {
-                User student = this.sessionsData.get(sessionId);
+//                User student = this.sessionsData.get(sessionId);
 
                 if (method.equals("GET")) {
                     try {
-                        listQuestsToDo(httpExchange);
+                        listQuestsToDo();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
                 } else if (method.equals("POST")) {
                     try {
-                        submitQuest(httpExchange, (Student) student );
+                        submitQuest(httpExchange, (Student) user );
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
             }
+            response = template.render(model);
+            httpExchange.sendResponseHeaders(200, response.getBytes().length);
+
+        } else if (this.sessionsData.containsKey(sessionId)){
+            redirectLoggedUser(user, httpExchange);
+
         } else {
-            httpExchange.getResponseHeaders().add("Location", "/login" );
+            httpExchange.getResponseHeaders().add("Location", "/login");
             httpExchange.sendResponseHeaders(302, -1);
         }
 
-        response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
@@ -109,7 +111,7 @@ public class StudentHandler implements HttpHandler {
 
 
 
-    private void listArtifacts (HttpExchange httpExchange, Student student) throws SQLException {
+    private void listArtifacts (Student student) throws SQLException {
         model = createModel("templates/student-buy-artifact.twig");
         ArrayList<Artifact> allArtifacts = aDao.getArtifactToBuyByUser(student.getCoins());
 
@@ -142,7 +144,7 @@ public class StudentHandler implements HttpHandler {
     }
 
 
-    private void listQuestsToDo (HttpExchange httpExchange) throws SQLException {
+    private void listQuestsToDo () throws SQLException {
         model = createModel("templates/student-do-quest.twig");
         ArrayList<Quest> quests = qDao.getQuests();
         model.with("quests", quests);
