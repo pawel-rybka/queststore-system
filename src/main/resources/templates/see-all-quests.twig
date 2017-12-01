@@ -19,7 +19,7 @@
 
             <form class="choose-form">
                 {%for quest in quests%}
-                <input type="radio" name="quest" value="{{ quest.getId }}"> {{ quest.getName }}<br><br>
+                <input type="radio" name="quest" value="{{ quest.getId }}" required> {{ quest.getName }}<br><br>
                 {%endfor%}
                 <button type="submit" formaction="see-quests" formmethod="post">See choosen quest</button>
             </form>
