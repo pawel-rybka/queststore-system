@@ -18,15 +18,17 @@ import model.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
+import static handlers.helpers.Utilities.redirectLoggedUser;
+
 
 public class AdminHandler implements HttpHandler {
     private JtwigModel model;
     private JtwigTemplate template;
     private MentorDao mDao = new MentorDao();
-    private Map inputs;
-    private Mentor mentor;
     private LevelDao lDao = new LevelDao();
     private ClassDao cDao = new ClassDao();
+    private Map inputs;
+    private Mentor mentor;
     private Map<String, User> sessionsData;
 
     public AdminHandler(Map<String, User> sessionsData) {
@@ -41,16 +43,15 @@ public class AdminHandler implements HttpHandler {
 
         URI uri = httpExchange.getRequestURI();
         String path = uri.getPath();
-        System.out.println(path);
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
         String sessionId = cookie.getValue();
+        User user = this.sessionsData.get(sessionId);
 
-
-        if (sessionsData.containsKey(sessionId)) {
+        if (this.sessionsData.containsKey(sessionId) && user instanceof Admin) {
 
             if (path.equals("/admin")) {
-                showHomePage(httpExchange, sessionId);
+                showHomePage(user);
 
             } else if (path.equals("/admin/add-mentor")) {
 
@@ -69,7 +70,7 @@ public class AdminHandler implements HttpHandler {
 
                 if (method.equals("GET")) {
                     try {
-                        listMentors(httpExchange);
+                        listMentors();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -113,7 +114,7 @@ public class AdminHandler implements HttpHandler {
             } else if (path.equals("/admin/classes")) {
                 if (method.equals("GET")) {
                     try {
-                        listClasses(httpExchange);
+                        listClasses();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -185,7 +186,7 @@ public class AdminHandler implements HttpHandler {
 
                 if (method.equals("GET")) {
                     try {
-                        listLevels(httpExchange);
+                        listLevels();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -218,27 +219,25 @@ public class AdminHandler implements HttpHandler {
                     }
                 }
             }
+            response = template.render(model);
+            httpExchange.sendResponseHeaders(200, response.getBytes().length);
+
+        } else if (this.sessionsData.containsKey(sessionId)){
+            redirectLoggedUser(user, httpExchange);
 
         } else {
-            httpExchange.getResponseHeaders().add("Location", "/login" );
+            httpExchange.getResponseHeaders().add("Location", "/login");
             httpExchange.sendResponseHeaders(302, -1);
         }
 
-
-        response = template.render(model);
-        System.out.println(response.getBytes().length);
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
-
     }
 
-    private void showHomePage(HttpExchange httpExchange, String sessionId) {
-        User admin = sessionsData.get(sessionId);
+    private void showHomePage(User admin) {
         model = createModel("templates/admin/admin-home.twig");
         model.with("admin", admin);
-
     }
 
     private void addMentor(HttpExchange httpExchange) throws IOException, SQLException {
@@ -255,14 +254,14 @@ public class AdminHandler implements HttpHandler {
 
     }
 
-    private void listMentors(HttpExchange httpExchange) throws SQLException {
+    private void listMentors() throws SQLException {
         model = createModel("templates/see-mentor.twig");
         ArrayList<Mentor> mentors = null;
         mentors = mDao.getMentors();
         model.with("mentors", mentors);
     }
 
-    private void listClasses(HttpExchange httpExchange) throws SQLException {
+    private void listClasses() throws SQLException {
         model = createModel("templates/see-classes.twig");
         ArrayList<Klass> classes = null;
         classes = cDao.getClasses();
@@ -358,7 +357,7 @@ public class AdminHandler implements HttpHandler {
         cDao.addObject(klass);
     }
 
-    private void listLevels(HttpExchange httpExchange) throws SQLException {
+    private void listLevels() throws SQLException {
         model = createModel("templates/see-all-levels.twig");
         ArrayList<Level> levels = null;
         levels = lDao.getLevels();
