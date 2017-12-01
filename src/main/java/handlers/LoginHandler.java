@@ -6,8 +6,6 @@ import dao.AdminDao;
 import dao.MentorDao;
 import dao.StudentDao;
 import handlers.helpers.ParserFormData;
-import model.Admin;
-import model.Mentor;
 import model.User;
 import org.jtwig.JtwigTemplate;
 
@@ -19,6 +17,8 @@ import java.net.HttpCookie;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.UUID;
+
+import static handlers.helpers.Utilities.redirectLoggedUser;
 
 public class LoginHandler implements HttpHandler {
 
@@ -32,7 +32,6 @@ public class LoginHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "";
         String method = httpExchange.getRequestMethod();
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
 
         if (method.equals("POST")) {
 
@@ -50,8 +49,7 @@ public class LoginHandler implements HttpHandler {
                 String sessionId = UUID.randomUUID().toString();
                 this.sessionsData.put(sessionId, user);
 
-                HttpCookie cookie = new HttpCookie("sessionId", sessionId.toString());
-                System.out.println(cookie.toString());
+                HttpCookie cookie = new HttpCookie("sessionId", sessionId);
                 httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
                 redirectLoggedUser(user, httpExchange);
             } else {
@@ -60,14 +58,34 @@ public class LoginHandler implements HttpHandler {
             }
 
         } else if (method.equals("GET")) {
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("/static/index.html");
-            response = template.render(null);
-            httpExchange.sendResponseHeaders(200, response.getBytes().length);
+            String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+
+            if (cookieStr != null) {
+                String sessionId = getSessionIdFromCookie(cookieStr);
+
+                if (this.sessionsData.containsKey(sessionId)) {
+                    User user = this.sessionsData.get(sessionId);
+                    redirectLoggedUser(user, httpExchange);
+
+                } else {
+                    response = createResponseWithLoginPage();
+                    httpExchange.sendResponseHeaders(200, response.getBytes().length);
+                }
+
+            } else {
+                response = createResponseWithLoginPage();
+                httpExchange.sendResponseHeaders(200, response.getBytes().length);
+            }
         }
 
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private String createResponseWithLoginPage() {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("/static/index.html");
+        return template.render(null);
     }
 
     private String getFormData(HttpExchange httpExchange) throws IOException {
@@ -95,17 +113,20 @@ public class LoginHandler implements HttpHandler {
         return user;
     }
 
-    private void redirectLoggedUser(User user, HttpExchange httpExchange) throws IOException {
+    private String getSessionIdFromCookie(String cookieStr) {
+        String[] cookiePairs = cookieStr.split("=");
 
-        if (user instanceof Admin) {
-            httpExchange.getResponseHeaders().add("Location", "/admin" );
-            httpExchange.sendResponseHeaders(302, -1);
-        } else if (user instanceof Mentor) {
-            httpExchange.getResponseHeaders().add("Location", "/mentor" );
-            httpExchange.sendResponseHeaders(302, -1);
-        } else {
-            httpExchange.getResponseHeaders().add("Location", "/student" );
-            httpExchange.sendResponseHeaders(302, -1);
+        int i = 0;
+        while(!cookiePairs[i].equals("sessionId") && i < cookiePairs.length) {
+            i += 2;
         }
+
+        String cookieValue = cookiePairs[i+1];
+        Integer firstLetter = 1;
+        Integer lastLetter = cookieValue.length() - 1;
+
+        return cookieValue.substring(firstLetter, lastLetter);
     }
+
+
 }
